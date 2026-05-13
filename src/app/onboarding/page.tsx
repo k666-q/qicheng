@@ -127,6 +127,12 @@ function OnboardingContent() {
 
       if (complete) {
         setIsComplete(true);
+        sessionStorage.setItem("qicheng_draft", JSON.stringify(newDraft));
+        const summary = newMessages
+          .filter((m) => m.role === "user")
+          .map((m) => m.content)
+          .join("; ");
+        sessionStorage.setItem("qicheng_summary", summary);
       }
     } catch {
       setStreamingText("");
@@ -194,7 +200,7 @@ function OnboardingContent() {
         <div className="border-t border-stone-100 px-6 py-4">
           {isComplete ? (
             <button
-              onClick={() => router.push("/plan/generate")}
+              onClick={() => router.push("/plan")}
               className="w-full rounded-lg bg-stone-800 px-4 py-3 text-sm font-medium text-white hover:bg-stone-700 transition-colors"
             >
               生成我的计划
