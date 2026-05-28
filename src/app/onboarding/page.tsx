@@ -2,8 +2,10 @@
 
 import { Suspense, useEffect, useRef, useState, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { ChatBubble } from "@/components/onboarding/ChatBubble";
+import { ChatBubbleGroup } from "@/components/onboarding/ChatBubble";
 import { OptionButtons } from "@/components/onboarding/OptionButtons";
+import { saveMilestone } from "@/lib/milestones/store";
+import { trackEvent } from "@/lib/profile/events";
 import type { ConversationMessage, DraftPlan } from "@/lib/onboarding/types";
 
 const META_SEPARATOR = "|||META|||";
@@ -29,7 +31,11 @@ function OnboardingContent() {
   const [isComplete, setIsComplete] = useState(false);
   const [streamingText, setStreamingText] = useState("");
 
+  const [uploadedDoc, setUploadedDoc] = useState<{ filename: string; textContent: string } | null>(null);
+  const [uploading, setUploading] = useState(false);
+
   const chatEndRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const initialized = useRef(false);
 
   const scrollToBottom = useCallback(() => {
@@ -128,11 +134,20 @@ function OnboardingContent() {
       if (complete) {
         setIsComplete(true);
         sessionStorage.setItem("qicheng_draft", JSON.stringify(newDraft));
+        localStorage.setItem("qicheng_draft_backup", JSON.stringify(newDraft));
         const summary = newMessages
           .filter((m) => m.role === "user")
           .map((m) => m.content)
           .join("; ");
         sessionStorage.setItem("qicheng_summary", summary);
+
+        const firstUserMsg = newMessages.find((m) => m.role === "user")?.content || "";
+        saveMilestone("first_words", "说出了想做的事", firstUserMsg, {
+          user_quote: firstUserMsg,
+          stage: 0,
+          context: { goal: newDraft.goal, domain: newDraft.domain },
+        });
+        trackEvent("onboarding_complete", { goal: newDraft.goal, domain: newDraft.domain });
       }
     } catch {
       setStreamingText("");
@@ -152,7 +167,38 @@ function OnboardingContent() {
     const msg = text || input.trim();
     if (!msg || loading || isComplete) return;
     setInput("");
-    sendToAI(msg, messages, draft);
+
+    let fullMsg = msg;
+    if (uploadedDoc) {
+      fullMsg = `[用户上传了文件: ${uploadedDoc.filename}，用户说明: ${msg}]\n\n以下是文件内容：\n${uploadedDoc.textContent}`;
+      setUploadedDoc(null);
+    }
+
+    sendToAI(fullMsg, messages, draft);
+  }
+
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/upload-doc", { method: "POST", body: formData });
+      const data = await res.json();
+
+      if (!data.success) {
+        setMessages((prev) => [...prev, { role: "ai", content: `文件上传失败：${data.error}` }]);
+      } else {
+        setUploadedDoc({ filename: data.filename, textContent: data.textContent });
+      }
+    } catch {
+      setMessages((prev) => [...prev, { role: "ai", content: "文件上传出了问题，请重试。" }]);
+    }
+    setUploading(false);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
   if (!initialInput) {
@@ -173,22 +219,36 @@ function OnboardingContent() {
 
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
           {messages.map((msg, i) => (
-            <ChatBubble key={i} role={msg.role} content={msg.content} />
+            <ChatBubbleGroup key={i} role={msg.role} content={msg.content} />
           ))}
 
           {/* Streaming AI message */}
           {streamingText && (
-            <div className="flex justify-start">
-              <div className="max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed bg-stone-100 text-stone-800">
-                {streamingText}
-                <span className="inline-block w-1 h-4 ml-0.5 bg-stone-400 animate-pulse" />
-              </div>
+            <div className="space-y-1.5">
+              {streamingText.split("|||SPLIT|||").map((part, i, arr) => (
+                <div key={i} className="flex justify-start">
+                  <div className="max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed bg-stone-100 text-stone-800 whitespace-pre-wrap">
+                    {part.trim()}
+                    {i === arr.length - 1 && (
+                      <span className="inline-flex items-center ml-1.5 gap-0.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-stone-400 animate-bounce [animation-delay:0ms]" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-stone-400 animate-bounce [animation-delay:150ms]" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-stone-400 animate-bounce [animation-delay:300ms]" />
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
           )}
 
           {loading && !streamingText && (
             <div className="flex justify-start">
-              <div className="bg-stone-100 rounded-2xl px-4 py-2.5 text-sm text-stone-400 animate-pulse">
+              <div className="bg-stone-100 rounded-2xl px-4 py-2.5 text-sm text-stone-400 flex items-center gap-2">
+                <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                </svg>
                 正在思考...
               </div>
             </div>
@@ -216,7 +276,41 @@ function OnboardingContent() {
                   />
                 </div>
               )}
+              {uploadedDoc && (
+                <div className="mb-2 flex items-center gap-2 text-xs text-stone-500 bg-stone-50 rounded-lg px-3 py-1.5">
+                  <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  <span className="truncate">{uploadedDoc.filename} 已解析</span>
+                  <button onClick={() => setUploadedDoc(null)} className="ml-auto text-stone-400 hover:text-stone-600">✕</button>
+                </div>
+              )}
               <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} className="flex gap-2">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".md,.txt,.pdf,.docx"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={loading || uploading || isComplete}
+                  title="上传需求文档（.md .txt .pdf .docx）"
+                  className="rounded-lg border border-stone-200 bg-white px-2.5 py-2.5 text-stone-500 hover:text-stone-700 hover:border-stone-300 transition-colors disabled:opacity-50"
+                >
+                  {uploading ? (
+                    <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                  ) : (
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                    </svg>
+                  )}
+                </button>
                 <input
                   type="text"
                   value={input}

@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import OpenAI from "openai";
+import { buildFullPersonaPrompt } from "@/lib/ai/persona";
 
 export const dynamic = "force-dynamic";
 
@@ -17,22 +18,29 @@ function getClient() {
 }
 
 function buildSystemPrompt(): string {
-  return `你是「启程」的计划编辑助手。用户对当前计划有修改意见，你要理解他的意图并输出修改后的完整计划。
+  const sceneInstructions = `## 当前场景：计划编辑
+
+**重要：本场景不使用 |||SPLIT||| 分条规则。** 你需要输出说明文字 + |||PLAN||| + 完整JSON。不要把JSON拆成多条消息。
+
+用户对当前计划有修改意见，你要理解他的意图并输出修改后的完整计划。
 
 ## 规则
 
 1. 先用 1-2 句话说明你做了什么修改、为什么。
-2. 输出修改后的完整计划 JSON（格式和生成时一样）。
-3. 如果用户的修改会产生连锁影响（比如改时间导致后面任务要调整），主动说明。
-4. 保持双层语言、用户原话引用等规则不变。
+2. 输出修改后的完整计划 JSON（格式和生成时一样：stages → weeks → days → tasks）。
+3. 如果用户的修改会产生连锁影响（比如改时间导致后面任务要调整），主动说明并重新按天分配。
+4. 保持双层语言、精力曲线原则、用户原话引用等规则不变。
 5. 不要问用户问题，直接按他说的做，做完解释。
+6. 修改后仍然要按天分配，考虑每天的精力状态。
 
 ## 输出格式
 
 <对用户说的话：解释你改了什么、为什么、有什么连锁影响>
 
 |||PLAN|||
-{完整的修改后计划 JSON，格式同生成时}`;
+{完整的修改后计划 JSON，结构：title, domain, total_weeks, stages[{name, why, duration, weeks[{week_number, theme, days[{day, energy_note?, tasks[{title_plain, title_professional, estimated_minutes, difficulty, day_label}]}], outcome}], outcome}], first_step}`;
+
+  return buildFullPersonaPrompt(sceneInstructions);
 }
 
 export async function POST(req: NextRequest) {

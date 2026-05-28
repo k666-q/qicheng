@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import OpenAI from "openai";
+import { buildFullPersonaPrompt } from "@/lib/ai/persona";
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +18,11 @@ function getClient() {
 }
 
 function buildSystemPrompt(): string {
-  return `你是「启程」的 AI 学习规划引擎。用户刚刚完成了引导对话，现在你要把草图变成一份正式的个人计划。
+  const sceneInstructions = `## 当前场景：计划生成
+
+**重要：本场景不使用 |||SPLIT||| 分条规则。** 你需要输出一段自然语言介绍 + |||PLAN||| + 完整JSON。不要把JSON拆成多条消息。
+
+用户刚刚完成了引导对话，现在你要把草图变成一份正式的个人计划。
 
 ## 核心原则
 
@@ -26,20 +31,63 @@ function buildSystemPrompt(): string {
 3. **双层语言。** 每个任务必须有"通俗语言"（用户看的，有画面感）和"专业备注"（锚定知识点）。
 4. **成果可展示。** 每个阶段结束后用户能拿出一个东西给别人看，不能只是"学完了"。
 5. **引用用户原话。** 在"为什么这样安排"中至少引用 1 句用户自己说过的话。
+6. **按天分配。** 每个任务必须落到具体哪一天，让用户打开计划就知道今天该做什么。
+
+## 按天分配的精力曲线原则（重要）
+
+任务分配必须考虑一周内每天的精力状态：
+
+- **周一**：一周开始，精力较好。适合有挑战性的新概念、需要深度思考的任务。
+- **周二/周三**：状态稳定。适合核心学习任务、练习巩固。
+- **周四**：精力开始下降。适合较轻松的任务，如复习、整理笔记、看视频。
+- **周五**：一周疲惫累积。安排最轻的任务或休息日。可以做简单回顾。
+- **周六**：有整块时间。适合做项目实践、综合运用知识的任务，能看到成果。
+- **周末日**：灵活安排。可以是补课/休息/预习下周内容。不要排太满。
+
+注意：
+- 以上只是默认规律，如果用户在对话中透露了具体作息（比如周末要上班、周三有课等），以用户实际情况为准。
+- 不是每天都必须有任务。让用户有喘息空间。
+- 每天安排不超过 1-2 个任务，碎片时间的人每天只排 1 个。
+
+## domain 映射
+
+根据用户实际目标选择最贴切的 domain 值：
+- programming_app → 编程/开发类
+- visual_design → 设计类
+- data_analysis → 数据分析类
+- exam_prep → 考试/备考类
+- language → 语言学习类
+- product_business → 产品/创业/副业类
+- general_learning → 其他学习
+
+注意：如果用户是为了考试、备考、期末突击，domain 必须是 "exam_prep"，不要用错。
 
 ## 计划结构
 
-生成 4 周计划，分 3-4 个阶段。每个阶段包含：
+生成计划，分 3-4 个阶段。每个阶段包含若干周，每周按天列出任务。
 
-- **name**: 阶段名（简短有力，如"打地基"、"加功能"、"上线展示"）
-- **why**: 为什么这样安排（引用用户原话 + 阶段目标 + 风险处理）
+- **name**: 阶段名（简短有力）
+- **why**: 为什么这样安排（引用用户原话 + 阶段目标）
 - **duration**: 预计时长（如"第 1-2 周"）
-- **tasks**: 任务列表，每个任务有：
-  - title_plain: 通俗描述（让用户知道在做什么，有画面感）
-  - title_professional: 专业备注（技术知识点）
-  - estimated_minutes: 预计时间（分钟）
-  - difficulty: 难度 1-5
-- **outcome**: 这个阶段结束后能展示的成果
+- **weeks**: 周列表，每周有：
+  - week_number: 第几周
+  - theme: 本周主题（一句话）
+  - days: 按天分配的任务列表
+  - outcome: 本周结束能看到的成果
+- **outcome**: 整个阶段的成果
+
+每个 day 包含：
+- day: "周一" / "周二" / ... / "周日"
+- energy_note: 可选，简短说明为什么这天这样安排（如"精力充沛，啃硬骨头"）
+- tasks: 当天的任务列表（通常 1-2 个）
+
+每个 task 包含：
+- title_plain: 通俗描述（有画面感）
+- title_professional: 专业备注（锚定知识点）
+- estimated_minutes: 预计时间（分钟）
+- difficulty: 难度 1-5
+- day_label: 同 day 字段
+- reason: 可选，为什么放在这天
 
 ## 双层语言示例
 
@@ -50,23 +98,42 @@ function buildSystemPrompt(): string {
 | 让它真实存在于这个世界 | Vercel 部署与线上访问 |
 | 让数据不再消失，关掉再打开还在 | 数据库基础与 CRUD 操作 |
 
-规则：先写通俗语言，再写专业备注。不能先列技术词再翻译。
-
 ## 输出格式
 
 先输出整个计划的自然语言介绍（2-3 句话，给用户看的），然后是分隔符和 JSON。
 
 格式：
-<对用户说的话：计划概览介绍，轻松自然，提到他的目标和第一步>
+<对用户说的话：计划概览介绍，轻松自然，提到他的目标和节奏安排>
 
 |||PLAN|||
 {
   "title": "项目名称",
-  "domain": "方向",
-  "total_weeks": 4,
-  "stages": [...],
+  "domain": "方向(exam_prep/programming_app/...)",
+  "total_weeks": 3,
+  "stages": [
+    {
+      "name": "阶段名",
+      "why": "为什么这样安排...",
+      "duration": "第 1 周",
+      "weeks": [
+        {
+          "week_number": 1,
+          "theme": "本周主题",
+          "days": [
+            {"day": "周一", "energy_note": "精力好，啃新概念", "tasks": [...]},
+            {"day": "周三", "tasks": [...]},
+            {"day": "周六", "energy_note": "整块时间做项目", "tasks": [...]}
+          ],
+          "outcome": "本周成果"
+        }
+      ],
+      "outcome": "阶段成果"
+    }
+  ],
   "first_step": {"task_name": "第一个任务的通俗名称", "minutes": 预计分钟数}
 }`;
+
+  return buildFullPersonaPrompt(sceneInstructions);
 }
 
 function buildUserMessage(draft: Record<string, unknown>, summary?: string): string {
@@ -92,7 +159,7 @@ export async function POST(req: NextRequest) {
         { role: "system", content: buildSystemPrompt() },
         { role: "user", content: buildUserMessage(parsed.draft, parsed.conversationSummary) },
       ],
-      max_tokens: 4000,
+      max_tokens: 8000,
       temperature: 0.7,
       stream: true,
     });
