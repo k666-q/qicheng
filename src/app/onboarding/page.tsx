@@ -30,6 +30,7 @@ function OnboardingContent() {
   const [loading, setLoading] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
   const [streamingText, setStreamingText] = useState("");
+  const [showModifyOptions, setShowModifyOptions] = useState(false);
 
   const [uploadedDoc, setUploadedDoc] = useState<{ filename: string; textContent: string } | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -207,27 +208,32 @@ function OnboardingContent() {
   }
 
   return (
-    <div className="flex h-screen bg-stone-50">
+    <div className="flex h-screen bg-gradient-to-br from-stone-50 via-white to-stone-50/80">
       {/* Left: Chat */}
-      <div className="flex flex-1 flex-col border-r border-stone-200">
-        <div className="border-b border-stone-100 px-6 py-4">
-          <h1 className="text-lg font-semibold text-stone-800">启程 · 引导对话</h1>
-          <p className="text-xs text-stone-400 mt-0.5">
-            {isComplete ? "引导完成 ✓" : "对话进行中..."}
-          </p>
+      <div className="flex flex-1 flex-col">
+        <div className="border-b border-stone-100/80 px-6 py-4 backdrop-blur-sm bg-white/70">
+          <div className="flex items-center gap-3">
+            <div className="w-7 h-7 rounded-lg bg-stone-900 flex items-center justify-center text-white text-xs font-bold shadow-sm">启</div>
+            <div>
+              <h1 className="text-sm font-semibold text-stone-800">引导对话</h1>
+              <p className="text-[11px] text-stone-400">
+                {isComplete ? "✓ 信息收集完成" : "聊聊你想做的事"}
+              </p>
+            </div>
+          </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+        <div className="flex-1 overflow-y-auto px-8 py-6 space-y-5">
           {messages.map((msg, i) => (
             <ChatBubbleGroup key={i} role={msg.role} content={msg.content} />
           ))}
 
           {/* Streaming AI message */}
           {streamingText && (
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               {streamingText.split("|||SPLIT|||").map((part, i, arr) => (
                 <div key={i} className="flex justify-start">
-                  <div className="max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed bg-stone-100 text-stone-800 whitespace-pre-wrap">
+                  <div className="max-w-[80%] rounded-2xl px-5 py-3 text-[15px] leading-relaxed bg-white border border-stone-100 text-stone-700 shadow-sm whitespace-pre-wrap">
                     {part.trim()}
                     {i === arr.length - 1 && (
                       <span className="inline-flex items-center ml-1.5 gap-0.5">
@@ -244,27 +250,69 @@ function OnboardingContent() {
 
           {loading && !streamingText && (
             <div className="flex justify-start">
-              <div className="bg-stone-100 rounded-2xl px-4 py-2.5 text-sm text-stone-400 flex items-center gap-2">
+              <div className="bg-white border border-stone-100 rounded-2xl px-5 py-3 text-[15px] text-stone-400 flex items-center gap-2 shadow-sm">
                 <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                 </svg>
-                正在思考...
+                思考中...
               </div>
             </div>
           )}
 
           <div ref={chatEndRef} />
+          {/* Extra bottom padding for floating input */}
+          <div className="h-20" />
         </div>
 
-        <div className="border-t border-stone-100 px-6 py-4">
-          {isComplete ? (
-            <button
-              onClick={() => router.push("/plan")}
-              className="w-full rounded-lg bg-stone-800 px-4 py-3 text-sm font-medium text-white hover:bg-stone-700 transition-colors"
-            >
-              生成我的计划
-            </button>
+        {/* Floating input area - positioned higher, not at bottom edge */}
+        <div className="px-8 pb-12">
+          <div className="rounded-2xl border border-stone-200/60 bg-white/95 backdrop-blur-xl shadow-xl shadow-stone-300/30 p-4 ring-1 ring-stone-100/50">
+          {isComplete && !showModifyOptions ? (
+            <div className="space-y-3">
+              <p className="text-xs text-stone-400 text-center">
+                这是初步草图，生成后会为你精确布局每一步
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowModifyOptions(true)}
+                  className="flex-1 rounded-xl border border-stone-200 px-4 py-3 text-sm font-medium text-stone-700 hover:bg-stone-50 transition-all"
+                >
+                  我想调整一下
+                </button>
+                <button
+                  onClick={() => router.push("/plan")}
+                  className="flex-1 rounded-xl bg-stone-900 px-4 py-3 text-sm font-medium text-white hover:bg-stone-800 transition-all shadow-sm"
+                >
+                  直接生成计划
+                </button>
+              </div>
+            </div>
+          ) : isComplete && showModifyOptions ? (
+            <div className="space-y-3">
+              <p className="text-xs text-stone-500">想调整哪部分？</p>
+              <div className="flex flex-wrap gap-2">
+                {getModifyOptions(draft).map((opt, i) => (
+                  <button
+                    key={i}
+                    onClick={() => {
+                      setIsComplete(false);
+                      setShowModifyOptions(false);
+                      sendToAI(opt, messages, draft);
+                    }}
+                    className="rounded-xl border border-stone-200 bg-stone-50 px-3 py-1.5 text-xs text-stone-600 hover:bg-white hover:border-stone-300 hover:shadow-sm transition-all"
+                  >
+                    {opt}
+                  </button>
+                ))}
+              </div>
+              <button
+                onClick={() => router.push("/plan")}
+                className="w-full rounded-xl bg-stone-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-stone-800 transition-all shadow-sm"
+              >
+                不改了，生成计划
+              </button>
+            </div>
           ) : (
             <>
               {currentOptions && currentOptions.length > 0 && !loading && (
@@ -285,7 +333,7 @@ function OnboardingContent() {
                   <button onClick={() => setUploadedDoc(null)} className="ml-auto text-stone-400 hover:text-stone-600">✕</button>
                 </div>
               )}
-              <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} className="flex gap-2">
+              <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} className="flex gap-2 items-center">
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -297,16 +345,16 @@ function OnboardingContent() {
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
                   disabled={loading || uploading || isComplete}
-                  title="上传需求文档（.md .txt .pdf .docx）"
-                  className="rounded-lg border border-stone-200 bg-white px-2.5 py-2.5 text-stone-500 hover:text-stone-700 hover:border-stone-300 transition-colors disabled:opacity-50"
+                  title="上传需求文档"
+                  className="rounded-xl border border-stone-200 bg-stone-50 p-2.5 text-stone-400 hover:text-stone-600 hover:border-stone-300 transition-all disabled:opacity-50"
                 >
                   {uploading ? (
-                    <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                    <svg className="w-4.5 h-4.5 animate-spin" viewBox="0 0 24 24" fill="none">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" />
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                     </svg>
                   ) : (
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
                     </svg>
                   )}
@@ -315,30 +363,54 @@ function OnboardingContent() {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder={currentOptions ? "或者直接说..." : "输入你的想法..."}
+                  placeholder={currentOptions ? "或者直接说..." : "说说你想做什么..."}
                   disabled={loading}
-                  className="flex-1 rounded-lg border border-stone-200 bg-white px-4 py-2.5 text-sm text-stone-800 placeholder:text-stone-400 focus:border-stone-400 focus:outline-none disabled:opacity-50"
+                  className="flex-1 bg-transparent px-3 py-2.5 text-[15px] text-stone-800 placeholder:text-stone-400 focus:outline-none disabled:opacity-50"
                 />
                 <button
                   type="submit"
                   disabled={loading || !input.trim()}
-                  className="rounded-lg bg-stone-800 px-4 py-2.5 text-sm font-medium text-white hover:bg-stone-700 transition-colors disabled:opacity-50"
+                  className="rounded-xl bg-stone-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-stone-800 transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm"
                 >
                   发送
                 </button>
               </form>
+              {/* 一键生成按钮 — 醒目的独立按钮 */}
+              {messages.filter(m => m.role === "user").length >= 2 && !loading && (
+                <div className="mt-3 pt-3 border-t border-stone-100">
+                  <button
+                    onClick={() => {
+                      setIsComplete(true);
+                      sessionStorage.setItem("qicheng_draft", JSON.stringify(draft));
+                      localStorage.setItem("qicheng_draft_backup", JSON.stringify(draft));
+                      trackEvent("onboarding_early_generate", { rounds: messages.filter(m => m.role === "user").length });
+                    }}
+                    className="group w-full flex items-center justify-center gap-2 rounded-xl border border-stone-200 bg-gradient-to-r from-stone-50 to-white px-4 py-2.5 text-sm text-stone-600 hover:border-stone-300 hover:shadow-sm hover:text-stone-800 transition-all"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span>直接生成计划</span>
+                    <svg className="w-3.5 h-3.5 text-stone-400 group-hover:text-stone-600 group-hover:translate-x-0.5 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                  </button>
+                </div>
+              )}
             </>
           )}
+          </div>
         </div>
       </div>
 
       {/* Right: Live Draft Plan */}
-      <div className="w-[400px] overflow-y-auto border-l border-stone-100 bg-white px-6 py-6 max-lg:hidden">
-        <h2 className="text-sm font-semibold text-stone-500 uppercase tracking-wide">
-          计划草图
-        </h2>
-        <p className="text-xs text-stone-400 mt-1 mb-5">
-          随着对话推进，你的计划在这里逐渐成型
+      <div className="w-[380px] overflow-y-auto border-l border-stone-100/60 bg-gradient-to-b from-white to-stone-50/50 px-6 py-6 max-lg:hidden">
+        <div className="flex items-center gap-2 mb-1">
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <h2 className="text-xs font-semibold text-stone-500 uppercase tracking-wider">
+            实时草图
+          </h2>
+        </div>
+        <p className="text-[11px] text-stone-400 mb-5">
+          你说的每句话都在变成计划
         </p>
 
         <div className="space-y-4">
@@ -420,6 +492,32 @@ function OnboardingContent() {
       </div>
     </div>
   );
+}
+
+function getModifyOptions(draft: DraftPlan): string[] {
+  const options: string[] = [];
+
+  if (draft.stages && draft.stages.length > 0) {
+    options.push("调整阶段安排");
+  }
+  if (draft.time_budget) {
+    options.push("时间其实没那么多");
+    options.push("时间可以更多一点");
+  } else {
+    options.push("补充一下我的时间安排");
+  }
+  if (draft.goal) {
+    options.push("目标想再聚焦一些");
+  }
+  if (!draft.starting_point) {
+    options.push("说说我现在的基础");
+  }
+  if (draft.stages && draft.stages.length > 0) {
+    options.push("第一周任务想换个方向");
+  }
+  options.push("其他想法");
+
+  return options.slice(0, 5);
 }
 
 function DraftSection({ icon, title, children }: { icon: string; title: string; children: React.ReactNode }) {

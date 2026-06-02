@@ -27,10 +27,14 @@ export async function POST(req: NextRequest) {
     const results = await searchBilibili(parsed.query, 8);
 
     if (results.length === 0) {
+      const searchUrl = `https://search.bilibili.com/all?keyword=${encodeURIComponent(parsed.query)}`;
       return Response.json({
         success: true,
-        recommendations: [],
-        fallback: `在 B站搜索「${parsed.query}」可以找到相关视频`,
+        recommendations: [
+          { title: `在B站搜索「${parsed.query}」`, url: searchUrl, reason: "点击直接跳转B站搜索结果" }
+        ],
+        fallback: `在 B站搜索「${parsed.query}」`,
+        searchUrl,
       });
     }
 

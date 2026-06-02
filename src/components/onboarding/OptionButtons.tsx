@@ -14,7 +14,7 @@ export function OptionButtons({ options, onSelect, disabled }: OptionButtonsProp
           key={opt}
           onClick={() => onSelect(opt)}
           disabled={disabled}
-          className="rounded-full border border-stone-200 bg-white px-4 py-2 text-sm text-stone-700 hover:border-stone-400 hover:bg-stone-50 transition-colors disabled:opacity-50"
+          className="rounded-xl border border-stone-200 bg-white px-4 py-2 text-sm text-stone-600 hover:border-stone-300 hover:bg-stone-50 hover:text-stone-800 hover:shadow-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {opt}
         </button>

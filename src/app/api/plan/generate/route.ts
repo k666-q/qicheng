@@ -85,7 +85,7 @@ function buildSystemPrompt(): string {
 - title_plain: 通俗描述（有画面感）
 - title_professional: 专业备注（锚定知识点）
 - estimated_minutes: 预计时间（分钟）
-- difficulty: 难度 1-5
+- difficulty: 难度 1-10（整数，1=最简单 10=最难。注意要合理分布，不要全部都是5-6，要有真实的难度起伏。简单任务给2-3，适中给4-6，有挑战给7-8，高难度给9-10）
 - day_label: 同 day 字段
 - reason: 可选，为什么放在这天
 

@@ -99,6 +99,28 @@ function buildChatPrompt(task: z.infer<typeof RequestSchema>["task"], planContex
 3. 用通俗语言解释概念，可以用类比和例子
 4. 如果用户完全不知道从哪开始，给他一个"第一步就做这个"的明确指引
 
+## 格式要求
+
+**必须使用 Markdown 格式回复**，充分利用：
+- **## 标题** 来分隔不同模块（知识点、操作步骤、练习题等）
+- **加粗** 标注核心概念和重点
+- \`代码\` 标注命令、代码片段
+- 有序列表和无序列表让内容清晰
+- > 引用块 用于答案解析
+- --- 分隔不同板块
+
+讲解知识时要**足够细致**，假设用户是零基础。用生活化类比解释抽象概念。
+
+出选择题时，格式如下：
+**第 N 题（难度）**
+题目...
+- A) ...
+- B) ...
+- C) ...
+- D) ...
+> 答案：X
+> 解析：...
+
 ## 资源推荐规则
 
 当用户问"有没有推荐的视频/教程/资源"时：
@@ -146,7 +168,7 @@ export async function POST(req: NextRequest) {
     const stream = await client.chat.completions.create({
       model,
       messages,
-      max_tokens: isBreakdown ? 2000 : 1000,
+      max_tokens: isBreakdown ? 2000 : 4000,
       temperature: 0.7,
       stream: true,
     });

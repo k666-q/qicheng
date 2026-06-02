@@ -1,5 +1,6 @@
 export type EventType =
   | "onboarding_complete"
+  | "onboarding_early_generate"
   | "draft_modified"
   | "plan_generated"
   | "task_clicked"

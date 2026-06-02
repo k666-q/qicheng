@@ -6,6 +6,7 @@ import { ReturnBanner } from "@/components/ReturnBanner";
 import { DarkPeriodWarning } from "@/components/DarkPeriodWarning";
 import { ProgressCompare } from "@/components/ProgressCompare";
 import { StreakCard } from "@/components/StreakCard";
+import { MiniEmotionCurve } from "@/components/MiniEmotionCurve";
 import { getCardByStage, saveStageCard } from "@/lib/cards/store";
 import type { GeneratedPlan, PlanStage, PlanTask } from "@/lib/plan/types";
 import type { StageCard as StageCardType } from "@/lib/cards/types";
@@ -197,45 +198,53 @@ function PlanContent() {
 
   if (error && !plan) {
     return (
-      <div className="flex h-screen items-center justify-center bg-stone-50">
-        <div className="text-center">
-          <p className="text-stone-600">{error}</p>
-          <a href="/" className="mt-4 inline-block text-sm text-stone-500 underline">回到首页</a>
+      <div className="flex h-screen items-center justify-center bg-gradient-to-b from-stone-50 to-white">
+        <div className="text-center animate-fade-in">
+          <div className="w-10 h-10 rounded-xl bg-stone-100 flex items-center justify-center mx-auto mb-4">
+            <svg className="w-5 h-5 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+            </svg>
+          </div>
+          <p className="text-stone-600 text-sm">{error}</p>
+          <a href="/" className="mt-4 inline-block text-sm text-stone-400 hover:text-stone-600 transition-colors">← 回到首页</a>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-stone-50">
+    <div className="min-h-screen bg-gradient-to-b from-stone-50/80 via-white to-stone-50/50">
       {/* Header */}
-      <header className="border-b border-stone-200 bg-white px-6 py-4">
+      <header className="sticky top-0 z-10 border-b border-stone-100/80 bg-white/80 backdrop-blur-md px-6 py-4">
         <div className="mx-auto max-w-4xl flex items-center justify-between">
-          <div>
-            <h1 className="text-lg font-semibold text-stone-800">
-              {plan?.title || "生成计划中..."}
-            </h1>
-            {plan && (
-              <p className="text-xs text-stone-400 mt-0.5">
-                {plan.total_weeks} 周 · {plan.stages.length} 个阶段 · {plan.stages.reduce((sum, s) => sum + getAllTasks(s).length, 0)} 个任务
-              </p>
-            )}
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-stone-900 flex items-center justify-center text-white text-xs font-bold shadow-sm">启</div>
+            <div>
+              <h1 className="text-base font-semibold text-stone-800">
+                {plan?.title || "生成计划中..."}
+              </h1>
+              {plan && (
+                <p className="text-[11px] text-stone-400 mt-0.5">
+                  {plan.total_weeks} 周 · {plan.stages.length} 阶段 · {plan.stages.reduce((sum, s) => sum + getAllTasks(s).length, 0)} 任务
+                </p>
+              )}
+            </div>
           </div>
           {plan && (
             <div className="flex items-center gap-2">
               <button
                 onClick={() => router.push("/cards")}
-                className="rounded-full bg-stone-50 border border-stone-200 px-3 py-1 text-xs text-stone-500 hover:text-stone-700 hover:border-stone-300 transition-colors"
+                className="rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs text-stone-500 hover:text-stone-700 hover:border-stone-300 hover:shadow-sm transition-all"
               >
                 🃏 卡片集
               </button>
-              <span className="rounded-full bg-stone-100 px-3 py-1 text-xs text-stone-600">
-                {plan.domain === "programming_app" ? "编程 / 开发" :
-                 plan.domain === "visual_design" ? "视觉设计" :
-                 plan.domain === "data_analysis" ? "数据分析" :
-                 plan.domain === "exam_prep" ? "备考突击" :
-                 plan.domain === "language" ? "语言学习" :
-                 plan.domain === "product_business" ? "产品 / 副业" : "学习计划"}
+              <span className="rounded-lg bg-stone-900 px-3 py-1.5 text-xs text-white font-medium">
+                {plan.domain === "programming_app" ? "编程" :
+                 plan.domain === "visual_design" ? "设计" :
+                 plan.domain === "data_analysis" ? "数据" :
+                 plan.domain === "exam_prep" ? "备考" :
+                 plan.domain === "language" ? "语言" :
+                 plan.domain === "product_business" ? "产品" : "学习"}
               </span>
             </div>
           )}
@@ -246,35 +255,38 @@ function PlanContent() {
         {/* Return banner for users coming back after absence */}
         {!loading && plan && <ReturnBanner />}
         {!loading && plan && <DarkPeriodWarning />}
-        {!loading && plan && <StreakCard />}
-        {!loading && plan && <ProgressCompare />}
 
-        {/* Emotion Curve Entry */}
+        {/* Emotion curve inline */}
+        {!loading && plan && <MiniEmotionCurve />}
+
+        {/* Stats section */}
         {!loading && plan && (
-          <button
-            onClick={() => router.push("/plan/curve")}
-            className="mb-6 flex items-center gap-2 rounded-lg border border-stone-200 bg-white px-4 py-3 text-sm text-stone-600 hover:border-stone-300 hover:text-stone-800 transition-colors w-full"
-          >
-            <span className="text-base">📈</span>
-            <span>查看情绪曲线</span>
-            <span className="ml-auto text-xs text-stone-400">预测 vs 实际</span>
-          </button>
+          <div className="mb-6 space-y-4">
+            <ProgressCompare />
+            <StreakCard />
+          </div>
         )}
+
+        {/* Edit section - below progress */}
+        {!loading && plan && <PlanEditBox editMessage={editMessage} setEditMessage={setEditMessage} editLoading={editLoading} handleEditRequest={handleEditRequest} />}
 
         {/* Loading / Streaming state */}
         {loading && (
-          <div className="mb-8">
+          <div className="mb-8 animate-fade-in">
             {streamingText ? (
-              <div className="rounded-lg bg-white border border-stone-200 p-6">
+              <div className="rounded-2xl bg-white border border-stone-100 p-6 shadow-sm">
                 <p className="text-sm text-stone-700 leading-relaxed whitespace-pre-wrap">
                   {streamingText}
-                  <span className="inline-block w-1 h-4 ml-0.5 bg-stone-400 animate-pulse" />
+                  <span className="inline-block w-0.5 h-4 ml-0.5 bg-stone-900 animate-pulse rounded-full" />
                 </p>
               </div>
             ) : (
-              <div className="text-center py-12">
-                <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-stone-300 border-t-stone-800" />
-                <p className="mt-3 text-sm text-stone-500">正在为你生成个人计划...</p>
+              <div className="text-center py-16">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-stone-100 mb-4">
+                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-stone-300 border-t-stone-800" />
+                </div>
+                <p className="text-sm text-stone-500">正在为你生成专属计划...</p>
+                <p className="text-xs text-stone-400 mt-1">通常需要 10-20 秒</p>
               </div>
             )}
           </div>
@@ -282,8 +294,8 @@ function PlanContent() {
 
         {/* Intro */}
         {!loading && introText && (
-          <div className="mb-8 rounded-lg bg-white border border-stone-200 p-6">
-            <p className="text-sm text-stone-700 leading-relaxed">{introText}</p>
+          <div className="mb-8 rounded-2xl bg-white border border-stone-100 p-6 shadow-sm">
+            <p className="text-sm text-stone-600 leading-relaxed">{introText}</p>
           </div>
         )}
 
@@ -340,31 +352,6 @@ function PlanContent() {
           </div>
         )}
 
-        {/* Edit section */}
-        {plan && (
-          <div className="mt-12 border-t border-stone-200 pt-8">
-            <p className="text-sm font-medium text-stone-600 mb-3">
-              想调整计划？直接说
-            </p>
-            <form onSubmit={(e) => { e.preventDefault(); handleEditRequest(); }} className="flex gap-2">
-              <input
-                type="text"
-                value={editMessage}
-                onChange={(e) => setEditMessage(e.target.value)}
-                placeholder="比如：我觉得第一周太难了 / 我想把时间改成每天 15 分钟"
-                disabled={editLoading}
-                className="flex-1 rounded-lg border border-stone-200 bg-white px-4 py-2.5 text-sm text-stone-800 placeholder:text-stone-400 focus:border-stone-400 focus:outline-none disabled:opacity-50"
-              />
-              <button
-                type="submit"
-                disabled={editLoading || !editMessage.trim()}
-                className="rounded-lg bg-stone-800 px-4 py-2.5 text-sm font-medium text-white hover:bg-stone-700 transition-colors disabled:opacity-50"
-              >
-                {editLoading ? "修改中..." : "修改"}
-              </button>
-            </form>
-          </div>
-        )}
       </main>
     </div>
   );
@@ -536,7 +523,7 @@ function StageCard({ stage, stageIndex, planTitle, planDomain }: { stage: PlanSt
                       </div>
                       <div className="space-y-2">
                         {group.tasks.map(({ task, dayLabel }, ti) => (
-                          <TaskRow key={ti} task={task} index={ti + 1} dayLabel={dayLabel} onClick={() => openTask(task)} />
+                          <TaskRow key={ti} task={task} index={ti + 1} dayLabel={dayLabel} stageIndex={stageIndex} onClick={() => openTask(task)} />
                         ))}
                       </div>
                       {weekMeta?.outcome && (
@@ -549,7 +536,7 @@ function StageCard({ stage, stageIndex, planTitle, planDomain }: { stage: PlanSt
             ) : (
               <div className="space-y-2">
                 {allTasks.map(({ task, dayLabel }, i) => (
-                  <TaskRow key={i} task={task} index={i + 1} dayLabel={dayLabel} onClick={() => openTask(task)} />
+                  <TaskRow key={i} task={task} index={i + 1} dayLabel={dayLabel} stageIndex={stageIndex} onClick={() => openTask(task)} />
                 ))}
               </div>
             )}
@@ -619,21 +606,72 @@ function getDisplayMinutes(actual: number): number {
   return Math.round(actual * 0.5);
 }
 
-function TaskRow({ task, index, dayLabel, onClick }: { task: PlanTask; index: number; dayLabel?: string; onClick: () => void }) {
+function getTaskCompletedSet(): Set<string> {
+  if (typeof window === "undefined") return new Set();
+  try {
+    const arr = JSON.parse(localStorage.getItem("qicheng_tasks_completed") || "[]");
+    return new Set(arr);
+  } catch { return new Set(); }
+}
+
+function toggleTaskCompleted(taskId: string, completed: boolean) {
+  const set = getTaskCompletedSet();
+  if (completed) {
+    set.add(taskId);
+  } else {
+    set.delete(taskId);
+  }
+  localStorage.setItem("qicheng_tasks_completed", JSON.stringify([...set]));
+}
+
+function TaskRow({ task, index, dayLabel, onClick, stageIndex }: { task: PlanTask; index: number; dayLabel?: string; onClick: () => void; stageIndex: number }) {
   const displayMin = getDisplayMinutes(task.estimated_minutes);
+  const taskId = `s${stageIndex}_t${index}_${task.title_plain.slice(0, 10)}`;
+  const [completed, setCompleted] = useState(false);
+
+  useEffect(() => {
+    setCompleted(getTaskCompletedSet().has(taskId));
+  }, [taskId]);
+
+  function handleToggle(e: React.MouseEvent) {
+    e.stopPropagation();
+    const next = !completed;
+    setCompleted(next);
+    toggleTaskCompleted(taskId, next);
+    if (next) {
+      const { trackEvent } = require("@/lib/profile/events");
+      trackEvent("task_completed", { taskId, title: task.title_plain, stageIndex });
+    }
+  }
 
   return (
-    <button
-      onClick={onClick}
-      className="w-full flex items-start gap-3 rounded-md border border-stone-100 p-3 hover:border-stone-300 hover:bg-stone-50 transition-colors text-left group"
-    >
-      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border border-stone-200 text-[10px] text-stone-400 group-hover:border-stone-400 group-hover:text-stone-600">
-        {index}
-      </span>
-      <div className="flex-1 min-w-0">
-        <p className="text-sm text-stone-800 group-hover:text-stone-900">{task.title_plain}</p>
+    <div className="w-full flex items-start gap-3 rounded-md border border-stone-100 p-3 hover:border-stone-300 hover:bg-stone-50 transition-colors text-left group">
+      {/* Completion checkbox with index */}
+      <button
+        onClick={handleToggle}
+        className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md border text-[10px] font-medium transition-all ${
+          completed
+            ? "bg-stone-800 border-stone-800 text-white"
+            : "border-stone-200 text-stone-400 hover:border-stone-400"
+        }`}
+      >
+        {completed ? (
+          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        ) : (
+          index
+        )}
+      </button>
+
+      {/* Task content - clickable */}
+      <button onClick={onClick} className="flex-1 min-w-0 text-left">
+        <p className={`text-sm group-hover:text-stone-900 transition-colors ${completed ? "text-stone-400 line-through" : "text-stone-800"}`}>
+          {task.title_plain}
+        </p>
         <p className="text-xs text-stone-400 mt-0.5">{task.title_professional}</p>
-      </div>
+      </button>
+
       <div className="shrink-0 flex flex-col items-end gap-1 mt-0.5">
         <div className="flex items-center gap-1.5">
           {dayLabel && (
@@ -643,10 +681,12 @@ function TaskRow({ task, index, dayLabel, onClick }: { task: PlanTask; index: nu
           <span className="text-[11px] text-stone-400">{displayMin}min</span>
         </div>
       </div>
-      <svg className="w-4 h-4 text-stone-300 group-hover:text-stone-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-      </svg>
-    </button>
+      <button onClick={onClick} className="shrink-0 mt-0.5">
+        <svg className="w-4 h-4 text-stone-300 group-hover:text-stone-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
   );
 }
 
@@ -664,5 +704,113 @@ function DifficultyBadge({ difficulty }: { difficulty: number }) {
     <span className={`rounded px-1.5 py-0.5 text-[10px] font-medium ${d.color}`}>
       {d.label}
     </span>
+  );
+}
+
+function PlanEditBox({ editMessage, setEditMessage, editLoading, handleEditRequest }: {
+  editMessage: string;
+  setEditMessage: (v: string) => void;
+  editLoading: boolean;
+  handleEditRequest: () => void;
+}) {
+  const [images, setImages] = useState<{ file: File; preview: string }[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  function handleImageSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = e.target.files;
+    if (!files) return;
+    const newImages: { file: File; preview: string }[] = [];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (file.type.startsWith("image/")) {
+        newImages.push({ file, preview: URL.createObjectURL(file) });
+      }
+    }
+    setImages(prev => [...prev, ...newImages].slice(0, 3));
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  function removeImage(idx: number) {
+    setImages(prev => {
+      const next = [...prev];
+      URL.revokeObjectURL(next[idx].preview);
+      next.splice(idx, 1);
+      return next;
+    });
+  }
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    handleEditRequest();
+    setImages([]);
+  }
+
+  return (
+    <div className="mb-6 rounded-2xl border border-stone-100 bg-white p-5 shadow-sm">
+      <p className="text-xs font-medium text-stone-500 mb-3">
+        想调整计划？直接说
+      </p>
+
+      {/* Image previews */}
+      {images.length > 0 && (
+        <div className="flex gap-2 mb-3">
+          {images.map((img, i) => (
+            <div key={i} className="relative w-16 h-16 rounded-lg overflow-hidden border border-stone-200">
+              <img src={img.preview} alt="" className="w-full h-full object-cover" />
+              <button
+                onClick={() => removeImage(i)}
+                className="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 flex items-center justify-center"
+              >
+                <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="flex gap-2 items-end">
+        <div className="flex-1 flex items-center gap-2 rounded-lg border border-stone-200 bg-stone-50 px-3 py-2 focus-within:border-stone-400 focus-within:bg-white transition-colors">
+          {/* Photo button */}
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="shrink-0 text-stone-400 hover:text-stone-600 transition-colors"
+            title="添加图片"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21zm16.5-13.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
+            </svg>
+          </button>
+          <input
+            type="text"
+            value={editMessage}
+            onChange={(e) => setEditMessage(e.target.value)}
+            placeholder="比如：第一周太难了 / 时间改成每天 15 分钟"
+            disabled={editLoading}
+            className="flex-1 bg-transparent text-sm text-stone-800 placeholder:text-stone-400 focus:outline-none disabled:opacity-50"
+          />
+        </div>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          multiple
+          className="hidden"
+          onChange={handleImageSelect}
+        />
+        <button
+          type="submit"
+          disabled={editLoading || (!editMessage.trim() && images.length === 0)}
+          className="rounded-lg bg-stone-800 px-4 py-2.5 text-sm font-medium text-white hover:bg-stone-700 transition-colors disabled:opacity-50 shrink-0"
+        >
+          {editLoading ? "修改中..." : "修改"}
+        </button>
+      </form>
+      {images.length < 3 && (
+        <p className="text-[10px] text-stone-300 mt-2">可附图片辅助说明（最多 3 张）</p>
+      )}
+    </div>
   );
 }

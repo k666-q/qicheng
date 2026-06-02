@@ -60,7 +60,6 @@ function TaskDetailContent() {
     setTask(t);
     setPlanContext(c);
 
-    // Find next task from plan
     try {
       const planStr = sessionStorage.getItem("qicheng_plan");
       if (planStr) {
@@ -161,9 +160,9 @@ function TaskDetailContent() {
     setSearchingResource(false);
   }
 
-  async function sendChat() {
-    if (!input.trim() || chatLoading || !task || !planContext) return;
-    const msg = input.trim();
+  async function sendChat(customMsg?: string) {
+    const msg = customMsg || input.trim();
+    if (!msg || chatLoading || !task || !planContext) return;
     setInput("");
     setChatLoading(true);
     setStreamingText("");
@@ -221,156 +220,148 @@ function TaskDetailContent() {
     setChatLoading(false);
   }
 
+  function handleStepClick(step: { order: number; title: string; description: string }) {
+    if (chatLoading || !task) return;
+    const prompt = `请详细讲解「${step.title}」这一步。
+
+要求格式如下（使用 Markdown）：
+
+## 📖 核心知识点
+
+用通俗易懂的方式，**逐个**讲解这一步涉及的关键概念。每个概念：
+- 给出**一句话定义**（加粗）
+- 用**生活化类比**或**实际例子**解释清楚
+- 如果有易混淆的点，用对比说明
+
+要求：讲得足够细，让完全零基础的人也能理解。
+
+## 🔧 实操指南
+
+如果这一步需要安装软件、配置环境、写代码或搭建项目：
+- 给出**详细的操作步骤**（每步一条命令或操作）
+- 用 \`代码块\` 标注命令
+- 标注可能遇到的坑和解决方法
+
+如果不需要安装/操作，这一节可以改为"动手建议"（比如：拿纸笔画、手写推演等）。
+
+## 📝 阶梯练习
+
+给出 3 道由浅入深的选择题：
+
+**第 1 题（入门）**
+题目描述
+- A) 选项一
+- B) 选项二
+- C) 选项三
+- D) 选项四
+
+> 答案：X  
+> 解析：为什么选这个...
+
+**第 2 题（进阶）**
+...（同样格式）
+
+**第 3 题（挑战）**
+...（同样格式）
+
+## 🎬 B站推荐搜索
+
+给出 2 个精准的 B站搜索关键词，格式：
+- 搜索：「关键词1」（推荐理由）
+- 搜索：「关键词2」（推荐理由）
+
+---
+
+背景信息：这是「${task.title_plain}」任务的第 ${step.order} 步。
+步骤描述：${step.description}
+所属阶段：${planContext?.stageName || ""}`;
+
+    sendChat(prompt);
+  }
+
   if (!task) return null;
 
   const DIFFICULTY_LABELS: Record<number, string> = { 1: "轻松", 2: "简单", 3: "适中", 4: "挑战", 5: "硬核" };
+  const DIFFICULTY_COLORS: Record<number, string> = {
+    1: "bg-emerald-50 text-emerald-600",
+    2: "bg-sky-50 text-sky-600",
+    3: "bg-amber-50 text-amber-600",
+    4: "bg-orange-50 text-orange-600",
+    5: "bg-red-50 text-red-600",
+  };
 
   return (
-    <div className="flex h-screen bg-stone-50">
-      {/* Left: Task breakdown */}
-      <div className="flex-1 overflow-y-auto border-r border-stone-200">
-        <header className="border-b border-stone-100 px-6 py-4">
-          <button
-            onClick={() => router.back()}
-            className="text-xs text-stone-400 hover:text-stone-600 mb-2 flex items-center gap-1"
-          >
-            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-            返回计划
-          </button>
-          <h1 className="text-lg font-semibold text-stone-800">{task.title_plain}</h1>
-          <p className="text-xs text-stone-400 mt-1">{task.title_professional}</p>
-          <div className="flex items-center gap-3 mt-2">
-            <span className="text-xs text-stone-500">~{task.estimated_minutes} 分钟</span>
-            <span className="text-xs text-stone-500">难度：{DIFFICULTY_LABELS[task.difficulty] || "适中"}</span>
-            {planContext && <span className="text-xs text-stone-400">{planContext.stageName}</span>}
-          </div>
-        </header>
-
-        <div className="px-6 py-6">
-          {breakdownLoading ? (
-            <div className="text-center py-12">
-              <div className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-stone-300 border-t-stone-800" />
-              <p className="mt-3 text-sm text-stone-500">正在拆解任务...</p>
-            </div>
-          ) : breakdown ? (
-            <div className="space-y-6">
-              {/* Steps */}
+    <div className="flex h-screen bg-gradient-to-br from-stone-50 via-white to-stone-50/80">
+      {/* Left: AI Chat - main area */}
+      <div className="flex flex-1 flex-col">
+        {/* Header */}
+        <div className="border-b border-stone-100/80 px-6 py-4 backdrop-blur-sm bg-white/70">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => router.back()}
+                className="w-7 h-7 rounded-lg bg-stone-100 flex items-center justify-center text-stone-500 hover:bg-stone-200 hover:text-stone-700 transition-all"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
               <div>
-                <h2 className="text-sm font-semibold text-stone-700 mb-3">执行步骤</h2>
-                <div className="space-y-3">
-                  {breakdown.steps.map((step) => (
-                    <div key={step.order} className="flex gap-3 rounded-lg border border-stone-100 p-4 hover:border-stone-200 transition-colors">
-                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-stone-800 text-[11px] font-medium text-white">
-                        {step.order}
-                      </span>
-                      <div className="flex-1">
-                        <p className="text-sm font-medium text-stone-800">{step.title}</p>
-                        <p className="text-xs text-stone-500 mt-1 leading-relaxed">{step.description}</p>
-                        <span className="inline-block mt-1.5 text-[11px] text-stone-400">~{step.estimated_minutes} 分钟</span>
-                      </div>
-                    </div>
-                  ))}
+                <h1 className="text-sm font-semibold text-stone-800">{task.title_plain}</h1>
+                <div className="flex items-center gap-2 mt-0.5">
+                  <span className="text-[11px] text-stone-400">{task.title_professional}</span>
+                  <span className={`text-[10px] rounded-full px-1.5 py-0.5 font-medium ${DIFFICULTY_COLORS[task.difficulty] || DIFFICULTY_COLORS[3]}`}>
+                    {DIFFICULTY_LABELS[task.difficulty] || "适中"}
+                  </span>
+                  <span className="text-[10px] text-stone-400">~{task.estimated_minutes}min</span>
                 </div>
               </div>
-
-              {/* Tips */}
-              {breakdown.tips && breakdown.tips.length > 0 && (
-                <div>
-                  <h2 className="text-sm font-semibold text-stone-700 mb-2">💡 小贴士</h2>
-                  <ul className="space-y-1.5">
-                    {breakdown.tips.map((tip, i) => (
-                      <li key={i} className="text-xs text-stone-600 flex gap-2">
-                        <span className="text-stone-400">•</span>
-                        {tip}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {/* Resources */}
-              {breakdown.resources && breakdown.resources.length > 0 && (
-                <div>
-                  <h2 className="text-sm font-semibold text-stone-700 mb-2">📚 推荐资源</h2>
-                  <ul className="space-y-1.5">
-                    {breakdown.resources.map((res, i) => (
-                      <li key={i} className="text-xs text-stone-600 flex gap-2">
-                        <span className="text-stone-400">→</span>
-                        {res}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
             </div>
-          ) : (
-            <p className="text-sm text-stone-500">拆解失败，可以在右侧直接问我。</p>
-          )}
-        </div>
-
-        {/* Task completion + soft upgrade */}
-        <div className="border-t border-stone-100 px-6 py-4">
-          {!completed ? (
-            <button
-              onClick={() => {
-                setCompleted(true);
-                recordDailyCompletion();
-                trackEvent("task_completed", {
-                  title_plain: task?.title_plain,
-                  title_professional: task?.title_professional,
-                  difficulty: task?.difficulty,
-                });
-              }}
-              className="w-full rounded-lg bg-stone-800 px-4 py-3 text-sm font-medium text-white hover:bg-stone-700 transition-colors"
-            >
-              ✓ 完成这个任务
-            </button>
-          ) : (
-            <div>
-              <p className="text-sm text-emerald-700 font-medium">完成了 ✓</p>
-              <SoftUpgrade
-                nextTaskName={nextTask?.title_plain}
-                nextTaskMinutes={nextTask?.estimated_minutes}
-                onAccept={() => {
-                  if (nextTask && planContext) {
-                    sessionStorage.setItem("qicheng_current_task", JSON.stringify(nextTask));
-                    window.location.reload();
-                  }
+            {/* Complete button in header */}
+            {!completed ? (
+              <button
+                onClick={() => {
+                  setCompleted(true);
+                  recordDailyCompletion();
+                  trackEvent("task_completed", {
+                    title_plain: task?.title_plain,
+                    title_professional: task?.title_professional,
+                    difficulty: task?.difficulty,
+                  });
                 }}
-              />
-            </div>
-          )}
+                className="rounded-xl bg-stone-900 px-4 py-2 text-xs font-medium text-white hover:bg-stone-800 transition-all shadow-sm"
+              >
+                ✓ 完成任务
+              </button>
+            ) : (
+              <span className="text-xs text-emerald-600 font-medium bg-emerald-50 rounded-xl px-3 py-1.5">已完成 ✓</span>
+            )}
+          </div>
         </div>
 
-        {/* Mood check-in at bottom */}
-        <div className="border-t border-stone-100 px-6 py-3">
-          <MoodCheckin />
-        </div>
-      </div>
-
-      {/* Right: AI Chat */}
-      <div className="w-[420px] flex flex-col max-lg:hidden">
-        <div className="border-b border-stone-100 px-5 py-3">
-          <h2 className="text-sm font-semibold text-stone-700">AI 助手</h2>
-          <p className="text-[11px] text-stone-400 mt-0.5">有什么不清楚的，随时问我</p>
-        </div>
-
-        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-3">
+        {/* Chat area */}
+        <div className="flex-1 overflow-y-auto px-8 py-6 space-y-5">
+          {/* Initial AI guidance messages */}
           {messages.length === 0 && !streamingText && !chatLoading && (
-            <div className="text-center py-8">
-              <p className="text-xs text-stone-400 mb-3">你可以问我：</p>
-              <div className="space-y-1.5">
-                {["这一步具体怎么开始？", "有什么好的学习资源？", "我卡住了，能给个提示吗？"].map((q) => (
-                  <button
-                    key={q}
-                    onClick={() => { setInput(q); }}
-                    className="block w-full text-left rounded-lg border border-stone-100 px-3 py-2 text-xs text-stone-600 hover:bg-stone-50 hover:border-stone-200 transition-colors"
-                  >
-                    {q}
-                  </button>
-                ))}
+            <div className="space-y-4">
+              <div className="flex justify-start">
+                <div className="max-w-[78%] rounded-2xl px-5 py-3 text-[15px] leading-relaxed bg-white border border-stone-100 text-stone-700 shadow-sm">
+                  有什么不清楚的，随时问我
+                </div>
+              </div>
+              <div className="flex justify-start">
+                <div className="max-w-[78%] space-y-2">
+                  <p className="text-xs text-stone-400 mb-2">你可以问我：</p>
+                  {["这一步具体怎么开始？", "有什么好的学习资源？", "我卡住了，能给个提示吗？"].map((q) => (
+                    <button
+                      key={q}
+                      onClick={() => sendChat(q)}
+                      className="block w-full text-left rounded-xl border border-stone-100 bg-white px-4 py-2.5 text-[13px] text-stone-600 hover:bg-stone-50 hover:border-stone-200 hover:shadow-sm transition-all"
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           )}
@@ -379,9 +370,10 @@ function TaskDetailContent() {
             <ChatBubbleGroup key={i} role={msg.role} content={msg.content} />
           ))}
 
+          {/* Streaming */}
           {streamingText && (
             <div className="flex justify-start">
-              <div className="max-w-[90%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed bg-stone-100 text-stone-800 whitespace-pre-wrap">
+              <div className="max-w-[78%] rounded-2xl px-5 py-3 text-[15px] leading-relaxed bg-white border border-stone-100 text-stone-700 shadow-sm whitespace-pre-wrap">
                 {streamingText}
                 <span className="inline-flex items-center ml-1.5 gap-0.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-stone-400 animate-bounce [animation-delay:0ms]" />
@@ -394,7 +386,7 @@ function TaskDetailContent() {
 
           {chatLoading && !streamingText && (
             <div className="flex justify-start">
-              <div className="bg-stone-100 rounded-2xl px-4 py-2.5 text-sm text-stone-400 flex items-center gap-2">
+              <div className="bg-white border border-stone-100 rounded-2xl px-5 py-3 text-[15px] text-stone-400 flex items-center gap-2 shadow-sm">
                 <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -404,61 +396,181 @@ function TaskDetailContent() {
             </div>
           )}
 
+          {/* Resource results inline */}
+          {resourceResults.length > 0 && (
+            <div className="flex justify-start">
+              <div className="max-w-[78%] rounded-2xl bg-white border border-stone-100 p-4 shadow-sm">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-xs font-medium text-stone-600">📚 为你找到的资源</p>
+                  <button onClick={() => setResourceResults([])} className="text-xs text-stone-300 hover:text-stone-500">✕</button>
+                </div>
+                <div className="space-y-2">
+                  {resourceResults.map((r, i) => (
+                    <div key={i} className="rounded-lg border border-stone-100 bg-stone-50 p-2.5">
+                      {r.url ? (
+                        <a href={r.url} target="_blank" rel="noopener noreferrer" className="text-xs font-medium text-stone-800 hover:text-blue-600 hover:underline">
+                          {r.title}
+                        </a>
+                      ) : (
+                        <p className="text-xs font-medium text-stone-600">{r.title}</p>
+                      )}
+                      <p className="text-[11px] text-stone-400 mt-0.5">{r.reason}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
           <div ref={chatEndRef} />
+          <div className="h-20" />
         </div>
 
-        {/* Resource results */}
-        {resourceResults.length > 0 && (
-          <div className="border-t border-stone-100 px-5 py-3 max-h-48 overflow-y-auto">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-xs font-medium text-stone-500">📚 推荐资源</p>
-              <button onClick={() => setResourceResults([])} className="text-xs text-stone-400 hover:text-stone-600">✕</button>
+        {/* Floating input area */}
+        <div className="px-8 pb-8">
+          <div className="rounded-2xl border border-stone-200/60 bg-white/95 backdrop-blur-xl shadow-xl shadow-stone-300/30 p-4 ring-1 ring-stone-100/50">
+            {/* Soft upgrade after completion */}
+            {completed && nextTask && (
+              <div className="mb-3 pb-3 border-b border-stone-100">
+                <SoftUpgrade
+                  nextTaskName={nextTask.title_plain}
+                  nextTaskMinutes={nextTask.estimated_minutes}
+                  onAccept={() => {
+                    if (nextTask && planContext) {
+                      sessionStorage.setItem("qicheng_current_task", JSON.stringify(nextTask));
+                      window.location.reload();
+                    }
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Action buttons */}
+            <div className="flex gap-2 mb-3">
+              <button
+                onClick={searchResource}
+                disabled={searchingResource || chatLoading}
+                className="rounded-xl border border-stone-200 bg-stone-50 px-3 py-1.5 text-[11px] text-stone-500 hover:text-stone-700 hover:border-stone-300 hover:shadow-sm transition-all disabled:opacity-50"
+              >
+                {searchingResource ? "搜索中..." : "🔍 搜索学习资源"}
+              </button>
+              <MoodCheckin />
             </div>
-            <div className="space-y-2">
-              {resourceResults.map((r, i) => (
-                <div key={i} className="rounded-lg border border-stone-100 p-2.5">
-                  {r.url ? (
-                    <a href={r.url} target="_blank" rel="noopener noreferrer" className="text-xs font-medium text-stone-800 hover:text-blue-600 hover:underline">
-                      {r.title}
-                    </a>
-                  ) : (
-                    <p className="text-xs font-medium text-stone-600">{r.title}</p>
-                  )}
-                  <p className="text-[11px] text-stone-400 mt-0.5">{r.reason}</p>
+
+            {/* Input form */}
+            <form onSubmit={(e) => { e.preventDefault(); sendChat(); }} className="flex gap-2 items-center">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="问问这个任务怎么做..."
+                disabled={chatLoading}
+                className="flex-1 bg-transparent px-3 py-2.5 text-[15px] text-stone-800 placeholder:text-stone-400 focus:outline-none disabled:opacity-50"
+              />
+              <button
+                type="submit"
+                disabled={chatLoading || !input.trim()}
+                className="rounded-xl bg-stone-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-stone-800 transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm"
+              >
+                发送
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      {/* Right: Task breakdown panel */}
+      <div className="w-[380px] overflow-y-auto border-l border-stone-100/60 bg-gradient-to-b from-white to-stone-50/50 px-6 py-6 max-lg:hidden">
+        <div className="flex items-center gap-2 mb-1">
+          <div className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+          <h2 className="text-xs font-semibold text-stone-500 uppercase tracking-wider">
+            任务拆解
+          </h2>
+        </div>
+        <p className="text-[11px] text-stone-400 mb-5">
+          {planContext?.stageName || "执行步骤与提示"}
+        </p>
+
+        {breakdownLoading ? (
+          <div className="text-center py-12">
+            <div className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-stone-300 border-t-stone-800" />
+            <p className="mt-3 text-xs text-stone-400">正在拆解任务...</p>
+          </div>
+        ) : breakdown ? (
+          <div className="space-y-5">
+            {/* Steps */}
+            <div>
+              <div className="flex items-center gap-1.5 text-xs font-medium text-stone-500 mb-3">
+                <span>📋</span>
+                <span>执行步骤</span>
+              </div>
+              <p className="text-[10px] text-stone-400 mb-2">点击步骤 → 左侧生成详细讲解与练习题</p>
+              <div className="space-y-2.5">
+                {breakdown.steps.map((step) => (
+                  <button
+                    key={step.order}
+                    onClick={() => handleStepClick(step)}
+                    disabled={chatLoading}
+                    className="w-full text-left flex gap-3 rounded-xl border border-stone-100 bg-stone-50/50 p-3.5 hover:border-amber-200 hover:bg-amber-50/30 hover:shadow-sm transition-all group disabled:opacity-50"
+                  >
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-stone-800 group-hover:bg-amber-600 text-[10px] font-medium text-white mt-0.5 transition-colors">
+                      {step.order}
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[13px] font-medium text-stone-800 group-hover:text-amber-800 transition-colors">{step.title}</p>
+                      <p className="text-[11px] text-stone-500 mt-1 leading-relaxed">{step.description}</p>
+                      <div className="flex items-center gap-2 mt-1.5">
+                        <span className="text-[10px] text-stone-400">~{step.estimated_minutes} 分钟</span>
+                        <span className="text-[10px] text-amber-500 opacity-0 group-hover:opacity-100 transition-opacity">点击展开 →</span>
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Tips */}
+            {breakdown.tips && breakdown.tips.length > 0 && (
+              <div>
+                <div className="flex items-center gap-1.5 text-xs font-medium text-stone-500 mb-2">
+                  <span>💡</span>
+                  <span>小贴士</span>
                 </div>
-              ))}
-            </div>
+                <div className="pl-5 space-y-1.5">
+                  {breakdown.tips.map((tip, i) => (
+                    <p key={i} className="text-[11px] text-stone-600 leading-relaxed flex gap-1.5">
+                      <span className="text-stone-300 shrink-0">•</span>
+                      <span>{tip}</span>
+                    </p>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Resources */}
+            {breakdown.resources && breakdown.resources.length > 0 && (
+              <div>
+                <div className="flex items-center gap-1.5 text-xs font-medium text-stone-500 mb-2">
+                  <span>📚</span>
+                  <span>推荐资源</span>
+                </div>
+                <div className="pl-5 space-y-1.5">
+                  {breakdown.resources.map((res, i) => (
+                    <p key={i} className="text-[11px] text-stone-600 leading-relaxed flex gap-1.5">
+                      <span className="text-stone-300 shrink-0">→</span>
+                      <span>{res}</span>
+                    </p>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="text-center py-12 text-stone-300">
+            <p className="text-2xl">🔧</p>
+            <p className="mt-2 text-xs">拆解失败，可以直接问 AI</p>
           </div>
         )}
-
-        <div className="border-t border-stone-100 px-5 py-3">
-          <div className="flex gap-2 mb-2">
-            <button
-              onClick={searchResource}
-              disabled={searchingResource || chatLoading}
-              className="rounded-lg border border-stone-200 px-3 py-1.5 text-[11px] text-stone-500 hover:text-stone-700 hover:border-stone-300 transition-colors disabled:opacity-50"
-            >
-              {searchingResource ? "搜索中..." : "🔍 搜索学习资源"}
-            </button>
-          </div>
-          <form onSubmit={(e) => { e.preventDefault(); sendChat(); }} className="flex gap-2">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="问问这个任务怎么做..."
-              disabled={chatLoading}
-              className="flex-1 rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-800 placeholder:text-stone-400 focus:border-stone-400 focus:outline-none disabled:opacity-50"
-            />
-            <button
-              type="submit"
-              disabled={chatLoading || !input.trim()}
-              className="rounded-lg bg-stone-800 px-3 py-2 text-sm font-medium text-white hover:bg-stone-700 transition-colors disabled:opacity-50"
-            >
-              发送
-            </button>
-          </form>
-        </div>
       </div>
     </div>
   );

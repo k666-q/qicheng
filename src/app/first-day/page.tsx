@@ -129,23 +129,28 @@ export default function FirstDayPage() {
   }
 
   return (
-    <div className="flex h-screen bg-stone-50">
+    <div className="flex h-screen bg-gradient-to-br from-stone-50 via-white to-stone-50/80">
       {/* Chat area */}
       <div className="flex flex-1 flex-col">
-        <header className="border-b border-stone-100 px-6 py-4">
+        <header className="border-b border-stone-100/80 px-6 py-4 backdrop-blur-sm bg-white/70">
           <button
             onClick={() => router.push("/plan")}
-            className="text-xs text-stone-400 hover:text-stone-600 mb-2 flex items-center gap-1"
+            className="text-xs text-stone-400 hover:text-stone-600 mb-2 flex items-center gap-1 transition-colors"
           >
             <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
             返回计划
           </button>
-          <h1 className="text-lg font-semibold text-stone-800">第一天 · 从今天开始</h1>
-          <p className="text-xs text-stone-400 mt-0.5">
-            不是学习，是行动。做完一件小事，你就已经开始了。
-          </p>
+          <div className="flex items-center gap-3">
+            <div className="w-7 h-7 rounded-lg bg-stone-900 flex items-center justify-center text-white text-[10px] font-bold">D1</div>
+            <div>
+              <h1 className="text-sm font-semibold text-stone-800">第一天 · 从今天开始</h1>
+              <p className="text-[11px] text-stone-400">
+                做完一件小事，你就已经开始了
+              </p>
+            </div>
+          </div>
         </header>
 
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-3">
