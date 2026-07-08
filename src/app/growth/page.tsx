@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { getMilestones, getGrowthContrast } from "@/lib/milestones/store";
 import { MILESTONE_LABELS } from "@/lib/milestones/types";
 import type { Milestone } from "@/lib/milestones/types";
+import { CosmicBackground } from "@/components/universe/CosmicBackground";
+import { CyberOverlay } from "@/components/universe/CyberOverlay";
+import { EmptyState } from "@/components/ui/EmptyState";
 
 export default function GrowthPage() {
   const router = useRouter();
@@ -27,34 +30,38 @@ export default function GrowthPage() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-50">
-      <header className="border-b border-stone-200 bg-white px-6 py-4">
+    <div className="min-h-screen bg-[#050510] md:pl-[var(--siderail-width)] transition-[padding] duration-200">
+      <CosmicBackground />
+      <CyberOverlay />
+      <header className="relative z-10 border-b border-cyan-400/15 bg-[#0a0a14]/60 backdrop-blur-xl px-6 py-4">
         <div className="mx-auto max-w-2xl flex items-center justify-between">
           <div>
-            <h1 className="text-lg font-semibold text-stone-800">成长回顾</h1>
-            <p className="text-xs text-stone-400 mt-0.5">每一步都算数</p>
+            <h1 className="cyber-glitch text-lg font-semibold text-white/90" data-text="成长回顾">成长回顾</h1>
+            <p className="mt-1 font-mono text-xs uppercase tracking-[0.3em] text-cyan-300/40">growth_log // progress_scan</p>
+            <p className="text-xs text-white/35 mt-0.5">每一步都算数</p>
           </div>
-          <button onClick={() => router.back()} className="text-xs text-stone-400 hover:text-stone-600">
+          <button onClick={() => router.back()} className="border border-white/10 px-3 py-1.5 font-mono text-xs text-white/40 hover:bg-white/[0.06] hover:text-white/70 transition-colors">
             返回
           </button>
         </div>
       </header>
 
-      <main className="mx-auto max-w-2xl px-6 py-8">
+      <main className="relative z-10 mx-auto max-w-2xl px-6 py-8 pb-6">
         {/* Growth contrast */}
         {contrast.then && contrast.now && contrast.then.id !== contrast.now.id && (
-          <div className="mb-8 rounded-lg border border-stone-200 bg-white p-6">
-            <p className="text-xs font-medium text-stone-500 mb-4">起点 vs 现在</p>
+          <div className="mb-8 cyber-panel cyber-corner p-6">
+            <p className="font-mono text-xs font-medium tracking-wider text-cyan-200/70 mb-3">起点 vs 现在</p>
+            <div className="cyber-dataline h-px w-full mb-4" />
             <div className="grid grid-cols-2 gap-4">
-              <div className="rounded-lg bg-stone-50 p-4">
-                <p className="text-[11px] text-stone-400 mb-1">{formatDate(contrast.then.created_at)} · 起点</p>
-                <p className="text-sm text-stone-700 italic">
+              <div className="cyber-panel p-4">
+                <p className="font-mono text-[11px] text-fuchsia-300/60 mb-1">{formatDate(contrast.then.created_at)} · 起点</p>
+                <p className="text-sm text-white/70 italic">
                   {contrast.then.user_quote ? `"${contrast.then.user_quote.slice(0, 80)}"` : contrast.then.content}
                 </p>
               </div>
-              <div className="rounded-lg bg-emerald-50 p-4">
-                <p className="text-[11px] text-emerald-600 mb-1">{formatDate(contrast.now.created_at)} · 最近</p>
-                <p className="text-sm text-stone-700">
+              <div className="bg-emerald-500/[0.08] border border-emerald-400/20 p-4">
+                <p className="text-[11px] text-emerald-300/80 mb-1">{formatDate(contrast.now.created_at)} · 最近</p>
+                <p className="text-sm text-white/70">
                   {contrast.now.content}
                 </p>
               </div>
@@ -64,38 +71,37 @@ export default function GrowthPage() {
 
         {/* Empty state */}
         {milestones.length === 0 && (
-          <div className="text-center py-16">
-            <p className="text-4xl mb-3">🌱</p>
-            <p className="text-sm text-stone-500">还没有记录。完成第一天体验后，你的成长故事就开始了。</p>
-            <button
-              onClick={() => router.push("/first-day")}
-              className="mt-4 rounded-lg bg-stone-800 px-6 py-2.5 text-sm font-medium text-white hover:bg-stone-700 transition-colors"
-            >
-              开始第一天
-            </button>
-          </div>
+          <EmptyState
+            icon="🌱"
+            title="成长故事尚未开始"
+            description="完成学习任务、点亮知识星、通过阶段挑战——每一步都会成为你的成长里程碑。"
+            actionLabel="创建学习计划"
+            actionHref="/universe?welcome=1"
+            secondaryLabel="先探索宇宙"
+            secondaryHref="/universe"
+          />
         )}
 
         {/* Timeline */}
         {milestones.length > 0 && (
           <div className="relative">
-            <div className="absolute left-4 top-0 bottom-0 w-px bg-stone-200" />
+            <div className="absolute left-4 top-0 bottom-0 w-px bg-cyan-400/20" />
 
             <div className="space-y-6">
               {[...milestones].reverse().map((m) => {
                 const meta = MILESTONE_LABELS[m.type];
                 return (
                   <div key={m.id} className="relative pl-10">
-                    <div className="absolute left-2.5 top-1 w-3 h-3 rounded-full bg-white border-2 border-stone-300" />
-                    <div className="rounded-lg border border-stone-100 bg-white p-4">
+                    <div className="absolute left-2.5 top-1 w-3 h-3 rounded-full bg-[#12121a] border-2 border-cyan-400/60 shadow-[0_0_8px_rgba(34,211,238,0.5)]" />
+                    <div className="cyber-panel cyber-corner p-4">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="text-sm">{meta.emoji}</span>
-                        <span className="text-xs font-medium text-stone-700">{m.title}</span>
-                        <span className="text-[11px] text-stone-400 ml-auto">{formatDate(m.created_at)}</span>
+                        <span className="text-sm font-medium text-white/80">{m.title}</span>
+                        <span className="font-mono text-[11px] text-cyan-300/40 ml-auto">{formatDate(m.created_at)}</span>
                       </div>
-                      <p className="text-xs text-stone-600 leading-relaxed">{m.content}</p>
+                      <p className="text-sm text-white/60 leading-relaxed">{m.content}</p>
                       {m.user_quote && (
-                        <p className="mt-2 text-[11px] text-stone-400 italic border-l-2 border-stone-200 pl-2">
+                        <p className="mt-2 text-[11px] text-white/40 italic border-l-2 border-fuchsia-400/30 pl-2">
                           "{m.user_quote.slice(0, 100)}"
                         </p>
                       )}
@@ -107,6 +113,7 @@ export default function GrowthPage() {
           </div>
         )}
       </main>
+
     </div>
   );
 }

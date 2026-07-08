@@ -5,11 +5,15 @@ export type EventType =
   | "plan_generated"
   | "task_clicked"
   | "task_completed"
+  | "first_day_completed"
   | "task_tier_selected"
   | "task_help_requested"
   | "emotion_checkin"
   | "plan_edited"
-  | "session_returned";
+  | "session_returned"
+  | "node_explored"
+  | "stage_completed"
+  | "card_shared";
 
 export type ProfileEvent = {
   event_type: EventType;

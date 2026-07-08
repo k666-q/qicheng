@@ -1,0 +1,492 @@
+{
+  "subject": {
+    "id": "data_science",
+    "name": "数据科学",
+    "color": "#10b981",
+    "description": "从数据里发现规律，用模型预测未来。",
+    "category": "自然科学与工程"
+  },
+  "nodes": [
+    {
+      "id": "ds_math",
+      "subjectId": "data_science",
+      "name": "数学基础",
+      "plain_name": "看懂模型背后的道理",
+      "description": "线性代数、概率统计、微积分——机器学习的语言。",
+      "difficulty": 6,
+      "keywords": [
+        "线性代数",
+        "概率",
+        "统计",
+        "微积分",
+        "矩阵",
+        "数学基础"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "logic"
+      ]
+    },
+    {
+      "id": "ds_python",
+      "subjectId": "data_science",
+      "name": "Python 数据工具",
+      "plain_name": "用代码处理数据",
+      "description": "NumPy、Pandas、Matplotlib，数据清洗与可视化的主力。",
+      "difficulty": 4,
+      "keywords": [
+        "Python",
+        "NumPy",
+        "Pandas",
+        "Matplotlib",
+        "数据清洗",
+        "数据处理"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "logic"
+      ]
+    },
+    {
+      "id": "ds_statistics",
+      "subjectId": "data_science",
+      "name": "统计分析",
+      "plain_name": "用数据讲一个可信的故事",
+      "description": "描述统计、假设检验、相关与回归，分析的基本功。",
+      "difficulty": 5,
+      "keywords": [
+        "描述统计",
+        "假设检验",
+        "回归分析",
+        "相关性",
+        "统计分析",
+        "显著性"
+      ],
+      "cognition_tags": [
+        "logic",
+        "modeling"
+      ]
+    },
+    {
+      "id": "ds_ml_basics",
+      "subjectId": "data_science",
+      "name": "机器学习入门",
+      "plain_name": "让机器从数据里学规律",
+      "description": "监督/非监督/强化学习的区别，分类与回归、过拟合。",
+      "difficulty": 6,
+      "keywords": [
+        "监督学习",
+        "非监督学习",
+        "强化学习",
+        "分类",
+        "回归",
+        "过拟合",
+        "机器学习"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "abstract"
+      ]
+    },
+    {
+      "id": "ds_linear_models",
+      "subjectId": "data_science",
+      "name": "线性与逻辑回归",
+      "plain_name": "最基础的两个模型",
+      "description": "线性回归原理、损失函数、梯度下降，逻辑回归与决策边界。",
+      "difficulty": 6,
+      "keywords": [
+        "线性回归",
+        "逻辑回归",
+        "损失函数",
+        "梯度下降",
+        "决策边界",
+        "Sigmoid"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "logic"
+      ]
+    },
+    {
+      "id": "ds_tree_models",
+      "subjectId": "data_science",
+      "name": "决策树与集成",
+      "plain_name": "用'问问题'的方式做判断",
+      "description": "决策树、随机森林、梯度提升，强力又好解释的模型。",
+      "difficulty": 7,
+      "keywords": [
+        "决策树",
+        "随机森林",
+        "梯度提升",
+        "集成学习",
+        "信息增益",
+        "XGBoost"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "system"
+      ]
+    },
+    {
+      "id": "ds_deep_learning",
+      "subjectId": "data_science",
+      "name": "深度学习",
+      "plain_name": "神经网络的世界",
+      "description": "神经网络、反向传播、CNN/RNN，处理图像与序列。",
+      "difficulty": 9,
+      "keywords": [
+        "神经网络",
+        "反向传播",
+        "CNN",
+        "RNN",
+        "深度学习",
+        "激活函数"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "abstract",
+        "system"
+      ]
+    },
+    {
+      "id": "ds_eval",
+      "subjectId": "data_science",
+      "name": "模型评估",
+      "plain_name": "判断模型靠不靠谱",
+      "description": "训练/验证/测试集、交叉验证、准确率召回率与混淆矩阵。",
+      "difficulty": 5,
+      "keywords": [
+        "交叉验证",
+        "准确率",
+        "召回率",
+        "混淆矩阵",
+        "模型评估",
+        "F1"
+      ],
+      "cognition_tags": [
+        "logic",
+        "system"
+      ]
+    },
+    {
+      "id": "ds_data_viz",
+      "subjectId": "data_science",
+      "name": "数据可视化",
+      "plain_name": "让数据说人话",
+      "description": "图表选择、交互可视化、数据叙事——把数据变成洞察。",
+      "difficulty": 4,
+      "keywords": [
+        "数据可视化",
+        "图表",
+        "Matplotlib",
+        "D3.js",
+        "数据叙事"
+      ],
+      "cognition_tags": [
+        "expression",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "ds_inference",
+      "subjectId": "data_science",
+      "name": "统计推断",
+      "plain_name": "从一勺汤判断整锅咸淡",
+      "description": "置信区间、p 值、贝叶斯推断、A/B 测试——用有限样本对总体下科学结论。",
+      "difficulty": 6,
+      "keywords": [
+        "统计推断",
+        "置信区间",
+        "p值",
+        "贝叶斯",
+        "A/B测试",
+        "抽样",
+        "显著性检验"
+      ],
+      "cognition_tags": [
+        "logic",
+        "abstract"
+      ]
+    },
+    {
+      "id": "ds_supervised",
+      "subjectId": "data_science",
+      "name": "监督学习",
+      "plain_name": "带着'标准答案'学习",
+      "description": "SVM、KNN、朴素贝叶斯等经典算法全景——给模型看带标签的例子，让它学会举一反三。",
+      "difficulty": 7,
+      "keywords": [
+        "监督学习",
+        "SVM",
+        "KNN",
+        "朴素贝叶斯",
+        "分类算法",
+        "支持向量机",
+        "机器学习"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "logic"
+      ]
+    },
+    {
+      "id": "ds_unsupervised",
+      "subjectId": "data_science",
+      "name": "无监督学习",
+      "plain_name": "没有答案也能找出规律",
+      "description": "K-Means 聚类、层次聚类、PCA 降维、异常检测——在没有标签的数据里发现隐藏的群组和结构。",
+      "difficulty": 7,
+      "keywords": [
+        "无监督学习",
+        "聚类",
+        "K-Means",
+        "PCA",
+        "降维",
+        "异常检测",
+        "机器学习"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "abstract"
+      ]
+    },
+    {
+      "id": "ds_feature_engineering",
+      "subjectId": "data_science",
+      "name": "特征工程",
+      "plain_name": "把原始数据'喂'得更好",
+      "description": "缺失值处理、编码、标准化、特征选择——数据和特征决定上限，模型只是逼近这个上限。",
+      "difficulty": 6,
+      "keywords": [
+        "特征工程",
+        "特征选择",
+        "数据预处理",
+        "标准化",
+        "缺失值",
+        "编码",
+        "归一化"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "system"
+      ]
+    },
+    {
+      "id": "ds_nlp",
+      "subjectId": "data_science",
+      "name": "自然语言处理",
+      "plain_name": "让机器读懂人话",
+      "description": "分词、词向量、Transformer、大语言模型——从垃圾邮件过滤到 ChatGPT 的语言智能之路。",
+      "difficulty": 9,
+      "keywords": [
+        "自然语言处理",
+        "NLP",
+        "词向量",
+        "Transformer",
+        "大语言模型",
+        "LLM",
+        "文本分析",
+        "分词"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "abstract"
+      ]
+    },
+    {
+      "id": "ds_cv",
+      "subjectId": "data_science",
+      "name": "计算机视觉",
+      "plain_name": "让机器看懂图像",
+      "description": "图像分类、目标检测、图像分割——从人脸识别到自动驾驶，教计算机'睁开眼睛'。",
+      "difficulty": 9,
+      "keywords": [
+        "计算机视觉",
+        "CV",
+        "图像识别",
+        "目标检测",
+        "图像分割",
+        "卷积神经网络",
+        "人脸识别"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "system"
+      ]
+    },
+    {
+      "id": "ds_data_engineering",
+      "subjectId": "data_science",
+      "name": "数据工程",
+      "plain_name": "给数据修高速公路",
+      "description": "ETL 管道、数据仓库、Spark 分布式计算——保证海量数据干净、及时地流到分析师手上。",
+      "difficulty": 7,
+      "keywords": [
+        "数据工程",
+        "ETL",
+        "数据管道",
+        "数据仓库",
+        "Spark",
+        "大数据",
+        "SQL"
+      ],
+      "cognition_tags": [
+        "system",
+        "logic"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "ds_python",
+      "target": "ds_statistics",
+      "type": "prerequisite",
+      "reason": "统计分析需要用Python代码来计算均值、标准差、做假设检验，Pandas是数据统计的核心工具。"
+    },
+    {
+      "source": "ds_math",
+      "target": "ds_ml_basics",
+      "type": "prerequisite",
+      "reason": "机器学习的损失函数需要微积分求导，特征空间需要线性代数，模型概率化需要概率论。"
+    },
+    {
+      "source": "ds_python",
+      "target": "ds_ml_basics",
+      "type": "prerequisite",
+      "reason": "ML的实现（scikit-learn、TensorFlow）全部基于Python，数据预处理到模型训练都用Python完成。"
+    },
+    {
+      "source": "ds_statistics",
+      "target": "ds_ml_basics",
+      "type": "related",
+      "reason": "统计学的回归分析是ML线性模型的理论原型，假设检验思想也用于模型显著性验证。"
+    },
+    {
+      "source": "ds_ml_basics",
+      "target": "ds_linear_models",
+      "type": "prerequisite",
+      "reason": "线性回归和逻辑回归是ML最基础的模型，理解它们需要先掌握监督学习、损失函数等核心概念。"
+    },
+    {
+      "source": "ds_ml_basics",
+      "target": "ds_tree_models",
+      "type": "prerequisite",
+      "reason": "决策树是分类/回归的另一类方法，理解信息增益、过拟合等概念依赖ML入门知识。"
+    },
+    {
+      "source": "ds_linear_models",
+      "target": "ds_deep_learning",
+      "type": "prerequisite",
+      "reason": "神经网络的单个神经元就是逻辑回归，反向传播是链式求导，深度学习是线性模型的层叠扩展。"
+    },
+    {
+      "source": "ds_ml_basics",
+      "target": "ds_eval",
+      "type": "related",
+      "reason": "训练模型后必须评估效果，交叉验证、过拟合检测与ML训练流程紧密相关。"
+    },
+    {
+      "source": "ds_tree_models",
+      "target": "ds_eval",
+      "type": "related",
+      "reason": "集成模型（随机森林、XGBoost）的调参高度依赖评估指标反馈，两者在实践中总是一起使用。"
+    },
+    {
+      "source": "ds_python",
+      "target": "ds_data_viz",
+      "type": "prerequisite",
+      "reason": "数据可视化的工具（Matplotlib、Seaborn、Plotly）都是Python库，可视化代码依赖Python基础。"
+    },
+    {
+      "source": "ds_statistics",
+      "target": "ds_data_viz",
+      "type": "related",
+      "reason": "好的可视化需要统计思维支撑：选择合适图表类型、展示分布和置信区间都是统计概念的可视化表达。"
+    },
+    {
+      "source": "ds_statistics",
+      "target": "ds_inference",
+      "type": "prerequisite",
+      "reason": "统计推断是统计分析的深化：从描述'样本长什么样'走向推断'总体是什么样'，假设检验是核心桥梁。"
+    },
+    {
+      "source": "ds_math",
+      "target": "ds_inference",
+      "type": "related",
+      "reason": "置信区间的推导依赖概率分布理论，贝叶斯推断直接应用条件概率公式。"
+    },
+    {
+      "source": "ds_inference",
+      "target": "ds_eval",
+      "type": "related",
+      "reason": "模型比较本质是统计推断问题：判断两个模型的性能差异是否显著需要假设检验思想。"
+    },
+    {
+      "source": "ds_ml_basics",
+      "target": "ds_supervised",
+      "type": "prerequisite",
+      "reason": "监督学习算法全景建立在 ML 入门概念之上：损失函数、过拟合、训练测试划分是理解各算法的前提。"
+    },
+    {
+      "source": "ds_ml_basics",
+      "target": "ds_unsupervised",
+      "type": "prerequisite",
+      "reason": "无监督学习需要先理解'有无标签'这个根本区别：聚类与分类的差异正是 ML 入门的核心知识点。"
+    },
+    {
+      "source": "ds_linear_models",
+      "target": "ds_supervised",
+      "type": "related",
+      "reason": "线性与逻辑回归是监督学习的最简代表，SVM 可以看作逻辑回归在间隔最大化下的推广。"
+    },
+    {
+      "source": "ds_supervised",
+      "target": "ds_unsupervised",
+      "type": "related",
+      "reason": "半监督学习结合两者：先用聚类发现结构再少量标注，PCA 降维也常作为监督模型的预处理步骤。"
+    },
+    {
+      "source": "ds_python",
+      "target": "ds_feature_engineering",
+      "type": "prerequisite",
+      "reason": "特征工程的实操全靠 Pandas 和 sklearn 的预处理工具：缺失值填充、独热编码都是代码活。"
+    },
+    {
+      "source": "ds_feature_engineering",
+      "target": "ds_supervised",
+      "type": "related",
+      "reason": "监督模型的效果高度依赖特征质量：好的特征能让简单模型超过复杂模型，垃圾进则垃圾出。"
+    },
+    {
+      "source": "ds_deep_learning",
+      "target": "ds_nlp",
+      "type": "prerequisite",
+      "reason": "现代 NLP 以深度学习为基石：词向量是神经网络嵌入层，Transformer 是注意力机制的深度堆叠。"
+    },
+    {
+      "source": "ds_deep_learning",
+      "target": "ds_cv",
+      "type": "prerequisite",
+      "reason": "计算机视觉的主力是卷积神经网络：图像分类、目标检测的骨干网络都是深度学习架构。"
+    },
+    {
+      "source": "ds_nlp",
+      "target": "ds_cv",
+      "type": "related",
+      "reason": "多模态模型（如图文对照的 CLIP）让视觉与语言互通，Transformer 架构已同时统治两个领域。"
+    },
+    {
+      "source": "ds_python",
+      "target": "ds_data_engineering",
+      "type": "prerequisite",
+      "reason": "数据管道的脚本编写、PySpark 的分布式任务都以 Python 数据处理能力为基础。"
+    },
+    {
+      "source": "ds_data_engineering",
+      "target": "ds_feature_engineering",
+      "type": "related",
+      "reason": "数据工程保证原始数据可靠到达，特征工程接力把它加工成模型输入，两者是数据流水线的上下游。"
+    }
+  ]
+}

@@ -14,7 +14,7 @@ export async function GET() {
     const options = {
       promptType: "onboarding" as const,
       promptVersion: "v1.0-test",
-      systemPrompt: "你是启程的 AI 助手。请用 JSON 格式回复。",
+      systemPrompt: "你是 Nexiova 的 AI 助手。请用 JSON 格式回复。",
       userMessage: '用户说：我想学编程。请返回 JSON：{ "message": "你的回复", "confidence": 0到1之间的数字 }',
       maxTokens: 200,
     };

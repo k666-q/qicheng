@@ -1,0 +1,348 @@
+{
+  "subject": {
+    "id": "art",
+    "name": "美术与艺术史",
+    "color": "#a855f7",
+    "description": "训练看见美的眼睛和画出来的手，读懂人类视觉文明。",
+    "category": "艺术与生活"
+  },
+  "nodes": [
+    {
+      "id": "art_sketch",
+      "subjectId": "art",
+      "name": "素描基础",
+      "plain_name": "用一支铅笔抓住形",
+      "description": "排线、结构与明暗——一切绘画的地基，训练手眼协调的第一课。",
+      "difficulty": 3,
+      "keywords": [
+        "素描",
+        "排线",
+        "结构",
+        "明暗",
+        "石膏像",
+        "速写",
+        "造型"
+      ],
+      "cognition_tags": [
+        "expression",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "art_perspective",
+      "subjectId": "art",
+      "name": "透视与构图",
+      "plain_name": "把三维世界装进平面",
+      "description": "一点两点透视、三分法与视觉引导——让画面既真实又耐看。",
+      "difficulty": 4,
+      "keywords": [
+        "透视",
+        "构图",
+        "灭点",
+        "三分法",
+        "空间感",
+        "视觉中心"
+      ],
+      "cognition_tags": [
+        "logic",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "art_color",
+      "subjectId": "art",
+      "name": "色彩与光影",
+      "plain_name": "光怎么落，色怎么变",
+      "description": "固有色、环境色与冷暖对比——理解光线如何塑造一切颜色。",
+      "difficulty": 5,
+      "keywords": [
+        "色彩",
+        "光影",
+        "冷暖",
+        "环境色",
+        "固有色",
+        "色调",
+        "写生"
+      ],
+      "cognition_tags": [
+        "aesthetic",
+        "abstract"
+      ]
+    },
+    {
+      "id": "art_watercolor_oil",
+      "subjectId": "art",
+      "name": "水彩与油画",
+      "plain_name": "水的轻盈与油的厚重",
+      "description": "晕染与堆叠、透明与覆盖——两种经典颜料的脾气和玩法。",
+      "difficulty": 6,
+      "keywords": [
+        "水彩",
+        "油画",
+        "晕染",
+        "笔触",
+        "颜料",
+        "画布",
+        "罩染"
+      ],
+      "cognition_tags": [
+        "expression",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "art_chinese_painting",
+      "subjectId": "art",
+      "name": "中国画基础",
+      "plain_name": "笔墨纸砚里的东方气韵",
+      "description": "工笔与写意、留白与气韵——用毛笔和水墨表达意境而非再现。",
+      "difficulty": 6,
+      "keywords": [
+        "国画",
+        "水墨",
+        "工笔",
+        "写意",
+        "留白",
+        "笔墨",
+        "山水画"
+      ],
+      "cognition_tags": [
+        "expression",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "art_sculpture",
+      "subjectId": "art",
+      "name": "雕塑与立体",
+      "plain_name": "让形体从泥巴里长出来",
+      "description": "加法塑形与减法雕刻——在真实三维空间里思考体积与重量。",
+      "difficulty": 6,
+      "keywords": [
+        "雕塑",
+        "泥塑",
+        "立体构成",
+        "体积",
+        "空间",
+        "雕刻"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "art_history_west",
+      "subjectId": "art",
+      "name": "西方艺术史",
+      "plain_name": "西方人怎么一路画过来",
+      "description": "从洞穴壁画到当代装置的大脉络——看懂博物馆的导航地图。",
+      "difficulty": 4,
+      "keywords": [
+        "西方艺术史",
+        "美术史",
+        "流派",
+        "博物馆",
+        "古希腊",
+        "中世纪"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "art_renaissance",
+      "subjectId": "art",
+      "name": "文艺复兴",
+      "plain_name": "人重新成为画的主角",
+      "description": "达芬奇、米开朗基罗与透视法的发明——艺术与科学在此刻握手。",
+      "difficulty": 5,
+      "keywords": [
+        "文艺复兴",
+        "达芬奇",
+        "米开朗基罗",
+        "拉斐尔",
+        "人文主义",
+        "蒙娜丽莎"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "art_impressionism",
+      "subjectId": "art",
+      "name": "印象派",
+      "plain_name": "走出画室去抓光",
+      "description": "莫奈、雷诺阿用碎笔触捕捉瞬间光色——绘画从'画得像'转向'画得真'。",
+      "difficulty": 5,
+      "keywords": [
+        "印象派",
+        "莫奈",
+        "梵高",
+        "光色",
+        "外光写生",
+        "睡莲",
+        "后印象派"
+      ],
+      "cognition_tags": [
+        "aesthetic",
+        "abstract"
+      ]
+    },
+    {
+      "id": "art_modernism",
+      "subjectId": "art",
+      "name": "现代主义艺术",
+      "plain_name": "画得像已经不重要了",
+      "description": "毕加索的立体主义、康定斯基的抽象——艺术彻底挣脱'再现'的缰绳。",
+      "difficulty": 6,
+      "keywords": [
+        "现代主义",
+        "毕加索",
+        "立体主义",
+        "抽象艺术",
+        "野兽派",
+        "超现实主义"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "art_history_china",
+      "subjectId": "art",
+      "name": "中国美术史",
+      "plain_name": "从青铜器到文人画",
+      "description": "顾恺之、宋代山水与文人画传统——一条与西方平行的视觉文明长河。",
+      "difficulty": 5,
+      "keywords": [
+        "中国美术史",
+        "文人画",
+        "山水画",
+        "青铜器",
+        "敦煌",
+        "清明上河图"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "art_contemporary",
+      "subjectId": "art",
+      "name": "当代艺术",
+      "plain_name": "看不懂的艺术在说什么",
+      "description": "装置、行为与观念艺术——当代艺术比的不是技法，而是提问的方式。",
+      "difficulty": 7,
+      "keywords": [
+        "当代艺术",
+        "装置艺术",
+        "行为艺术",
+        "观念艺术",
+        "双年展",
+        "杜尚"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "expression"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "art_sketch",
+      "target": "art_perspective",
+      "type": "prerequisite",
+      "reason": "透视要靠素描的线条与结构能力来落实：先能画准形，再谈画出空间纵深。"
+    },
+    {
+      "source": "art_sketch",
+      "target": "art_color",
+      "type": "prerequisite",
+      "reason": "色彩写生建立在素描的明暗体系上：先用黑白理解光影，再为它穿上颜色。"
+    },
+    {
+      "source": "art_perspective",
+      "target": "art_watercolor_oil",
+      "type": "prerequisite",
+      "reason": "风景与静物创作离不开构图和空间安排，下笔上色之前画面骨架已由透视决定。"
+    },
+    {
+      "source": "art_color",
+      "target": "art_watercolor_oil",
+      "type": "prerequisite",
+      "reason": "水彩和油画就是色彩理论的实战场：调色、冷暖关系直接决定画面成败。"
+    },
+    {
+      "source": "art_sketch",
+      "target": "art_chinese_painting",
+      "type": "related",
+      "reason": "国画的白描与素描同练线条造型，但国画更强调以书法用笔写形传神。"
+    },
+    {
+      "source": "art_sketch",
+      "target": "art_sculpture",
+      "type": "prerequisite",
+      "reason": "雕塑前要画大量结构草图：对形体块面的素描理解是塑形的图纸。"
+    },
+    {
+      "source": "art_history_west",
+      "target": "art_renaissance",
+      "type": "prerequisite",
+      "reason": "文艺复兴是西方艺术史的关键章节，需要先有整体脉络才能理解它承上启下的位置。"
+    },
+    {
+      "source": "art_history_west",
+      "target": "art_impressionism",
+      "type": "prerequisite",
+      "reason": "印象派是对学院派传统的反叛：不了解之前的艺术史，就看不懂它反叛的对象。"
+    },
+    {
+      "source": "art_impressionism",
+      "target": "art_modernism",
+      "type": "prerequisite",
+      "reason": "印象派松动了'再现'的地基，塞尚等后印象派直接开启了现代主义的大门。"
+    },
+    {
+      "source": "art_modernism",
+      "target": "art_contemporary",
+      "type": "prerequisite",
+      "reason": "杜尚的小便池是当代艺术的起点：观念艺术的逻辑承接自现代主义的边界实验。"
+    },
+    {
+      "source": "art_renaissance",
+      "target": "art_perspective",
+      "type": "related",
+      "reason": "今天美术课上的焦点透视法正是文艺复兴画家发明并系统化的成果。"
+    },
+    {
+      "source": "art_impressionism",
+      "target": "art_color",
+      "type": "related",
+      "reason": "印象派对光色关系的探索（影子是紫色的！）至今仍是色彩教学的经典案例。"
+    },
+    {
+      "source": "art_history_china",
+      "target": "art_chinese_painting",
+      "type": "prerequisite",
+      "reason": "国画的笔墨程式承载千年传统：了解文人画的审美脉络才懂留白与气韵为何珍贵。"
+    },
+    {
+      "source": "art_history_china",
+      "target": "art_history_west",
+      "type": "related",
+      "reason": "中西美术史对照着看更有味道：同一时代两种文明对'美'的回答常常截然不同。"
+    },
+    {
+      "source": "art_history_china",
+      "target": "art_contemporary",
+      "type": "related",
+      "reason": "中国当代艺术家常从水墨传统中取材重构，传统资源是当代创作的重要弹药库。"
+    }
+  ]
+}

@@ -1,0 +1,223 @@
+{
+  "subject": {
+    "id": "law",
+    "name": "法学",
+    "color": "#1d4ed8",
+    "description": "研究规则如何运转的学问——从一纸合同到一国宪法，社会靠它定分止争。",
+    "category": "人文社科"
+  },
+  "nodes": [
+    {
+      "id": "law_jurisprudence",
+      "subjectId": "law",
+      "name": "法理学",
+      "plain_name": "法律背后的道理",
+      "description": "法律是什么？恶法是不是法？权利从哪来？法理学追问所有部门法共同的底层逻辑。",
+      "difficulty": 6,
+      "keywords": ["法理学", "法哲学", "权利", "法律渊源", "自然法", "实证主义"],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "law_constitution",
+      "subjectId": "law",
+      "name": "宪法",
+      "plain_name": "国家的总章程",
+      "description": "国家权力怎么分配、公民权利怎么保障——宪法是所有法律的母法，给整个法律体系定基调。",
+      "difficulty": 5,
+      "keywords": ["宪法", "基本权利", "国家机构", "宪法权利", "根本法"],
+      "cognition_tags": ["system", "abstract"]
+    },
+    {
+      "id": "law_civil_general",
+      "subjectId": "law",
+      "name": "民法总论",
+      "plain_name": "民事生活的基本规则",
+      "description": "你几岁能签合同、什么算法律行为、诉讼时效几年——民法总则是处理一切民事关系的'操作系统'。",
+      "difficulty": 6,
+      "keywords": ["民法", "民法典", "民事主体", "法律行为", "代理", "诉讼时效"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "law_contract",
+      "subjectId": "law",
+      "name": "合同法",
+      "plain_name": "白纸黑字的约定怎么算数",
+      "description": "网购下单那一刻合同就成立了——要约承诺、违约责任、合同解除，日常交易背后的规则全在这里。",
+      "difficulty": 6,
+      "keywords": ["合同法", "要约", "承诺", "违约责任", "合同效力", "缔约"],
+      "cognition_tags": ["logic", "system"]
+    },
+    {
+      "id": "law_tort",
+      "subjectId": "law",
+      "name": "侵权责任",
+      "plain_name": "弄伤人弄坏东西谁来赔",
+      "description": "高空坠物砸到人、宠物咬伤路人、网上造谣毁名誉——侵权法回答'损害发生后由谁买单'。",
+      "difficulty": 6,
+      "keywords": ["侵权责任", "过错责任", "损害赔偿", "因果关系", "无过错责任"],
+      "cognition_tags": ["logic", "system"]
+    },
+    {
+      "id": "law_criminal_general",
+      "subjectId": "law",
+      "name": "刑法总论",
+      "plain_name": "什么样的行为算犯罪",
+      "description": "构成要件、违法性、有责性——给'犯罪'下精确定义的三层过滤器，正当防卫为何无罪在这里找答案。",
+      "difficulty": 7,
+      "keywords": ["刑法", "犯罪构成", "正当防卫", "故意过失", "罪刑法定", "刑罚"],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "law_criminal_specific",
+      "subjectId": "law",
+      "name": "刑法分论",
+      "plain_name": "一个个罪名怎么认定",
+      "description": "盗窃和抢夺差在哪？诈骗和盗窃怎么区分？把总论的分析框架套到故意杀人、盗窃、受贿等具体罪名上。",
+      "difficulty": 7,
+      "keywords": ["刑法分则", "罪名", "盗窃罪", "诈骗罪", "故意杀人", "受贿罪"],
+      "cognition_tags": ["logic", "system"]
+    },
+    {
+      "id": "law_civil_procedure",
+      "subjectId": "law",
+      "name": "民事诉讼法",
+      "plain_name": "打官司的流程指南",
+      "description": "去哪个法院告、谁来举证、不服判决怎么办——民事纠纷从立案到执行的全流程地图。",
+      "difficulty": 6,
+      "keywords": ["民事诉讼", "管辖", "举证责任", "一审二审", "执行", "证据"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "law_criminal_procedure",
+      "subjectId": "law",
+      "name": "刑事诉讼法",
+      "plain_name": "从抓人到判刑的程序",
+      "description": "侦查、起诉、审判每一步都有严格程序——程序正义保护的不只是嫌疑人，更是每一个人。",
+      "difficulty": 6,
+      "keywords": ["刑事诉讼", "侦查", "公诉", "辩护", "无罪推定", "非法证据排除"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "law_administrative",
+      "subjectId": "law",
+      "name": "行政法",
+      "plain_name": "民告官的法律",
+      "description": "罚单开得对不对、拆迁补偿合不合法——行政法给政府权力划边界，让'民告官'有法可依。",
+      "difficulty": 6,
+      "keywords": ["行政法", "行政许可", "行政处罚", "行政诉讼", "依法行政", "行政复议"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "law_commercial",
+      "subjectId": "law",
+      "name": "商法与公司法",
+      "plain_name": "开公司做生意的规则",
+      "description": "有限责任为什么是伟大发明？股东、董事、债权人之间的权力游戏，全靠公司法定规则。",
+      "difficulty": 7,
+      "keywords": ["商法", "公司法", "有限责任", "股东", "公司治理", "破产"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "law_international",
+      "subjectId": "law",
+      "name": "国际法初步",
+      "plain_name": "没有世界政府的世界规则",
+      "description": "国家之间没有'上级法院'，条约和惯例如何约束主权国家？从领土争端到国际贸易的规则入门。",
+      "difficulty": 7,
+      "keywords": ["国际法", "条约", "主权", "国际公法", "国际私法", "WTO"],
+      "cognition_tags": ["abstract", "system"]
+    }
+  ],
+  "edges": [
+    {
+      "source": "law_jurisprudence",
+      "target": "law_constitution",
+      "type": "prerequisite",
+      "reason": "宪法中的权利、法治概念都源自法理学：理解'权利'的法理含义才能读懂基本权利条款。"
+    },
+    {
+      "source": "law_jurisprudence",
+      "target": "law_civil_general",
+      "type": "prerequisite",
+      "reason": "民法总论的法律关系、法律行为概念是法理学一般理论在私法领域的具体化。"
+    },
+    {
+      "source": "law_jurisprudence",
+      "target": "law_criminal_general",
+      "type": "prerequisite",
+      "reason": "罪刑法定原则、刑罚正当性都是法理学问题在刑法中的延伸。"
+    },
+    {
+      "source": "law_civil_general",
+      "target": "law_contract",
+      "type": "prerequisite",
+      "reason": "合同是最典型的法律行为：总论的行为能力、意思表示理论是合同法的地基。"
+    },
+    {
+      "source": "law_civil_general",
+      "target": "law_tort",
+      "type": "prerequisite",
+      "reason": "侵权责任的主体资格、责任能力都要回到民法总论的框架里判断。"
+    },
+    {
+      "source": "law_criminal_general",
+      "target": "law_criminal_specific",
+      "type": "prerequisite",
+      "reason": "分论就是把总论的犯罪构成框架逐一套用到具体罪名：不懂总论无法分析任何罪名。"
+    },
+    {
+      "source": "law_civil_general",
+      "target": "law_civil_procedure",
+      "type": "prerequisite",
+      "reason": "民事诉讼解决的是实体民事权利争议：先懂权利义务，才懂在法庭上主张什么。"
+    },
+    {
+      "source": "law_criminal_general",
+      "target": "law_criminal_procedure",
+      "type": "prerequisite",
+      "reason": "刑诉程序围绕'是否构成犯罪'展开：犯罪构成理论决定了控辩双方的攻防焦点。"
+    },
+    {
+      "source": "law_constitution",
+      "target": "law_administrative",
+      "type": "prerequisite",
+      "reason": "行政法是'动态的宪法'：政府权力的来源与边界由宪法设定，行政法负责落实。"
+    },
+    {
+      "source": "law_civil_general",
+      "target": "law_commercial",
+      "type": "prerequisite",
+      "reason": "商法是民法的特别法：公司的法人资格、商事合同都以民法总论为基础。"
+    },
+    {
+      "source": "law_jurisprudence",
+      "target": "law_international",
+      "type": "prerequisite",
+      "reason": "国际法是否是'真正的法'本身就是法理学经典问题，需要法概念论的工具来讨论。"
+    },
+    {
+      "source": "law_contract",
+      "target": "law_commercial",
+      "type": "related",
+      "reason": "商事交易以合同为骨架：股权转让、并购协议都是合同法规则的商业应用。"
+    },
+    {
+      "source": "law_contract",
+      "target": "law_tort",
+      "type": "related",
+      "reason": "违约与侵权常常竞合：一次医疗事故既可能违约也可能侵权，当事人可择一主张。"
+    },
+    {
+      "source": "law_civil_procedure",
+      "target": "law_criminal_procedure",
+      "type": "related",
+      "reason": "两大诉讼法共享证据、管辖、审级等程序概念，对比学习事半功倍。"
+    },
+    {
+      "source": "law_constitution",
+      "target": "law_international",
+      "type": "related",
+      "reason": "条约在国内如何生效、主权与国际义务如何平衡，是宪法与国际法的交叉地带。"
+    }
+  ]
+}

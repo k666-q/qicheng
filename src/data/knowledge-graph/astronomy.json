@@ -1,0 +1,147 @@
+{
+  "subject": {
+    "id": "astronomy",
+    "name": "天文学",
+    "color": "#6366f1",
+    "description": "研究宇宙中天体与现象的科学，带我们仰望星空,追问从地球到宇宙边缘的奥秘。",
+    "category": "自然科学与工程"
+  },
+  "nodes": [
+    {
+      "id": "astro_celestial_sphere",
+      "subjectId": "astronomy",
+      "name": "天球与坐标",
+      "plain_name": "如何在星空中找方向",
+      "description": "把星星想象成贴在大球面上,用赤经赤纬等坐标系统精确标记它们的位置。",
+      "difficulty": 4,
+      "keywords": ["天球", "坐标系", "赤经赤纬", "星图", "方位"],
+      "cognition_tags": ["abstract", "modeling"]
+    },
+    {
+      "id": "astro_solar_system",
+      "subjectId": "astronomy",
+      "name": "太阳系",
+      "plain_name": "我们的宇宙老家",
+      "description": "太阳和八大行星、卫星、小行星组成的家园,理解行星运动与轨道规律。",
+      "difficulty": 3,
+      "keywords": ["太阳系", "行星", "公转", "轨道", "开普勒定律", "卫星"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "astro_observational",
+      "subjectId": "astronomy",
+      "name": "观测天文学",
+      "plain_name": "用望远镜看清宇宙",
+      "description": "借助光学与射电望远镜收集天体的光与电磁波,是认识宇宙的眼睛。",
+      "difficulty": 5,
+      "keywords": ["观测", "望远镜", "射电", "光谱", "电磁波", "成像"],
+      "cognition_tags": ["modeling", "logic"]
+    },
+    {
+      "id": "astro_stellar_evolution",
+      "subjectId": "astronomy",
+      "name": "恒星演化",
+      "plain_name": "星星的一生",
+      "description": "恒星从星云诞生,经历主序星到红巨星,最终变成白矮星、中子星或黑洞。",
+      "difficulty": 6,
+      "keywords": ["恒星", "恒星演化", "主序星", "红巨星", "超新星", "核聚变"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "astro_compact_objects",
+      "subjectId": "astronomy",
+      "name": "黑洞与致密天体",
+      "plain_name": "连光都逃不掉的天体",
+      "description": "白矮星、中子星和黑洞这些极端致密的天体,挑战我们对时空的认知。",
+      "difficulty": 8,
+      "keywords": ["黑洞", "中子星", "白矮星", "事件视界", "引力", "致密天体"],
+      "cognition_tags": ["abstract", "modeling"]
+    },
+    {
+      "id": "astro_galaxies",
+      "subjectId": "astronomy",
+      "name": "星系与宇宙结构",
+      "plain_name": "千亿恒星组成的岛屿",
+      "description": "银河系等星系如何聚集成星系团,构成宇宙宏大的网状结构。",
+      "difficulty": 7,
+      "keywords": ["星系", "银河系", "星系团", "暗物质", "宇宙结构"],
+      "cognition_tags": ["system", "abstract"]
+    },
+    {
+      "id": "astro_exoplanets",
+      "subjectId": "astronomy",
+      "name": "系外行星",
+      "plain_name": "其他恒星身边的行星",
+      "description": "寻找太阳系之外环绕别的恒星运行的行星,追问地球之外是否有生命。",
+      "difficulty": 7,
+      "keywords": ["系外行星", "凌星", "宜居带", "地外生命", "行星探测"],
+      "cognition_tags": ["modeling", "logic"]
+    },
+    {
+      "id": "astro_cosmology",
+      "subjectId": "astronomy",
+      "name": "宇宙学",
+      "plain_name": "整个宇宙从哪来到哪去",
+      "description": "大爆炸理论描绘宇宙从一点膨胀至今,研究它的起源、结构与终极命运。",
+      "difficulty": 9,
+      "keywords": ["宇宙学", "大爆炸", "宇宙膨胀", "宇宙微波背景", "暗能量"],
+      "cognition_tags": ["abstract", "modeling"]
+    },
+    {
+      "id": "astro_milky_way",
+      "subjectId": "astronomy",
+      "name": "银河系结构",
+      "plain_name": "我们所在的星系长啥样",
+      "description": "由旋臂、核球与暗物质晕组成的银河系,是我们太阳系所在的恒星城市。",
+      "difficulty": 7,
+      "keywords": ["银河系", "旋臂", "核球", "星系结构", "恒星分布"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "astro_sun",
+      "subjectId": "astronomy",
+      "name": "太阳",
+      "plain_name": "离我们最近的那颗恒星",
+      "description": "太阳的内部结构、黑子与耀斑活动,直接影响地球的气候与通信。",
+      "difficulty": 5,
+      "keywords": ["太阳", "黑子", "耀斑", "日冕", "太阳活动", "核聚变"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "astro_dark_universe",
+      "subjectId": "astronomy",
+      "name": "暗物质与暗能量",
+      "plain_name": "宇宙里看不见的大多数",
+      "description": "占宇宙绝大部分却看不见的暗物质与暗能量,是当代天文学最大的谜团。",
+      "difficulty": 9,
+      "keywords": ["暗物质", "暗能量", "宇宙加速膨胀", "引力", "未解之谜"],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "astro_celestial_mechanics",
+      "subjectId": "astronomy",
+      "name": "天体力学",
+      "plain_name": "天体如何运动的数学",
+      "description": "用牛顿引力与轨道力学计算行星、卫星和探测器的运行轨迹。",
+      "difficulty": 7,
+      "keywords": ["天体力学", "万有引力", "轨道", "三体问题", "开普勒定律"],
+      "cognition_tags": ["modeling", "logic"]
+    }
+  ],
+  "edges": [
+    { "source": "astro_celestial_sphere", "target": "astro_solar_system", "type": "prerequisite", "reason": "要描述行星在天空中的运动,先要掌握天球坐标这套定位语言。" },
+    { "source": "astro_celestial_sphere", "target": "astro_observational", "type": "prerequisite", "reason": "观测时望远镜需要按坐标对准目标,天球坐标是观测的基础。" },
+    { "source": "astro_solar_system", "target": "astro_celestial_mechanics", "type": "prerequisite", "reason": "太阳系行星运动的规律,正是天体力学用引力和轨道理论来精确描述的对象。" },
+    { "source": "astro_solar_system", "target": "astro_sun", "type": "prerequisite", "reason": "太阳是太阳系的中心天体,认识太阳系自然延伸到对太阳本身的研究。" },
+    { "source": "astro_observational", "target": "astro_stellar_evolution", "type": "prerequisite", "reason": "恒星演化的规律是通过观测大量不同阶段的恒星总结出来的。" },
+    { "source": "astro_sun", "target": "astro_stellar_evolution", "type": "related", "reason": "太阳是一颗典型的主序星,是研究恒星演化的最佳近距离样本。" },
+    { "source": "astro_stellar_evolution", "target": "astro_compact_objects", "type": "prerequisite", "reason": "黑洞、中子星都是大质量恒星演化的最终归宿,是恒星演化的终点。" },
+    { "source": "astro_stellar_evolution", "target": "astro_galaxies", "type": "prerequisite", "reason": "星系由无数恒星构成,理解恒星的生死才能理解星系的形成与演变。" },
+    { "source": "astro_galaxies", "target": "astro_milky_way", "type": "prerequisite", "reason": "银河系是星系的具体实例,是我们研究星系结构最直接的对象。" },
+    { "source": "astro_galaxies", "target": "astro_cosmology", "type": "prerequisite", "reason": "星系的分布与退行是宇宙学研究宇宙膨胀和起源的关键证据。" },
+    { "source": "astro_galaxies", "target": "astro_dark_universe", "type": "related", "reason": "星系旋转曲线异常揭示了暗物质的存在,星系研究是暗物质的重要线索。" },
+    { "source": "astro_cosmology", "target": "astro_dark_universe", "type": "prerequisite", "reason": "暗物质与暗能量是现代宇宙学模型的核心组成部分。" },
+    { "source": "astro_observational", "target": "astro_exoplanets", "type": "prerequisite", "reason": "系外行星主要通过凌星、视向速度等观测手段发现,依赖观测天文学。" },
+    { "source": "astro_solar_system", "target": "astro_exoplanets", "type": "related", "reason": "认识太阳系行星为理解和对比系外行星提供了基本参照。" }
+  ]
+}

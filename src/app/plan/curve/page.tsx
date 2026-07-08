@@ -8,6 +8,9 @@ import {
 } from "recharts";
 import type { PredictedEmotionCurve, EmotionPhase } from "@/lib/plan/types";
 import { getEventsByType } from "@/lib/profile/events";
+import { loadSessionItem } from "@/lib/plan/store";
+import { CosmicBackground } from "@/components/universe/CosmicBackground";
+import { CyberOverlay } from "@/components/universe/CyberOverlay";
 
 type ChartPoint = {
   week: number;
@@ -30,7 +33,7 @@ export default function CurvePage() {
       try {
         const parsed = JSON.parse(stored) as PredictedEmotionCurve;
         // 检查周数是否与计划匹配
-        const planStr = sessionStorage.getItem("qicheng_plan");
+        const planStr = loadSessionItem("qicheng_plan");
         if (planStr) {
           const plan = JSON.parse(planStr);
           if (parsed.curve_points.length < plan.total_weeks) {
@@ -49,7 +52,7 @@ export default function CurvePage() {
   }, []);
 
   const generateCurve = useCallback(async () => {
-    const planStr = sessionStorage.getItem("qicheng_plan");
+    const planStr = loadSessionItem("qicheng_plan");
     if (!planStr) {
       setLoading(false);
       return;
@@ -128,10 +131,10 @@ export default function CurvePage() {
 
   if (loading || generating) {
     return (
-      <div className="flex h-screen items-center justify-center bg-stone-50">
+      <div className="flex h-screen items-center justify-center bg-[#050510]">
         <div className="text-center">
-          <div className="w-8 h-8 border-2 border-stone-300 border-t-stone-800 rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-sm text-stone-500">{generating ? "正在生成你的情绪预测曲线..." : "加载中..."}</p>
+          <div className="w-8 h-8 border-2 border-cyan-400/20 border-t-cyan-400/80 rounded-full animate-spin mx-auto mb-3" />
+          <p className="cyber-cursor font-mono text-sm text-cyan-300/50">{generating ? "正在生成你的情绪预测曲线..." : "加载中..."}</p>
         </div>
       </div>
     );
@@ -139,12 +142,12 @@ export default function CurvePage() {
 
   if (!curve) {
     return (
-      <div className="flex h-screen items-center justify-center bg-stone-50">
+      <div className="flex h-screen items-center justify-center bg-[#050510]">
         <div className="text-center max-w-sm">
-          <p className="text-stone-600 mb-4">还没有计划数据，先完成引导对话生成计划吧。</p>
+          <p className="text-white/70 mb-4">还没有计划数据，先完成引导对话生成计划吧。</p>
           <button
             onClick={() => router.push("/")}
-            className="rounded-lg bg-stone-800 px-4 py-2 text-sm text-white hover:bg-stone-700"
+            className="border border-cyan-400/40 bg-cyan-400/10 px-4 py-2 font-mono text-sm tracking-widest text-cyan-200 hover:bg-cyan-400/20 transition-colors"
           >
             回到首页
           </button>
@@ -154,33 +157,37 @@ export default function CurvePage() {
   }
 
   const phaseColors: Record<string, string> = {
-    "新手兴奋期": "bg-emerald-50 border-emerald-200 text-emerald-800",
-    "黑暗期": "bg-stone-100 border-stone-300 text-stone-800",
-    "突破期": "bg-blue-50 border-blue-200 text-blue-800",
-    "成熟期": "bg-amber-50 border-amber-200 text-amber-800",
+    "新手兴奋期": "bg-emerald-500/15 border-emerald-400/20 text-emerald-300",
+    "黑暗期": "bg-fuchsia-500/10 border-fuchsia-400/20 text-fuchsia-300",
+    "突破期": "bg-cyan-500/10 border-cyan-400/20 text-cyan-300",
+    "成熟期": "bg-amber-500/15 border-amber-400/20 text-amber-300",
   };
 
   const hasActual = chartData.some(d => d.actual !== undefined);
 
   return (
-    <div className="min-h-screen bg-stone-50 py-8 px-4">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-[#050510] py-8 px-4 pb-6 md:pl-[var(--siderail-width)] transition-[padding] duration-200">
+      <CosmicBackground />
+      <CyberOverlay />
+      <div className="relative z-10 max-w-4xl mx-auto">
         <button
-          onClick={() => router.push("/plan")}
-          className="text-sm text-stone-400 hover:text-stone-600 mb-6 flex items-center gap-1"
+          onClick={() => router.push("/plan/detail")}
+          className="font-mono text-sm tracking-wider text-cyan-300/50 hover:text-cyan-200 mb-6 flex items-center gap-1 transition-colors"
         >
           ← 回到计划
         </button>
 
-        <h1 className="text-xl font-semibold text-stone-800 mb-2">情绪曲线</h1>
-        <p className="text-sm text-stone-500 mb-8">
+        <h1 className="cyber-glitch text-xl font-semibold text-white/90" data-text="情绪曲线">情绪曲线</h1>
+        <p className="mt-1 font-mono text-xs uppercase tracking-[0.3em] text-cyan-300/40">emotion_curve // forecast</p>
+        <p className="mt-2 text-sm text-white/50 mb-6">
           学习不是一条直线。提前知道低谷会来，是对抗它最好的武器。
         </p>
+        <div className="cyber-dataline mb-8 h-px w-full" />
 
         {/* Current Phase Banner */}
         {currentPhase && (
-          <div className={`rounded-lg border p-4 mb-8 ${phaseColors[currentPhase.name] || "bg-stone-50 border-stone-200"}`}>
-            <p className="text-sm font-medium">当前阶段：{currentPhase.name}</p>
+          <div className={`border p-4 mb-8 ${phaseColors[currentPhase.name] || "bg-cyan-400/[0.04] border-cyan-400/15 text-white/70"}`}>
+            <p className="text-sm font-medium"><span className="font-mono text-[10px] tracking-[0.25em] opacity-50 mr-2">CURRENT_PHASE</span>当前阶段：{currentPhase.name}</p>
             {currentPhase.message && (
               <p className="text-xs mt-1 opacity-80">{currentPhase.message}</p>
             )}
@@ -188,29 +195,29 @@ export default function CurvePage() {
         )}
 
         {/* Chart */}
-        <div className="bg-white rounded-xl border border-stone-200 p-6 mb-8">
-          <div className="flex items-center gap-4 mb-4 text-xs text-stone-500">
+        <div className="cyber-panel cyber-corner p-6 mb-8">
+          <div className="flex items-center gap-4 mb-4 font-mono text-xs tracking-wider text-cyan-200/50">
             <span className="flex items-center gap-1.5">
-              <span className="w-3 h-0.5 bg-stone-400 rounded" style={{ borderStyle: "dashed" }} /> 预测曲线
+              <span className="w-3 h-0.5 bg-cyan-400/60" style={{ borderStyle: "dashed" }} /> 预测曲线
             </span>
             {hasActual && (
               <span className="flex items-center gap-1.5">
-                <span className="w-3 h-0.5 bg-emerald-500 rounded" /> 你的实际
+                <span className="w-3 h-0.5 bg-emerald-400" /> 你的实际
               </span>
             )}
           </div>
 
           <ResponsiveContainer width="100%" height={280}>
             <ComposedChart data={chartData} margin={{ top: 10, right: 20, bottom: 10, left: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e7e5e4" />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
               <XAxis
                 dataKey="week"
-                tick={{ fontSize: 12, fill: "#78716c" }}
+                tick={{ fontSize: 12, fill: "rgba(255,255,255,0.4)" }}
                 tickFormatter={(v) => `第${v}周`}
               />
               <YAxis
                 domain={[0, 10]}
-                tick={{ fontSize: 12, fill: "#78716c" }}
+                tick={{ fontSize: 12, fill: "rgba(255,255,255,0.4)" }}
                 tickFormatter={(v) => {
                   const labels: Record<number, string> = { 2: "低落", 5: "平稳", 8: "高涨" };
                   return labels[v] || "";
@@ -222,12 +229,12 @@ export default function CurvePage() {
                   if (!active || !payload?.length) return null;
                   const data = payload[0]?.payload as ChartPoint;
                   return (
-                    <div className="bg-white border border-stone-200 rounded-lg p-3 shadow-sm text-xs">
-                      <p className="font-medium text-stone-800">第 {data.week} 周</p>
-                      {data.label && <p className="text-stone-500">{data.label}</p>}
-                      <p className="text-stone-600 mt-1">预测情绪：{data.predicted}/10</p>
+                    <div className="bg-[#0a0e1a] border border-cyan-400/30 p-3 shadow-[0_0_16px_rgba(34,211,238,0.15)] text-xs">
+                      <p className="font-mono font-medium text-cyan-200">第 {data.week} 周</p>
+                      {data.label && <p className="text-white/50">{data.label}</p>}
+                      <p className="text-cyan-300/80 mt-1">预测情绪：{data.predicted}/10</p>
                       {data.actual !== undefined && (
-                        <p className="text-emerald-600">实际情绪：{data.actual}/10</p>
+                        <p className="text-emerald-300">实际情绪：{data.actual}/10</p>
                       )}
                     </div>
                   );
@@ -241,9 +248,9 @@ export default function CurvePage() {
                   <ReferenceLine
                     key={i}
                     x={p.week_start}
-                    stroke="#d6d3d1"
+                    stroke="rgba(232,121,249,0.35)"
                     strokeDasharray="4 4"
-                    label={{ value: "黑暗期", position: "top", fontSize: 10, fill: "#a8a29e" }}
+                    label={{ value: "黑暗期", position: "top", fontSize: 10, fill: "rgba(232,121,249,0.6)" }}
                   />
                 ))}
 
@@ -251,25 +258,25 @@ export default function CurvePage() {
                 type="monotone"
                 dataKey="predicted"
                 stroke="none"
-                fill="#f5f5f4"
+                fill="rgba(34,211,238,0.08)"
                 fillOpacity={0.5}
               />
               <Line
                 type="monotone"
                 dataKey="predicted"
-                stroke="#a8a29e"
+                stroke="rgba(34,211,238,0.55)"
                 strokeWidth={2}
                 strokeDasharray="6 3"
-                dot={{ r: 3, fill: "#a8a29e" }}
+                dot={{ r: 3, fill: "rgba(34,211,238,0.55)" }}
                 name="预测"
               />
               {hasActual && (
                 <Line
                   type="monotone"
                   dataKey="actual"
-                  stroke="#10b981"
+                  stroke="#34d399"
                   strokeWidth={2.5}
-                  dot={{ r: 4, fill: "#10b981" }}
+                  dot={{ r: 4, fill: "#34d399" }}
                   connectNulls={false}
                   name="实际"
                 />
@@ -280,17 +287,17 @@ export default function CurvePage() {
 
         {/* Phases */}
         <div className="space-y-3">
-          <h2 className="text-sm font-medium text-stone-600">四个阶段</h2>
+          <h2 className="text-sm font-medium text-cyan-200/70"><span className="font-mono text-[10px] tracking-[0.25em] text-fuchsia-300/40 mr-2">PHASES</span>四个阶段</h2>
           {curve.phases.map((phase, i) => (
             <div
               key={i}
-              className={`rounded-lg border p-4 ${phaseColors[phase.name] || "bg-stone-50 border-stone-200"} ${
-                currentPhase?.name === phase.name ? "ring-2 ring-stone-400" : ""
+              className={`border p-4 ${phaseColors[phase.name] || "bg-cyan-400/[0.04] border-cyan-400/15 text-white/70"} ${
+                currentPhase?.name === phase.name ? "ring-2 ring-cyan-400/40" : ""
               }`}
             >
               <div className="flex items-center justify-between mb-1">
-                <span className="text-sm font-medium">{phase.name}</span>
-                <span className="text-xs opacity-60">第 {phase.week_start}-{phase.week_end} 周</span>
+                <span className="text-sm font-medium"><span className="font-mono text-[10px] opacity-40 mr-1.5">{String(i + 1).padStart(2, "0")}</span>{phase.name}</span>
+                <span className="font-mono text-xs opacity-60">第 {phase.week_start}-{phase.week_end} 周</span>
               </div>
               <p className="text-xs opacity-70">{phase.system_behavior}</p>
               {phase.message && (
@@ -302,10 +309,11 @@ export default function CurvePage() {
 
         {/* Mood History */}
         <div className="mt-8">
-          <h2 className="text-sm font-medium text-stone-600 mb-3">情绪打卡记录</h2>
+          <h2 className="text-sm font-medium text-cyan-200/70 mb-3"><span className="font-mono text-[10px] tracking-[0.25em] text-fuchsia-300/40 mr-2">CHECKIN_LOG</span>情绪打卡记录</h2>
           <MoodHistory />
         </div>
       </div>
+
     </div>
   );
 }
@@ -315,7 +323,7 @@ function MoodHistory() {
 
   if (events.length === 0) {
     return (
-      <p className="text-xs text-stone-400">还没有打卡记录。在任务页面完成每日情绪打卡后，这里会出现你的记录。</p>
+      <p className="text-xs text-white/35">还没有打卡记录。在任务页面完成每日情绪打卡后，这里会出现你的记录。</p>
     );
   }
 
@@ -326,7 +334,7 @@ function MoodHistory() {
       {recent.map((e, i) => (
         <div key={i} className="flex flex-col items-center gap-0.5">
           <span className="text-lg">{e.event_data.mood as string}</span>
-          <span className="text-[10px] text-stone-400">
+          <span className="text-[10px] text-white/35">
             {new Date(e.created_at).toLocaleDateString("zh-CN", { month: "numeric", day: "numeric" })}
           </span>
         </div>

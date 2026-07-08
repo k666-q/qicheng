@@ -1,0 +1,136 @@
+{
+  "subject": {
+    "id": "geography",
+    "name": "地理学",
+    "color": "#0ea5e9",
+    "description": "研究地球表面自然与人文现象及其空间规律的科学,连接山川河流与人类社会。",
+    "category": "自然科学与工程"
+  },
+  "nodes": [
+    {
+      "id": "geo_earth_spheres",
+      "subjectId": "geography",
+      "name": "地球圈层结构",
+      "plain_name": "地球像洋葱一样分层",
+      "description": "从地核、地幔到地壳,再到大气圈、水圈、生物圈,认识地球的整体构造。",
+      "difficulty": 4,
+      "keywords": ["地球圈层", "地壳", "地幔", "地核", "大气圈", "水圈"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "geo_plate_tectonics",
+      "subjectId": "geography",
+      "name": "板块构造",
+      "plain_name": "大陆为什么会漂移",
+      "description": "地壳被分成若干板块缓慢移动,碰撞挤压造就了山脉、地震与火山。",
+      "difficulty": 5,
+      "keywords": ["板块构造", "大陆漂移", "地震", "火山", "造山运动"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "geo_landforms",
+      "subjectId": "geography",
+      "name": "地貌",
+      "plain_name": "地表千姿百态的形状",
+      "description": "山地、平原、峡谷、沙漠等地表形态,是内力与风、水等外力共同雕刻的结果。",
+      "difficulty": 4,
+      "keywords": ["地貌", "地形", "侵蚀", "风化", "河流地貌", "喀斯特"],
+      "cognition_tags": ["system", "expression"]
+    },
+    {
+      "id": "geo_atmosphere_climate",
+      "subjectId": "geography",
+      "name": "大气与气候",
+      "plain_name": "天气和气候怎么形成",
+      "description": "大气环流、气压带与风带决定各地的冷暖干湿,塑造全球不同的气候类型。",
+      "difficulty": 6,
+      "keywords": ["大气", "气候", "大气环流", "气压带", "季风", "气候类型"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "geo_hydrology",
+      "subjectId": "geography",
+      "name": "水文",
+      "plain_name": "水在地球上的循环旅程",
+      "description": "研究河流、湖泊、地下水与水循环,水如何在海陆空之间不断流转。",
+      "difficulty": 5,
+      "keywords": ["水文", "水循环", "河流", "地下水", "径流", "流域"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "geo_human_geography",
+      "subjectId": "geography",
+      "name": "人文地理",
+      "plain_name": "人类活动的空间规律",
+      "description": "研究人口、聚落、文化等人类活动在地表的分布及其与环境的关系。",
+      "difficulty": 5,
+      "keywords": ["人文地理", "人口", "聚落", "文化", "城乡", "空间分布"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "geo_population_urban",
+      "subjectId": "geography",
+      "name": "人口与城市",
+      "plain_name": "人往哪里聚集和迁移",
+      "description": "研究人口增长、迁移与城市化进程,城市为何在特定地点兴起和扩张。",
+      "difficulty": 5,
+      "keywords": ["人口", "城市化", "人口迁移", "城市", "人口分布"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "geo_economic_geography",
+      "subjectId": "geography",
+      "name": "经济地理",
+      "plain_name": "产业和资源怎么分布",
+      "description": "研究农业、工业、贸易等经济活动的区位选择与空间格局。",
+      "difficulty": 6,
+      "keywords": ["经济地理", "区位", "产业布局", "农业", "工业", "贸易"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "geo_cartography_gis",
+      "subjectId": "geography",
+      "name": "地图与GIS",
+      "plain_name": "把世界画在图上并分析",
+      "description": "用地图投影、遥感与地理信息系统,采集、管理并分析空间数据。",
+      "difficulty": 6,
+      "keywords": ["地图", "GIS", "地理信息系统", "遥感", "投影", "空间分析"],
+      "cognition_tags": ["modeling", "abstract"]
+    },
+    {
+      "id": "geo_regional_geography",
+      "subjectId": "geography",
+      "name": "区域地理",
+      "plain_name": "认识一个地区的方方面面",
+      "description": "综合分析某一区域的自然与人文特征,理解不同地方的独特性与联系。",
+      "difficulty": 5,
+      "keywords": ["区域地理", "区域", "综合分析", "地域差异", "国家地理"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "geo_soil_vegetation",
+      "subjectId": "geography",
+      "name": "土壤与植被",
+      "plain_name": "土地表面的生命外衣",
+      "description": "土壤的形成与植被的分布随气候和地形变化,是自然地理的重要纽带。",
+      "difficulty": 5,
+      "keywords": ["土壤", "植被", "自然带", "地带性", "生态"],
+      "cognition_tags": ["system", "logic"]
+    }
+  ],
+  "edges": [
+    { "source": "geo_earth_spheres", "target": "geo_plate_tectonics", "type": "prerequisite", "reason": "板块运动发生在地壳与地幔之间,理解地球圈层是认识板块构造的前提。" },
+    { "source": "geo_plate_tectonics", "target": "geo_landforms", "type": "prerequisite", "reason": "板块碰撞与抬升塑造了山脉等大地貌,是地貌形成的内力来源。" },
+    { "source": "geo_earth_spheres", "target": "geo_atmosphere_climate", "type": "prerequisite", "reason": "大气圈是地球圈层之一,研究气候需先理解大气在整体圈层中的位置。" },
+    { "source": "geo_earth_spheres", "target": "geo_hydrology", "type": "prerequisite", "reason": "水圈是地球圈层的组成部分,水文研究建立在圈层结构的认识之上。" },
+    { "source": "geo_atmosphere_climate", "target": "geo_hydrology", "type": "related", "reason": "降水是水循环的关键环节,气候直接影响河流径流与水资源分布。" },
+    { "source": "geo_atmosphere_climate", "target": "geo_soil_vegetation", "type": "prerequisite", "reason": "气候决定植被类型与土壤发育,是自然带分布的主导因素。" },
+    { "source": "geo_landforms", "target": "geo_hydrology", "type": "related", "reason": "河流既塑造地貌又是水文研究对象,地貌与水文相互影响。" },
+    { "source": "geo_human_geography", "target": "geo_population_urban", "type": "prerequisite", "reason": "人口与城市是人文地理的核心子领域,是其具体展开的分支。" },
+    { "source": "geo_human_geography", "target": "geo_economic_geography", "type": "prerequisite", "reason": "经济地理是人文地理的重要分支,研究经济活动的空间规律。" },
+    { "source": "geo_atmosphere_climate", "target": "geo_economic_geography", "type": "related", "reason": "气候条件影响农业等产业布局,自然环境制约经济活动的区位。" },
+    { "source": "geo_cartography_gis", "target": "geo_regional_geography", "type": "prerequisite", "reason": "区域分析依赖地图与GIS工具来采集和呈现空间数据。" },
+    { "source": "geo_human_geography", "target": "geo_regional_geography", "type": "related", "reason": "区域地理综合自然与人文要素,人文地理为其提供人类活动的分析视角。" },
+    { "source": "geo_soil_vegetation", "target": "geo_regional_geography", "type": "related", "reason": "土壤植被是区域自然特征的重要组成,服务于区域综合分析。" }
+  ]
+}

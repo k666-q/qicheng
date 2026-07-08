@@ -1,0 +1,223 @@
+{
+  "subject": {
+    "id": "history",
+    "name": "历史学",
+    "color": "#b45309",
+    "description": "研究人类过去的学问——用史料还原真相，用脉络理解今天。",
+    "category": "人文社科"
+  },
+  "nodes": [
+    {
+      "id": "hist_method",
+      "subjectId": "history",
+      "name": "史学方法与史料",
+      "plain_name": "历史学家的工具箱",
+      "description": "一封古信、一块碑刻、一份档案如何变成可信的历史？学会辨别史料真伪、交叉验证，是入门历史的第一课。",
+      "difficulty": 4,
+      "keywords": ["史料", "考证", "史学方法", "一手史料", "二手史料", "史料批判"],
+      "cognition_tags": ["logic", "system"]
+    },
+    {
+      "id": "hist_china_ancient",
+      "subjectId": "history",
+      "name": "中国古代史通论",
+      "plain_name": "从夏商到清朝的大脉络",
+      "description": "三千多年王朝兴衰的整体地图——朝代更替、制度演变、经济重心南移，先看清全局再钻进细节。",
+      "difficulty": 3,
+      "keywords": ["中国古代史", "朝代", "王朝更替", "通史", "制度史"],
+      "cognition_tags": ["system"]
+    },
+    {
+      "id": "hist_pre_qin",
+      "subjectId": "history",
+      "name": "先秦史",
+      "plain_name": "诸子百家登场之前与之中",
+      "description": "从甲骨文里的商王占卜，到春秋战国的礼崩乐坏——中华文明的底色在这五百年争鸣中铸成。",
+      "difficulty": 5,
+      "keywords": ["先秦", "夏商周", "春秋战国", "诸子百家", "甲骨文", "分封制"],
+      "cognition_tags": ["abstract", "system"]
+    },
+    {
+      "id": "hist_qin_han",
+      "subjectId": "history",
+      "name": "秦汉史",
+      "plain_name": "大一统帝国的诞生",
+      "description": "秦始皇统一文字度量衡，汉武帝独尊儒术——中国此后两千年的政治框架在这里定型。",
+      "difficulty": 4,
+      "keywords": ["秦朝", "汉朝", "大一统", "郡县制", "丝绸之路", "独尊儒术"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "hist_tang_song",
+      "subjectId": "history",
+      "name": "唐宋史",
+      "plain_name": "古代中国的黄金时代",
+      "description": "长安城里万国来朝，汴京街头通宵夜市——从唐的开放到宋的繁荣，看科举、商业与文化如何重塑社会。",
+      "difficulty": 4,
+      "keywords": ["唐朝", "宋朝", "科举制", "唐宋变革", "商业革命", "安史之乱"],
+      "cognition_tags": ["system", "aesthetic"]
+    },
+    {
+      "id": "hist_ming_qing",
+      "subjectId": "history",
+      "name": "明清史",
+      "plain_name": "帝制晚期的盛世与危机",
+      "description": "郑和下西洋的辉煌与闭关锁国的转折——白银流入、人口爆炸、皇权登顶，理解传统中国为何走到尽头。",
+      "difficulty": 4,
+      "keywords": ["明朝", "清朝", "郑和下西洋", "闭关锁国", "康乾盛世", "白银贸易"],
+      "cognition_tags": ["system"]
+    },
+    {
+      "id": "hist_china_modern",
+      "subjectId": "history",
+      "name": "中国近现代史",
+      "plain_name": "三千年未有之大变局",
+      "description": "从鸦片战争的炮声到改革开放的春风——一个古老文明在屈辱、革命与重建中走向现代的全过程。",
+      "difficulty": 5,
+      "keywords": ["近代史", "鸦片战争", "辛亥革命", "抗日战争", "改革开放", "现代化"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "hist_world_ancient",
+      "subjectId": "history",
+      "name": "世界古代文明",
+      "plain_name": "人类文明的几大源头",
+      "description": "尼罗河畔的金字塔、两河流域的法典、雅典广场的辩论——看几大古文明如何各自发明'文明'这件事。",
+      "difficulty": 4,
+      "keywords": ["古埃及", "两河文明", "古希腊", "古罗马", "古印度", "轴心时代"],
+      "cognition_tags": ["system", "aesthetic"]
+    },
+    {
+      "id": "hist_world_medieval",
+      "subjectId": "history",
+      "name": "世界中世纪史",
+      "plain_name": "被误解的'黑暗'一千年",
+      "description": "骑士与城堡、教会与大学、阿拉伯的智慧宫——罗马陷落后的千年并非一片黑暗，而是现代欧洲与伊斯兰世界的孕育期。",
+      "difficulty": 5,
+      "keywords": ["中世纪", "封建制度", "十字军", "拜占庭", "伊斯兰文明", "大学起源"],
+      "cognition_tags": ["system"]
+    },
+    {
+      "id": "hist_world_early_modern",
+      "subjectId": "history",
+      "name": "世界近代史",
+      "plain_name": "大航海到工业革命的巨变",
+      "description": "哥伦布的帆船、瓦特的蒸汽机、法国大革命的断头台——三百年间世界被彻底重组，现代世界的规则在此写就。",
+      "difficulty": 5,
+      "keywords": ["大航海时代", "文艺复兴", "启蒙运动", "工业革命", "法国大革命", "殖民扩张"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "hist_world_contemporary",
+      "subjectId": "history",
+      "name": "世界现代史",
+      "plain_name": "两次大战与冷战的20世纪",
+      "description": "从萨拉热窝的枪声到柏林墙的倒塌——理解20世纪的战争、革命与对峙，才能看懂今天的国际格局。",
+      "difficulty": 5,
+      "keywords": ["第一次世界大战", "第二次世界大战", "冷战", "去殖民化", "联合国", "国际格局"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "hist_globalization",
+      "subjectId": "history",
+      "name": "全球化与当代世界",
+      "plain_name": "我们正在经历的历史",
+      "description": "集装箱、互联网与跨国供应链如何把世界拧成一体？用历史的眼光审视全球化的成就、裂痕与未来。",
+      "difficulty": 6,
+      "keywords": ["全球化", "全球史", "信息时代", "气候变化", "地缘政治", "当代世界"],
+      "cognition_tags": ["system", "abstract"]
+    }
+  ],
+  "edges": [
+    {
+      "source": "hist_method",
+      "target": "hist_china_ancient",
+      "type": "prerequisite",
+      "reason": "读懂中国古代史先要会用史料：二十四史、出土简牍、碑刻都需要史料批判的眼光。"
+    },
+    {
+      "source": "hist_method",
+      "target": "hist_world_ancient",
+      "type": "prerequisite",
+      "reason": "古代文明研究高度依赖考古发现与铭文释读，没有史学方法就只能看故事。"
+    },
+    {
+      "source": "hist_china_ancient",
+      "target": "hist_pre_qin",
+      "type": "prerequisite",
+      "reason": "先有通史框架，再钻入先秦细节才不会迷失在诸侯国与世系之中。"
+    },
+    {
+      "source": "hist_china_ancient",
+      "target": "hist_qin_han",
+      "type": "prerequisite",
+      "reason": "秦汉是通史脉络中的关键节点，需先了解全局才能体会'大一统'的转折意义。"
+    },
+    {
+      "source": "hist_china_ancient",
+      "target": "hist_tang_song",
+      "type": "prerequisite",
+      "reason": "唐宋变革论要放在通史尺度上理解：贵族社会向平民社会的转型。"
+    },
+    {
+      "source": "hist_china_ancient",
+      "target": "hist_ming_qing",
+      "type": "prerequisite",
+      "reason": "明清的制度与困境是此前两千年帝制演化的总结，需要通史视野。"
+    },
+    {
+      "source": "hist_pre_qin",
+      "target": "hist_qin_han",
+      "type": "prerequisite",
+      "reason": "秦的法家治国、汉的儒法合流，都直接继承自先秦诸子的思想资源。"
+    },
+    {
+      "source": "hist_qin_han",
+      "target": "hist_tang_song",
+      "type": "prerequisite",
+      "reason": "唐宋的官僚制、科举制是对秦汉郡县制与察举制的继承与改造。"
+    },
+    {
+      "source": "hist_ming_qing",
+      "target": "hist_china_modern",
+      "type": "prerequisite",
+      "reason": "鸦片战争前的明清社会结构与对外政策，是理解近代屈辱与转型的直接背景。"
+    },
+    {
+      "source": "hist_world_ancient",
+      "target": "hist_world_medieval",
+      "type": "prerequisite",
+      "reason": "中世纪的教会、法律与城市都建立在罗马遗产之上，不懂古典文明无法理解中世纪。"
+    },
+    {
+      "source": "hist_world_medieval",
+      "target": "hist_world_early_modern",
+      "type": "prerequisite",
+      "reason": "文艺复兴、宗教改革都是对中世纪秩序的回应，大航海的技术也源自中世纪积累。"
+    },
+    {
+      "source": "hist_world_early_modern",
+      "target": "hist_world_contemporary",
+      "type": "prerequisite",
+      "reason": "两次世界大战的根源——民族主义、帝国主义、工业化战争——全部种因于近代。"
+    },
+    {
+      "source": "hist_world_contemporary",
+      "target": "hist_globalization",
+      "type": "prerequisite",
+      "reason": "当代全球化体系（联合国、布雷顿森林体系、互联网）直接诞生于二战后秩序。"
+    },
+    {
+      "source": "hist_china_modern",
+      "target": "hist_world_early_modern",
+      "type": "related",
+      "reason": "中国近代史就是世界近代史的一部分：鸦片战争是工业革命后西方扩张撞上东方帝国的结果。"
+    },
+    {
+      "source": "hist_china_modern",
+      "target": "hist_globalization",
+      "type": "related",
+      "reason": "改革开放后中国深度融入全球化，是理解当代世界经济格局的关键案例。"
+    }
+  ]
+}

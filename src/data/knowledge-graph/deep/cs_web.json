@@ -1,0 +1,83 @@
+{
+  "parentId": "cs_web",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "web_html_css",
+      "subjectId": "programming",
+      "parentId": "cs_web",
+      "name": "HTML 与 CSS",
+      "plain_name": "网页的骨架与外衣",
+      "description": "HTML 描述内容结构，CSS 控制样式与布局——盒模型、Flex 与 Grid 让页面排布自如。",
+      "difficulty": 3,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["HTML", "CSS", "盒模型", "Flex", "Grid", "布局"],
+      "prerequisites": [],
+      "cognition_tags": ["aesthetic", "system"]
+    },
+    {
+      "id": "web_javascript",
+      "subjectId": "programming",
+      "parentId": "cs_web",
+      "name": "JavaScript 与 DOM",
+      "plain_name": "让网页动起来",
+      "description": "DOM 操作、事件、异步与 Promise——浏览器里让页面响应用户、与服务器通信的语言。",
+      "difficulty": 5,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["JavaScript", "DOM", "事件", "异步", "Promise", "Ajax"],
+      "prerequisites": ["web_html_css"],
+      "cognition_tags": ["logic", "system"]
+    },
+    {
+      "id": "web_frontend_framework",
+      "subjectId": "programming",
+      "parentId": "cs_web",
+      "name": "前端框架",
+      "plain_name": "用组件搭复杂界面",
+      "description": "React/Vue 的组件化、虚拟 DOM 与状态管理——把复杂 UI 拆成可复用的积木。",
+      "difficulty": 6,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["React", "Vue", "组件", "虚拟DOM", "状态管理"],
+      "prerequisites": ["web_javascript"],
+      "cognition_tags": ["system", "abstract"]
+    },
+    {
+      "id": "web_backend_api",
+      "subjectId": "programming",
+      "parentId": "cs_web",
+      "name": "后端与 API",
+      "plain_name": "搭建网站背后的服务器",
+      "description": "HTTP 服务、REST API、路由与中间件——让前端有数据可用的服务器端逻辑。",
+      "difficulty": 6,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["后端", "REST API", "路由", "中间件", "服务器"],
+      "prerequisites": ["web_javascript"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "web_fullstack",
+      "subjectId": "programming",
+      "parentId": "cs_web",
+      "name": "全栈架构",
+      "plain_name": "前后端如何配合",
+      "description": "前后端分离、鉴权、部署与性能——一个完整应用从浏览器到数据库的全链路设计。",
+      "difficulty": 7,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["全栈", "前后端分离", "鉴权", "部署", "架构"],
+      "prerequisites": ["web_frontend_framework", "web_backend_api"],
+      "cognition_tags": ["system"]
+    }
+  ],
+  "edges": [
+    { "source": "web_html_css", "target": "web_javascript", "type": "prerequisite" },
+    { "source": "web_javascript", "target": "web_frontend_framework", "type": "prerequisite" },
+    { "source": "web_javascript", "target": "web_backend_api", "type": "prerequisite" },
+    { "source": "web_frontend_framework", "target": "web_fullstack", "type": "prerequisite" },
+    { "source": "web_backend_api", "target": "web_fullstack", "type": "prerequisite" }
+  ]
+}

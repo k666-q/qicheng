@@ -1,0 +1,333 @@
+{
+  "subject": {
+    "id": "film",
+    "name": "影视与摄影",
+    "color": "#0891b2",
+    "description": "用镜头捕捉光影、用画面讲故事的现代叙事艺术。",
+    "category": "艺术与生活"
+  },
+  "nodes": [
+    {
+      "id": "film_photo_basic",
+      "subjectId": "film",
+      "name": "摄影基础",
+      "plain_name": "搞懂相机那三个旋钮",
+      "description": "光圈、快门、感光度的曝光三角，加上构图法则——按快门前的全部功课。",
+      "difficulty": 3,
+      "keywords": [
+        "摄影",
+        "曝光三要素",
+        "光圈",
+        "快门",
+        "ISO",
+        "构图",
+        "拍照"
+      ],
+      "cognition_tags": [
+        "logic",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "film_light_color",
+      "subjectId": "film",
+      "name": "用光与色彩",
+      "plain_name": "摄影是用光的艺术",
+      "description": "顺光逆光、硬光柔光与白平衡——光线的方向和质感决定照片的情绪。",
+      "difficulty": 5,
+      "keywords": [
+        "用光",
+        "布光",
+        "逆光",
+        "柔光",
+        "白平衡",
+        "色温",
+        "黄金时刻"
+      ],
+      "cognition_tags": [
+        "aesthetic",
+        "abstract"
+      ]
+    },
+    {
+      "id": "film_portrait",
+      "subjectId": "film",
+      "name": "人像摄影",
+      "plain_name": "把人拍得好看又有味道",
+      "description": "焦段选择、引导姿势与眼神光——人像的关键不是设备，是沟通。",
+      "difficulty": 5,
+      "keywords": [
+        "人像",
+        "人像摄影",
+        "焦外",
+        "大光圈",
+        "摆姿",
+        "眼神光",
+        "写真"
+      ],
+      "cognition_tags": [
+        "expression",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "film_landscape",
+      "subjectId": "film",
+      "name": "风光摄影",
+      "plain_name": "把大自然装进取景框",
+      "description": "前中后景层次、慢门流水与日出日落——等光、追光的耐心艺术。",
+      "difficulty": 5,
+      "keywords": [
+        "风光摄影",
+        "风景",
+        "慢门",
+        "滤镜",
+        "三脚架",
+        "日出日落",
+        "星空"
+      ],
+      "cognition_tags": [
+        "aesthetic",
+        "system"
+      ]
+    },
+    {
+      "id": "film_language",
+      "subjectId": "film",
+      "name": "视听语言",
+      "plain_name": "镜头自己会说话",
+      "description": "景别、运镜、机位与声音——电影不用文字也能让你心跳加速的语法。",
+      "difficulty": 5,
+      "keywords": [
+        "视听语言",
+        "景别",
+        "运镜",
+        "机位",
+        "蒙太奇",
+        "镜头语言",
+        "特写"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "expression"
+      ]
+    },
+    {
+      "id": "film_editing",
+      "subjectId": "film",
+      "name": "剪辑思维",
+      "plain_name": "在剪辑台上重写故事",
+      "description": "镜头组接、节奏控制与情绪曲线——电影是拍出来的，更是剪出来的。",
+      "difficulty": 6,
+      "keywords": [
+        "剪辑",
+        "蒙太奇",
+        "节奏",
+        "转场",
+        "剪辑点",
+        "Premiere",
+        "剪映"
+      ],
+      "cognition_tags": [
+        "logic",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "film_script",
+      "subjectId": "film",
+      "name": "剧本与叙事",
+      "plain_name": "先有好故事才有好电影",
+      "description": "三幕结构、人物弧光与冲突设计——所有打动人的电影都赢在纸上。",
+      "difficulty": 6,
+      "keywords": [
+        "剧本",
+        "叙事",
+        "三幕结构",
+        "人物弧光",
+        "冲突",
+        "编剧",
+        "故事板"
+      ],
+      "cognition_tags": [
+        "expression",
+        "abstract"
+      ]
+    },
+    {
+      "id": "film_directing",
+      "subjectId": "film",
+      "name": "导演与场面调度",
+      "plain_name": "指挥镜头前的一切",
+      "description": "演员走位、镜头设计与现场掌控——把剧本文字翻译成银幕画面的总工程师。",
+      "difficulty": 8,
+      "keywords": [
+        "导演",
+        "场面调度",
+        "走位",
+        "分镜",
+        "表演指导",
+        "现场",
+        "调度"
+      ],
+      "cognition_tags": [
+        "system",
+        "expression",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "film_documentary",
+      "subjectId": "film",
+      "name": "纪录片",
+      "plain_name": "用镜头记录真实",
+      "description": "观察式与参与式拍法、真实伦理——在不打扰真实的前提下讲好真事。",
+      "difficulty": 7,
+      "keywords": [
+        "纪录片",
+        "真实",
+        "跟拍",
+        "采访",
+        "观察式",
+        "人文记录"
+      ],
+      "cognition_tags": [
+        "expression",
+        "abstract"
+      ]
+    },
+    {
+      "id": "film_history",
+      "subjectId": "film",
+      "name": "电影史",
+      "plain_name": "电影这一百多年的进化",
+      "description": "从卢米埃尔到新浪潮再到数字时代——影史就是视听语言的发明史。",
+      "difficulty": 4,
+      "keywords": [
+        "电影史",
+        "默片",
+        "好莱坞",
+        "新浪潮",
+        "经典电影",
+        "影史百佳"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "film_post",
+      "subjectId": "film",
+      "name": "后期与调色",
+      "plain_name": "给画面化妆定情绪",
+      "description": "修图、调色与特效合成——后期是二次创作，色调就是影片的滤镜人格。",
+      "difficulty": 6,
+      "keywords": [
+        "后期",
+        "调色",
+        "修图",
+        "Lightroom",
+        "达芬奇",
+        "LUT",
+        "特效"
+      ],
+      "cognition_tags": [
+        "aesthetic",
+        "system"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "film_photo_basic",
+      "target": "film_light_color",
+      "type": "prerequisite",
+      "reason": "先掌握曝光三要素控制进光量，再研究光的方向与质感，否则连光都拍不准。"
+    },
+    {
+      "source": "film_light_color",
+      "target": "film_portrait",
+      "type": "prerequisite",
+      "reason": "人像的氛围八成靠布光：伦勃朗光、蝴蝶光都是用光知识在脸上的应用。"
+    },
+    {
+      "source": "film_light_color",
+      "target": "film_landscape",
+      "type": "prerequisite",
+      "reason": "风光摄影本质是等待和捕捉自然光：理解色温与光位才知道为什么要起早贪黑。"
+    },
+    {
+      "source": "film_photo_basic",
+      "target": "film_language",
+      "type": "prerequisite",
+      "reason": "视听语言以摄影为根基：景别与构图概念直接从静态摄影延伸到运动影像。"
+    },
+    {
+      "source": "film_language",
+      "target": "film_editing",
+      "type": "prerequisite",
+      "reason": "剪辑是视听语言的语法实践：懂景别与轴线规则，镜头组接才不会让观众迷路。"
+    },
+    {
+      "source": "film_language",
+      "target": "film_directing",
+      "type": "prerequisite",
+      "reason": "导演用视听语言思考：每个机位和运镜的选择都是在用镜头'写句子'。"
+    },
+    {
+      "source": "film_script",
+      "target": "film_directing",
+      "type": "prerequisite",
+      "reason": "导演的工作从读懂剧本开始：场面调度就是把文字节奏翻译成空间与表演。"
+    },
+    {
+      "source": "film_script",
+      "target": "film_editing",
+      "type": "related",
+      "reason": "剪辑被称为'最后一次编剧'：剪辑师常在素材里重新发现甚至改写故事结构。"
+    },
+    {
+      "source": "film_language",
+      "target": "film_documentary",
+      "type": "prerequisite",
+      "reason": "纪录片同样靠镜头叙事，只是把视听语言用在不可重来的真实现场。"
+    },
+    {
+      "source": "film_history",
+      "target": "film_language",
+      "type": "related",
+      "reason": "蒙太奇、长镜头等语言都是影史上被发明出来的：看经典片就是学语法的活教材。"
+    },
+    {
+      "source": "film_history",
+      "target": "film_directing",
+      "type": "related",
+      "reason": "大师场面调度的范例都在影史里：希区柯克与黑泽明是导演课的常驻教材。"
+    },
+    {
+      "source": "film_photo_basic",
+      "target": "film_post",
+      "type": "prerequisite",
+      "reason": "后期建立在正确曝光的素材上：白平衡和直方图的知识决定调色的起点质量。"
+    },
+    {
+      "source": "film_editing",
+      "target": "film_post",
+      "type": "related",
+      "reason": "剪辑定结构、调色定情绪，两者在同一条后期流水线上前后衔接。"
+    },
+    {
+      "source": "film_portrait",
+      "target": "film_post",
+      "type": "related",
+      "reason": "人像精修是后期的高频战场：磨皮、液化与肤色还原都有专门的处理流程。"
+    },
+    {
+      "source": "film_documentary",
+      "target": "film_editing",
+      "type": "related",
+      "reason": "纪录片的叙事大半在剪辑台上完成：上百小时素材要靠剪辑梳理出故事线。"
+    }
+  ]
+}

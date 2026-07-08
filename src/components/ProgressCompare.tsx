@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getEventsByType } from "@/lib/profile/events";
+import { loadSessionItem } from "@/lib/plan/store";
 
 type ProgressData = {
   userPercent: number;
@@ -137,7 +138,7 @@ export function ProgressCompare() {
   }, []);
 
   useEffect(() => {
-    const planStr = sessionStorage.getItem("qicheng_plan");
+    const planStr = loadSessionItem("qicheng_plan");
     const startStr = localStorage.getItem("qicheng_plan_start");
     if (!planStr) return;
 
@@ -213,20 +214,20 @@ export function ProgressCompare() {
   const avgPct = Math.round(data.avgPercent * 100);
 
   return (
-    <div className="rounded-2xl border border-stone-100 bg-gradient-to-br from-white via-white to-stone-50/50 p-6 shadow-sm overflow-hidden relative">
+    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.04] backdrop-blur-md p-6 shadow-[0_0_20px_rgba(100,150,255,0.05)] overflow-hidden relative">
       {/* Decorative background element */}
-      <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-stone-50 to-transparent rounded-bl-full opacity-60" />
+      <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-indigo-500/[0.06] to-transparent rounded-bl-full" />
 
       <div className="relative">
         {/* Top: Stage progress bar */}
         <div className="mb-5">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-medium text-stone-600">学习旅程</span>
-            <span className="text-xs text-stone-400">
+            <span className="text-xs font-medium text-white/60">学习旅程</span>
+            <span className="text-xs text-white/35">
               {data.currentStageIdx + 1}/{data.totalStages} 阶段
             </span>
           </div>
-          <div className="flex gap-1 h-2 rounded-full overflow-hidden bg-stone-100">
+          <div className="flex gap-1 h-2 rounded-full overflow-hidden bg-white/[0.07]">
             {data.stageProgress.map((stage, i) => {
               const stageWidth = (stage.tasks / data.totalTasks) * 100;
               const fillPercent = stage.tasks > 0 ? (stage.completed / stage.tasks) * 100 : 0;
@@ -255,7 +256,7 @@ export function ProgressCompare() {
               return (
                 <span
                   key={i}
-                  className={`text-[9px] truncate ${isActive ? "font-medium text-stone-600" : "text-stone-300"}`}
+                  className={`text-[9px] truncate ${isActive ? "font-medium text-white/65" : "text-white/25"}`}
                   style={{ width: `${stageWidth}%` }}
                 >
                   {stage.name.replace(/^第.阶段[：:]?\s*/, "")}
@@ -267,32 +268,32 @@ export function ProgressCompare() {
 
         {/* Middle: Stats row */}
         <div className="grid grid-cols-4 gap-3 mb-5">
-          <div className="text-center p-3 rounded-xl bg-stone-50/80">
-            <p className="text-2xl font-bold text-stone-800 tabular-nums">{userPct}%</p>
-            <p className="text-[10px] text-stone-400 mt-1">总进度</p>
+          <div className="text-center p-3 rounded-xl bg-white/[0.04] border border-white/[0.05]">
+            <p className="text-2xl font-bold text-white/90 tabular-nums">{userPct}%</p>
+            <p className="text-[10px] text-white/35 mt-1">总进度</p>
           </div>
-          <div className="text-center p-3 rounded-xl bg-stone-50/80">
-            <p className="text-2xl font-bold text-stone-800 tabular-nums">
-              {data.userTasks}<span className="text-sm text-stone-300">/{data.totalTasks}</span>
+          <div className="text-center p-3 rounded-xl bg-white/[0.04] border border-white/[0.05]">
+            <p className="text-2xl font-bold text-white/90 tabular-nums">
+              {data.userTasks}<span className="text-sm text-white/30">/{data.totalTasks}</span>
             </p>
-            <p className="text-[10px] text-stone-400 mt-1">已完成</p>
+            <p className="text-[10px] text-white/35 mt-1">已完成</p>
           </div>
-          <div className="text-center p-3 rounded-xl bg-stone-50/80">
-            <p className="text-2xl font-bold text-stone-800 tabular-nums">
-              {data.daysSinceStart}<span className="text-sm text-stone-300 ml-0.5">天</span>
+          <div className="text-center p-3 rounded-xl bg-white/[0.04] border border-white/[0.05]">
+            <p className="text-2xl font-bold text-white/90 tabular-nums">
+              {data.daysSinceStart}<span className="text-sm text-white/30 ml-0.5">天</span>
             </p>
-            <p className="text-[10px] text-stone-400 mt-1">已学习</p>
+            <p className="text-[10px] text-white/35 mt-1">已学习</p>
           </div>
-          <div className="text-center p-3 rounded-xl bg-stone-50/80">
-            <p className="text-2xl font-bold text-stone-400 tabular-nums">{avgPct}%</p>
-            <p className="text-[10px] text-stone-400 mt-1">同期平均</p>
+          <div className="text-center p-3 rounded-xl bg-white/[0.04] border border-white/[0.05]">
+            <p className="text-2xl font-bold text-white/40 tabular-nums">{avgPct}%</p>
+            <p className="text-[10px] text-white/35 mt-1">同期平均</p>
           </div>
         </div>
 
         {/* Bottom: Encouragement */}
         <p
           onClick={nextEncouragement}
-          className={`text-[13px] text-stone-400 leading-relaxed cursor-pointer select-none hover:text-stone-500 transition-all duration-200 text-center ${fade ? "opacity-100" : "opacity-0"}`}
+          className={`text-[13px] text-white/40 leading-relaxed cursor-pointer select-none hover:text-white/55 transition-all duration-200 text-center ${fade ? "opacity-100" : "opacity-0"}`}
         >
           「{encouragement}」
         </p>

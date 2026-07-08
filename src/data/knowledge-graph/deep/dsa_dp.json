@@ -1,0 +1,83 @@
+{
+  "parentId": "dsa_dp",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "dp_fib_memo",
+      "subjectId": "programming",
+      "parentId": "dsa_dp",
+      "name": "斐波那契的记忆化",
+      "plain_name": "算过的结果存起来不重算",
+      "description": "朴素递归求 fib(n) 会重复计算大量子问题。记忆化用一个 memo 数组缓存已算结果：每次进入 fib(k) 先查表，命中直接返回，否则计算后写回表中。动画对比递归树上被剪掉的重复分支，体现从指数级降到 O(n)。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["斐波那契", "记忆化", "缓存", "重叠子问题", "自顶向下"],
+      "prerequisites": [],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "dp_knapsack_01",
+      "subjectId": "programming",
+      "parentId": "dsa_dp",
+      "name": "0-1背包的状态转移",
+      "plain_name": "每件物品选或不选填表格",
+      "description": "用二维表 dp[i][w] 表示前 i 件物品在容量 w 下的最大价值。逐格填表时取两种决策的较大者：不选第 i 件(dp[i-1][w])或选它(dp[i-1][w-weight]+value)。动画高亮当前格及它依赖的上方与左上方格子。",
+      "difficulty": 7,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["0-1背包", "状态转移", "二维DP表", "选或不选", "最优子结构"],
+      "prerequisites": ["dp_fib_memo"],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "dp_lcs",
+      "subjectId": "programming",
+      "parentId": "dsa_dp",
+      "name": "最长公共子序列",
+      "plain_name": "两串里最长的共同顺序片段",
+      "description": "用二维表 dp[i][j] 表示两字符串前缀的最长公共子序列长度。填表时若字符相等取左上角 dp[i-1][j-1]+1，否则取上方和左方的较大值。动画逐格填表并高亮依赖来源，最后沿表格回溯出公共子序列。",
+      "difficulty": 7,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["最长公共子序列", "LCS", "二维DP", "字符匹配", "回溯路径"],
+      "prerequisites": ["dp_knapsack_01"],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "dp_lis",
+      "subjectId": "programming",
+      "parentId": "dsa_dp",
+      "name": "最长递增子序列",
+      "plain_name": "挑出最长的一段越来越大",
+      "description": "用一维数组 dp[i] 表示以第 i 个元素结尾的最长递增子序列长度。计算 dp[i] 时回看前面所有比它小的元素 j，取 dp[j]+1 的最大值。动画从左到右逐个确定 dp 值并高亮被回看比较的元素。",
+      "difficulty": 6,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["最长递增子序列", "LIS", "一维DP", "回看比较", "O(n²)"],
+      "prerequisites": ["dp_fib_memo"],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "dp_climb_stairs",
+      "subjectId": "programming",
+      "parentId": "dsa_dp",
+      "name": "爬楼梯",
+      "plain_name": "每步迈1或2阶有几种走法",
+      "description": "到第 n 阶的走法数等于到第 n-1 阶与第 n-2 阶之和，即 dp[n]=dp[n-1]+dp[n-2]。动画从底层台阶起逐级累加，高亮当前台阶由前两级相加而来，本质是斐波那契的递推填表。",
+      "difficulty": 4,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["爬楼梯", "递推", "状态转移方程", "斐波那契", "一维DP"],
+      "prerequisites": ["dp_fib_memo"],
+      "cognition_tags": ["logic", "abstract"]
+    }
+  ],
+  "edges": [
+    { "source": "dp_fib_memo", "target": "dp_climb_stairs", "type": "prerequisite" },
+    { "source": "dp_fib_memo", "target": "dp_knapsack_01", "type": "prerequisite" },
+    { "source": "dp_knapsack_01", "target": "dp_lcs", "type": "prerequisite" },
+    { "source": "dp_fib_memo", "target": "dp_lis", "type": "prerequisite" },
+    { "source": "dp_lcs", "target": "dp_lis", "type": "related" }
+  ]
+}

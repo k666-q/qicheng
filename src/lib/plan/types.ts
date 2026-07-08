@@ -6,6 +6,8 @@ export type PlanTask = {
   difficulty: number;
   day_label: string;
   reason?: string;
+  /** 关联的知识宇宙节点 id（生成时由 AI 锚定，旧计划由关键词匹配兜底） */
+  node_ids?: string[];
 };
 
 export type TaskBreakdown = {

@@ -2,6 +2,8 @@ import { NextRequest } from "next/server";
 import { z } from "zod";
 import OpenAI from "openai";
 import { buildFullPersonaPrompt } from "@/lib/ai/persona";
+import { recordEvent } from "@/lib/admin/usage-store";
+import { loadGraph } from "@/lib/universe/store";
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +19,47 @@ function getClient() {
   });
 }
 
-function buildSystemPrompt(): string {
+const DOMAIN_TO_SUBJECTS: Record<string, string[]> = {
+  programming_app: ["programming", "ai", "data_science"],
+  visual_design: ["design", "art", "film"],
+  data_analysis: ["data_science", "mathematics", "programming"],
+  language: ["english", "linguistics"],
+  product_business: ["management", "marketing", "finance", "economics"],
+  exam_prep: [],
+  general_learning: [],
+};
+
+/**
+ * 知识宇宙候选节点列表（注入 prompt，让 AI 给任务锚定 node_ids）。
+ * 当 domain 已知时只注入相关学科的节点（控制 prompt 长度）；
+ * 未知或通用时注入全部。
+ */
+function buildKnowledgeNodeCatalog(domain?: string): string {
+  const graph = loadGraph();
+  const subjectName = new Map(graph.subjects.map((s) => [s.id, s.name]));
+  const relevantSubjects = domain ? DOMAIN_TO_SUBJECTS[domain] : undefined;
+  const filteredNodes =
+    relevantSubjects && relevantSubjects.length > 0
+      ? graph.nodes.filter((n) => relevantSubjects.includes(n.subjectId))
+      : graph.nodes;
+  return filteredNodes
+    .map((n) => `- ${n.id}（${subjectName.get(n.subjectId) || n.subjectId}·${n.name}）`)
+    .join("\n");
+}
+
+function inferDomainFromDraft(draft: Record<string, unknown>): string | undefined {
+  const text = JSON.stringify(draft).toLowerCase();
+  if (/编程|代码|开发|前端|后端|app|web|软件|程序/.test(text)) return "programming_app";
+  if (/设计|ui|ux|视觉|平面|logo/.test(text)) return "visual_design";
+  if (/数据分析|数据科学|统计|机器学习/.test(text)) return "data_analysis";
+  if (/英语|英文|雅思|托福|口语|词汇/.test(text)) return "language";
+  if (/产品|创业|副业|商业|运营/.test(text)) return "product_business";
+  if (/考试|考研|期末|备考|408|高考/.test(text)) return "exam_prep";
+  return undefined;
+}
+
+function buildSystemPrompt(draft?: Record<string, unknown>): string {
+  const domain = draft ? inferDomainFromDraft(draft) : undefined;
   const sceneInstructions = `## 当前场景：计划生成
 
 **重要：本场景不使用 |||SPLIT||| 分条规则。** 你需要输出一段自然语言介绍 + |||PLAN||| + 完整JSON。不要把JSON拆成多条消息。
@@ -88,6 +130,15 @@ function buildSystemPrompt(): string {
 - difficulty: 难度 1-10（整数，1=最简单 10=最难。注意要合理分布，不要全部都是5-6，要有真实的难度起伏。简单任务给2-3，适中给4-6，有挑战给7-8，高难度给9-10）
 - day_label: 同 day 字段
 - reason: 可选，为什么放在这天
+- node_ids: 可选，知识宇宙节点 id 数组（0-2 个）。从下方「知识宇宙候选节点」中选择与该任务知识点**明确对应**的节点 id；没有明确对应就输出空数组 []，不要硬凑。
+  - **学科一致性**：整份计划的所有 node_ids 必须来自同一个或紧密相关的少数学科（如编程+数学），绝不能因为字面相似就跨到无关学科（如计算机任务锚到设计学节点）。
+  - 如果计划的主题领域在候选列表里没有对应学科，则**全部任务的 node_ids 都输出 []**，宁缺毋滥。
+
+## 知识宇宙候选节点
+
+每个任务的 node_ids 只能从以下列表中选（格式：id（学科·节点名））：
+
+${buildKnowledgeNodeCatalog(domain)}
 
 ## 双层语言示例
 
@@ -150,13 +201,16 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const parsed = RequestSchema.parse(body);
 
+    const userId = req.headers.get("x-user-id") || "anonymous";
+    recordEvent(userId, "ai_call:plan-generate", {});
+
     const client = getClient();
     const model = process.env.AI_MODEL || "deepseek-chat";
 
     const stream = await client.chat.completions.create({
       model,
       messages: [
-        { role: "system", content: buildSystemPrompt() },
+        { role: "system", content: buildSystemPrompt(parsed.draft) },
         { role: "user", content: buildUserMessage(parsed.draft, parsed.conversationSummary) },
       ],
       max_tokens: 8000,

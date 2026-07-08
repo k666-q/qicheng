@@ -1,0 +1,68 @@
+{
+  "parentId": "dsa_complexity",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "cplx_bigo_def",
+      "subjectId": "programming",
+      "parentId": "dsa_complexity",
+      "name": "大O记号的定义",
+      "plain_name": "用增长趋势衡量算法快慢",
+      "description": "在坐标系中画出实际运行时间曲线 T(n)，再画一条 c·g(n) 曲线，当 n 超过某个 n₀ 后 c·g(n) 始终压在 T(n) 上方，说明 T(n)=O(g(n))。动画展示忽略低阶项和常数、只保留最高阶项的过程。",
+      "difficulty": 4,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["大O记号", "渐近上界", "增长率", "最高阶项", "n₀"],
+      "prerequisites": [],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "cplx_common_compare",
+      "subjectId": "programming",
+      "parentId": "dsa_complexity",
+      "name": "常见复杂度对比",
+      "plain_name": "几条曲线看谁涨得猛",
+      "description": "在同一张图上同时绘制 O(1)、O(log n)、O(n)、O(n²) 四条曲线，随着 n 从小到大移动竖直扫描线，直观看到常数线不动、对数线缓涨、线性匀速、平方线陡然飙升，比较它们的高低关系。",
+      "difficulty": 4,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["O(1)", "O(logn)", "O(n)", "O(n²)", "增长曲线对比"],
+      "prerequisites": ["cplx_bigo_def"],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "cplx_worst_average",
+      "subjectId": "programming",
+      "parentId": "dsa_complexity",
+      "name": "最坏与平均情况分析",
+      "plain_name": "运气最差和一般情况各多慢",
+      "description": "以顺序查找为例，动画演示目标在数组末尾时需扫描全部 n 个元素（最坏 O(n)），再演示目标随机分布时平均比较 n/2 次。逐个高亮被检查的元素并累加计数，对比两种情况的步数差异。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["最坏情况", "平均情况", "顺序查找", "期望步数", "概率分析"],
+      "prerequisites": ["cplx_bigo_def"],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "cplx_space",
+      "subjectId": "programming",
+      "parentId": "dsa_complexity",
+      "name": "空间复杂度",
+      "plain_name": "算法额外占了多少内存",
+      "description": "对比两段代码：一段原地交换只用一个临时变量（O(1) 额外空间），另一段开辟与输入等长的新数组（O(n) 额外空间）。动画用方格代表内存单元，随算法执行点亮被占用的格子，统计峰值占用量。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["空间复杂度", "额外内存", "原地算法", "O(1)", "O(n)"],
+      "prerequisites": ["cplx_bigo_def"],
+      "cognition_tags": ["abstract", "system"]
+    }
+  ],
+  "edges": [
+    { "source": "cplx_bigo_def", "target": "cplx_common_compare", "type": "prerequisite" },
+    { "source": "cplx_bigo_def", "target": "cplx_worst_average", "type": "prerequisite" },
+    { "source": "cplx_bigo_def", "target": "cplx_space", "type": "prerequisite" },
+    { "source": "cplx_common_compare", "target": "cplx_worst_average", "type": "related" }
+  ]
+}

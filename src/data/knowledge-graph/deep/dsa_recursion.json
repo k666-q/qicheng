@@ -1,0 +1,68 @@
+{
+  "parentId": "dsa_recursion",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "rec_call_stack",
+      "subjectId": "programming",
+      "parentId": "dsa_recursion",
+      "name": "递归调用栈的展开与回收",
+      "plain_name": "一层层压栈再一层层弹回",
+      "description": "以 factorial(3) 为例，每次递归调用都把一个新栈帧压入调用栈直到触底(base case)，然后从栈顶逐帧弹出并把返回值带回上一层相乘。动画演示栈帧自底向上堆叠展开、再自顶向下回收的完整过程。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["递归", "调用栈", "栈帧", "基准情形", "回溯返回"],
+      "prerequisites": [],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "rec_divide_conquer",
+      "subjectId": "programming",
+      "parentId": "dsa_recursion",
+      "name": "分治三步法",
+      "plain_name": "分解、解决、再合并",
+      "description": "分治把大问题拆成同类子问题：第一步分解(把规模 n 切成两半)，第二步解决(递归处理每一半直到子问题足够小)，第三步合并(把子结果拼成原问题答案)。动画用一棵不断二分再向上汇聚的树展示三个阶段。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["分治", "分解", "解决", "合并", "子问题"],
+      "prerequisites": ["rec_call_stack"],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "rec_hanoi",
+      "subjectId": "programming",
+      "parentId": "dsa_recursion",
+      "name": "汉诺塔",
+      "plain_name": "借中间柱把整摞盘子搬过去",
+      "description": "把 n 个盘从 A 经 B 搬到 C：先递归把上面 n-1 个盘从 A 经 C 移到 B，再把最大盘从 A 移到 C，最后递归把 n-1 个盘从 B 经 A 移到 C。动画展示三根柱子上盘子按此递归顺序逐个移动。",
+      "difficulty": 6,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["汉诺塔", "递归", "辅助柱", "盘子移动", "2ⁿ-1"],
+      "prerequisites": ["rec_call_stack"],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "rec_merge_structure",
+      "subjectId": "programming",
+      "parentId": "dsa_recursion",
+      "name": "归并的分治结构",
+      "plain_name": "对半拆到底再两两合并",
+      "description": "归并排序是分治的典型：递归把数组对半拆分直到单元素(分解)，然后自底向上两两合并有序子段(合并)。动画展示一棵向下二分的拆分树和一棵向上汇聚的合并树，配合用双指针合并两个有序段的过程。",
+      "difficulty": 6,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["归并", "分治", "对半拆分", "合并", "递归树"],
+      "prerequisites": ["rec_divide_conquer"],
+      "cognition_tags": ["abstract", "logic"]
+    }
+  ],
+  "edges": [
+    { "source": "rec_call_stack", "target": "rec_divide_conquer", "type": "prerequisite" },
+    { "source": "rec_call_stack", "target": "rec_hanoi", "type": "prerequisite" },
+    { "source": "rec_divide_conquer", "target": "rec_merge_structure", "type": "prerequisite" },
+    { "source": "rec_hanoi", "target": "rec_merge_structure", "type": "related" }
+  ]
+}

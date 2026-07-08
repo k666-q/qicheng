@@ -1,0 +1,83 @@
+{
+  "parentId": "os_memory",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "mem_address_translation",
+      "subjectId": "programming",
+      "parentId": "os_memory",
+      "name": "虚拟地址到物理地址的转换",
+      "plain_name": "把程序看到的地址翻译成内存真实地址",
+      "description": "CPU 发出虚拟地址，内存管理单元MMU把它拆成页号和页内偏移，用页号查页表得到物理页框号，再拼上偏移得到物理地址。动画展示一个虚拟地址被分成两段、页号查表替换成页框号、最后拼接出物理地址的过程。",
+      "difficulty": 6,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["虚拟地址", "物理地址", "MMU", "页号", "地址转换"],
+      "prerequisites": [],
+      "cognition_tags": ["system", "abstract"]
+    },
+    {
+      "id": "mem_paging",
+      "subjectId": "programming",
+      "parentId": "os_memory",
+      "name": "分页机制与页表",
+      "plain_name": "把内存切成固定大小的页来管理",
+      "description": "把虚拟内存和物理内存都切成等长的页/页框，页表记录每个虚拟页映射到哪个物理页框。动画展示虚拟页通过页表的箭头映射到分散的物理页框，体现连续虚拟空间对应不连续物理空间。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["分页", "页表", "页框", "映射", "虚拟内存"],
+      "prerequisites": ["mem_address_translation"],
+      "cognition_tags": ["system", "abstract"]
+    },
+    {
+      "id": "mem_page_fault",
+      "subjectId": "programming",
+      "parentId": "os_memory",
+      "name": "缺页中断处理",
+      "plain_name": "要用的页不在内存就去硬盘调进来",
+      "description": "访问的页在页表中标记为不在内存时触发缺页中断，操作系统在磁盘上找到该页，挑一个空闲页框（或先置换出一页）把它读入，更新页表后重新执行被中断的指令。动画展示查表未命中→访问磁盘→载入页框→更新页表→重试的流程。",
+      "difficulty": 7,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["缺页中断", "page fault", "页面调入", "页表更新", "磁盘"],
+      "prerequisites": ["mem_paging"],
+      "cognition_tags": ["system"]
+    },
+    {
+      "id": "mem_fifo",
+      "subjectId": "programming",
+      "parentId": "os_memory",
+      "name": "FIFO页面置换",
+      "plain_name": "先进内存的页先被淘汰",
+      "description": "内存页框满时需置换，FIFO 总是淘汰最早进入内存的那一页，维护一个先进先出队列。动画展示页框队列，新页从队尾进入、被淘汰的页从队头移出，并可演示Belady异常。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["FIFO", "页面置换", "先进先出", "队列", "Belady异常"],
+      "prerequisites": ["mem_page_fault"],
+      "cognition_tags": ["logic", "system"]
+    },
+    {
+      "id": "mem_lru",
+      "subjectId": "programming",
+      "parentId": "os_memory",
+      "name": "LRU页面置换",
+      "plain_name": "淘汰最久没被用过的页",
+      "description": "LRU 在置换时淘汰最近最久未使用的页，每次访问一页就把它标记为最近使用。动画展示一个按使用时间排序的列表，被访问的页移到最前，置换时移除最末尾最久未用的页。",
+      "difficulty": 6,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["LRU", "最近最久未使用", "页面置换", "访问时间", "局部性"],
+      "prerequisites": ["mem_page_fault"],
+      "cognition_tags": ["logic", "system"]
+    }
+  ],
+  "edges": [
+    { "source": "mem_address_translation", "target": "mem_paging", "type": "prerequisite" },
+    { "source": "mem_paging", "target": "mem_page_fault", "type": "prerequisite" },
+    { "source": "mem_page_fault", "target": "mem_fifo", "type": "prerequisite" },
+    { "source": "mem_page_fault", "target": "mem_lru", "type": "prerequisite" },
+    { "source": "mem_fifo", "target": "mem_lru", "type": "related" }
+  ]
+}

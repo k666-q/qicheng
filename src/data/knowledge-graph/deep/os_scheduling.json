@@ -1,0 +1,83 @@
+{
+  "parentId": "os_scheduling",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "sched_fcfs",
+      "subjectId": "programming",
+      "parentId": "os_scheduling",
+      "name": "先来先服务FCFS",
+      "plain_name": "谁先到谁先用CPU，排队不插队",
+      "description": "进程按到达时间先后排成一个队列，CPU 从队头取出进程一直运行到结束，再取下一个，不抢占。动画展示一条时间轴上进程按到达顺序依次占满CPU，并标出长作业让后面短作业等很久的护航效应。",
+      "difficulty": 3,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["FCFS", "先来先服务", "非抢占", "队列", "护航效应"],
+      "prerequisites": [],
+      "cognition_tags": ["logic"]
+    },
+    {
+      "id": "sched_sjf",
+      "subjectId": "programming",
+      "parentId": "os_scheduling",
+      "name": "短作业优先SJF",
+      "plain_name": "运行时间最短的先上，缩短平均等待",
+      "description": "每次从就绪队列里挑选预计运行时间最短的进程先执行。动画展示一组带不同时长的进程按从短到长排序依次执行，并对比FCFS显示平均等待时间明显变短，同时标注长作业可能饥饿。",
+      "difficulty": 4,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["SJF", "短作业优先", "平均等待时间", "饥饿", "贪心"],
+      "prerequisites": ["sched_fcfs"],
+      "cognition_tags": ["logic", "modeling"]
+    },
+    {
+      "id": "sched_rr",
+      "subjectId": "programming",
+      "parentId": "os_scheduling",
+      "name": "时间片轮转RR",
+      "plain_name": "每个进程轮流用一小段CPU时间",
+      "description": "就绪队列里的进程依次获得一个固定时间片的CPU，时间片用完若没执行完就被移到队尾，轮流执行。动画展示一个旋转的就绪队列，进程获得时间片、计时耗尽后回到队尾的循环过程。",
+      "difficulty": 4,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["时间片轮转", "RR", "时间片", "抢占", "队尾"],
+      "prerequisites": ["sched_fcfs"],
+      "cognition_tags": ["logic", "system"]
+    },
+    {
+      "id": "sched_priority",
+      "subjectId": "programming",
+      "parentId": "os_scheduling",
+      "name": "优先级调度",
+      "plain_name": "优先级高的进程优先获得CPU",
+      "description": "每个进程带一个优先级数值，调度器总是选择优先级最高的进程运行，高优先级可抢占低优先级。动画展示带不同优先级标签的进程，高优先级插队执行，并演示低优先级长期等待的饥饿与老化提升优先级的解决办法。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["优先级调度", "抢占", "饥饿", "老化", "优先级"],
+      "prerequisites": ["sched_rr"],
+      "cognition_tags": ["logic", "system"]
+    },
+    {
+      "id": "sched_mlfq",
+      "subjectId": "programming",
+      "parentId": "os_scheduling",
+      "name": "多级反馈队列",
+      "plain_name": "多个优先级队列，用得久就降级",
+      "description": "设置多个优先级不同的队列，新进程进最高级队列，若时间片内没跑完就降到下一级队列（时间片更长），高级队列优先调度。动画展示进程在多层队列间随执行情况上下移动的过程。",
+      "difficulty": 7,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["多级反馈队列", "MLFQ", "降级", "多队列", "动态优先级"],
+      "prerequisites": ["sched_rr", "sched_priority"],
+      "cognition_tags": ["logic", "system"]
+    }
+  ],
+  "edges": [
+    { "source": "sched_fcfs", "target": "sched_sjf", "type": "related" },
+    { "source": "sched_fcfs", "target": "sched_rr", "type": "prerequisite" },
+    { "source": "sched_rr", "target": "sched_priority", "type": "related" },
+    { "source": "sched_priority", "target": "sched_mlfq", "type": "prerequisite" },
+    { "source": "sched_rr", "target": "sched_mlfq", "type": "prerequisite" }
+  ]
+}

@@ -1,0 +1,213 @@
+{
+  "subject": {
+    "id": "linguistics",
+    "name": "语言学",
+    "color": "#14b8a6",
+    "description": "把语言当作科学对象来研究——你每天说的话里藏着精密的规则系统。",
+    "category": "人文社科"
+  },
+  "nodes": [
+    {
+      "id": "ling_intro",
+      "subjectId": "linguistics",
+      "name": "语言学导论",
+      "plain_name": "语言这台机器怎么拆",
+      "description": "为什么婴儿不用上课就能学会母语？语言学把语言拆成语音、词汇、句法、语义几层，逐层研究。",
+      "difficulty": 3,
+      "keywords": ["语言学", "语言入门", "语言系统", "语言能力", "索绪尔"],
+      "cognition_tags": ["system", "abstract"]
+    },
+    {
+      "id": "ling_phonetics",
+      "subjectId": "linguistics",
+      "name": "语音学",
+      "plain_name": "声音是怎么发出来的",
+      "description": "舌位、气流、声带振动——把每个音素当成物理事件来观察，国际音标是它的记录工具。",
+      "difficulty": 5,
+      "keywords": ["语音学", "国际音标", "发音", "元音", "辅音", "声学"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "ling_phonology",
+      "subjectId": "linguistics",
+      "name": "音系学",
+      "plain_name": "声音背后的规则",
+      "description": "为什么普通话没有'b'和'p'之外的第三种唇音对立？音系学研究一门语言如何组织和区分声音。",
+      "difficulty": 6,
+      "keywords": ["音系学", "音位", "音变", "声调", "最小对立对"],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "ling_morphology",
+      "subjectId": "linguistics",
+      "name": "形态学",
+      "plain_name": "词是怎么组装的",
+      "description": "'unbelievable'拆成 un-believe-able——词不是最小单位，词素才是；看词如何像积木一样拼装。",
+      "difficulty": 5,
+      "keywords": ["形态学", "词素", "构词法", "词缀", "复合词"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "ling_syntax",
+      "subjectId": "linguistics",
+      "name": "句法学",
+      "plain_name": "句子的隐形骨架",
+      "description": "为什么'我吃饭'对而'饭吃我'怪？乔姆斯基用树形图揭示句子背后的层级结构与生成规则。",
+      "difficulty": 7,
+      "keywords": ["句法学", "句法树", "乔姆斯基", "生成语法", "短语结构", "语序"],
+      "cognition_tags": ["abstract", "logic", "system"]
+    },
+    {
+      "id": "ling_semantics",
+      "subjectId": "linguistics",
+      "name": "语义学",
+      "plain_name": "意义是怎么算出来的",
+      "description": "'单身汉'为什么等于'未婚男性'？语义学用真值、蕴涵、组合性研究意义的精确机制。",
+      "difficulty": 7,
+      "keywords": ["语义学", "意义", "真值条件", "蕴涵", "组合性", "指称"],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "ling_pragmatics",
+      "subjectId": "linguistics",
+      "name": "语用学",
+      "plain_name": "话外之音的学问",
+      "description": "'这里好冷啊'其实是让你关窗——研究语境如何让一句话的实际含义远超字面意思。",
+      "difficulty": 6,
+      "keywords": ["语用学", "言外之意", "会话含义", "言语行为", "格莱斯", "礼貌原则"],
+      "cognition_tags": ["abstract", "expression"]
+    },
+    {
+      "id": "ling_socio",
+      "subjectId": "linguistics",
+      "name": "社会语言学",
+      "plain_name": "口音和身份的秘密",
+      "description": "为什么一开口就知道你是哪里人、什么圈子？语言变体、方言、语码转换都是社会身份的标签。",
+      "difficulty": 5,
+      "keywords": ["社会语言学", "方言", "口音", "语言变体", "语码转换", "语言态度"],
+      "cognition_tags": ["system", "expression"]
+    },
+    {
+      "id": "ling_historical",
+      "subjectId": "linguistics",
+      "name": "历史语言学",
+      "plain_name": "语言的家谱与演化",
+      "description": "英语和印地语居然是亲戚？通过语音对应规律重建语言的演化树，像生物学家研究物种一样研究语言。",
+      "difficulty": 6,
+      "keywords": ["历史语言学", "语言演变", "语系", "印欧语", "音变规律", "比较法"],
+      "cognition_tags": ["logic", "system"]
+    },
+    {
+      "id": "ling_sla",
+      "subjectId": "linguistics",
+      "name": "二语习得",
+      "plain_name": "外语为什么这么难学",
+      "description": "关键期、母语迁移、中介语——用科学解释为什么成年人学外语总有口音，以及怎么学更高效。",
+      "difficulty": 5,
+      "keywords": ["二语习得", "外语学习", "母语迁移", "关键期假说", "中介语", "输入假说"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "ling_comp",
+      "subjectId": "linguistics",
+      "name": "计算语言学初步",
+      "plain_name": "教计算机懂人话",
+      "description": "分词、词向量、语言模型——从规则到统计再到神经网络，看机器如何一步步'学会'语言。",
+      "difficulty": 7,
+      "keywords": ["计算语言学", "自然语言处理", "NLP", "分词", "语言模型", "词向量"],
+      "cognition_tags": ["modeling", "logic", "system"]
+    }
+  ],
+  "edges": [
+    {
+      "source": "ling_intro",
+      "target": "ling_phonetics",
+      "type": "prerequisite",
+      "reason": "导论建立'语言分层'的框架后，语音学是最底层、最具体的一层。"
+    },
+    {
+      "source": "ling_phonetics",
+      "target": "ling_phonology",
+      "type": "prerequisite",
+      "reason": "先会描写声音（语音学），才能研究声音的系统组织（音系学）：音位分析以音标为工具。"
+    },
+    {
+      "source": "ling_intro",
+      "target": "ling_morphology",
+      "type": "prerequisite",
+      "reason": "词素的概念建立在导论'语言单位分层'的基础上。"
+    },
+    {
+      "source": "ling_morphology",
+      "target": "ling_syntax",
+      "type": "prerequisite",
+      "reason": "句法以词为积木：词类、屈折形态是句法树分析的前置知识。"
+    },
+    {
+      "source": "ling_intro",
+      "target": "ling_semantics",
+      "type": "prerequisite",
+      "reason": "语义学需要导论中'能指与所指'等基本概念作铺垫。"
+    },
+    {
+      "source": "ling_syntax",
+      "target": "ling_semantics",
+      "type": "related",
+      "reason": "组合语义学认为句子意义由句法结构逐层组装而成，两者在'句法-语义接口'交汇。"
+    },
+    {
+      "source": "ling_semantics",
+      "target": "ling_pragmatics",
+      "type": "prerequisite",
+      "reason": "语用学研究'字面意义之外'的含义，必须先有语义学的字面意义作参照。"
+    },
+    {
+      "source": "ling_intro",
+      "target": "ling_socio",
+      "type": "prerequisite",
+      "reason": "理解语言变体需要先掌握导论中'语言无优劣、变体皆系统'的基本观念。"
+    },
+    {
+      "source": "ling_intro",
+      "target": "ling_historical",
+      "type": "prerequisite",
+      "reason": "历史语言学的比较法建立在对语音、词汇系统的基本认识上。"
+    },
+    {
+      "source": "ling_phonology",
+      "target": "ling_historical",
+      "type": "related",
+      "reason": "历史音变本质是音系规则的演化：格林定律等音变规律要用音系学概念描述。"
+    },
+    {
+      "source": "ling_intro",
+      "target": "ling_sla",
+      "type": "prerequisite",
+      "reason": "二语习得研究需要先理解语言系统的构成，才能分析学习者在哪一层出错。"
+    },
+    {
+      "source": "ling_pragmatics",
+      "target": "ling_sla",
+      "type": "related",
+      "reason": "外语学习者最难掌握的常是语用规则：语法对了但说话不得体。"
+    },
+    {
+      "source": "ling_socio",
+      "target": "ling_sla",
+      "type": "related",
+      "reason": "学习动机、语言态度、身份认同显著影响二语习得效果。"
+    },
+    {
+      "source": "ling_syntax",
+      "target": "ling_comp",
+      "type": "prerequisite",
+      "reason": "句法分析是NLP的经典任务：句法树、依存关系直接来自句法学理论。"
+    },
+    {
+      "source": "ling_semantics",
+      "target": "ling_comp",
+      "type": "related",
+      "reason": "词向量与语义相似度计算是语义学'分布假说'的工程化实现。"
+    }
+  ]
+}

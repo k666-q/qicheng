@@ -1,0 +1,353 @@
+{
+  "subject": {
+    "id": "marketing",
+    "name": "市场营销",
+    "color": "#f43f5e",
+    "description": "洞察人心、创造价值，让好产品被对的人看见。",
+    "category": "商科与应用"
+  },
+  "nodes": [
+    {
+      "id": "mkt_intro",
+      "subjectId": "marketing",
+      "name": "营销导论",
+      "plain_name": "营销不只是打广告",
+      "description": "需求、价值与交换——营销是发现需求并满足需求的完整链条。",
+      "difficulty": 2,
+      "keywords": [
+        "营销",
+        "市场",
+        "需求",
+        "价值",
+        "科特勒",
+        "营销观念"
+      ],
+      "cognition_tags": [
+        "system"
+      ]
+    },
+    {
+      "id": "mkt_consumer",
+      "subjectId": "marketing",
+      "name": "消费者行为",
+      "plain_name": "人到底为什么掏钱",
+      "description": "购买决策五阶段、动机与从众心理——读懂消费者脑子里的小剧场。",
+      "difficulty": 5,
+      "keywords": [
+        "消费者行为",
+        "购买决策",
+        "消费心理",
+        "动机",
+        "从众",
+        "用户洞察"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "logic"
+      ]
+    },
+    {
+      "id": "mkt_research",
+      "subjectId": "marketing",
+      "name": "市场调研",
+      "plain_name": "先摸底再出手",
+      "description": "问卷、访谈与竞品分析——用数据代替拍脑袋，搞清市场到底要什么。",
+      "difficulty": 4,
+      "keywords": [
+        "市场调研",
+        "问卷",
+        "访谈",
+        "竞品分析",
+        "样本",
+        "用户画像"
+      ],
+      "cognition_tags": [
+        "logic",
+        "modeling"
+      ]
+    },
+    {
+      "id": "mkt_stp",
+      "subjectId": "marketing",
+      "name": "STP 与定位",
+      "plain_name": "选准你的那群人",
+      "description": "细分、目标、定位三步走——不讨好所有人，只在目标人群心智里占个坑。",
+      "difficulty": 5,
+      "keywords": [
+        "STP",
+        "市场细分",
+        "目标市场",
+        "定位",
+        "心智",
+        "差异化"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "system"
+      ]
+    },
+    {
+      "id": "mkt_4p",
+      "subjectId": "marketing",
+      "name": "4P 营销组合",
+      "plain_name": "营销的四张牌",
+      "description": "产品、价格、渠道、推广——把定位落地成一套互相配合的具体动作。",
+      "difficulty": 4,
+      "keywords": [
+        "4P",
+        "营销组合",
+        "产品",
+        "价格",
+        "渠道",
+        "推广",
+        "4C"
+      ],
+      "cognition_tags": [
+        "system"
+      ]
+    },
+    {
+      "id": "mkt_pricing",
+      "subjectId": "marketing",
+      "name": "定价策略",
+      "plain_name": "标价里全是心机",
+      "description": "成本加成、撇脂与渗透、心理定价——9.9 和 10 元之间隔着一门学问。",
+      "difficulty": 6,
+      "keywords": [
+        "定价",
+        "撇脂定价",
+        "渗透定价",
+        "心理定价",
+        "价格歧视",
+        "锚定效应"
+      ],
+      "cognition_tags": [
+        "logic",
+        "modeling"
+      ]
+    },
+    {
+      "id": "mkt_channel",
+      "subjectId": "marketing",
+      "name": "渠道与零售",
+      "plain_name": "货怎么送到买家手上",
+      "description": "经销商、直营、电商与新零售——设计商品从工厂到顾客的最优路径。",
+      "difficulty": 5,
+      "keywords": [
+        "渠道",
+        "零售",
+        "经销商",
+        "电商",
+        "新零售",
+        "分销",
+        "直播带货"
+      ],
+      "cognition_tags": [
+        "system"
+      ]
+    },
+    {
+      "id": "mkt_brand",
+      "subjectId": "marketing",
+      "name": "品牌管理",
+      "plain_name": "让名字本身值钱",
+      "description": "品牌资产、品牌故事与品牌延伸——把一个商标养成消费者的情感寄托。",
+      "difficulty": 6,
+      "keywords": [
+        "品牌",
+        "品牌资产",
+        "品牌故事",
+        "品牌延伸",
+        "知名度",
+        "忠诚度"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "expression"
+      ]
+    },
+    {
+      "id": "mkt_digital",
+      "subjectId": "marketing",
+      "name": "数字营销",
+      "plain_name": "在网上把人找到、留住",
+      "description": "搜索、社媒、信息流投放与数据追踪——互联网时代营销的主战场。",
+      "difficulty": 6,
+      "keywords": [
+        "数字营销",
+        "投放",
+        "SEO",
+        "社交媒体",
+        "信息流",
+        "转化率",
+        "私域"
+      ],
+      "cognition_tags": [
+        "system",
+        "logic"
+      ]
+    },
+    {
+      "id": "mkt_content",
+      "subjectId": "marketing",
+      "name": "内容营销",
+      "plain_name": "用好内容把人吸过来",
+      "description": "图文、短视频与种草笔记——不打扰用户，让用户主动找上门。",
+      "difficulty": 5,
+      "keywords": [
+        "内容营销",
+        "种草",
+        "短视频",
+        "公众号",
+        "小红书",
+        "选题",
+        "爆款"
+      ],
+      "cognition_tags": [
+        "expression",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "mkt_growth",
+      "subjectId": "marketing",
+      "name": "增长黑客",
+      "plain_name": "用实验和数据撬动增长",
+      "description": "AARRR 漏斗、A/B 测试与裂变——小预算快迭代，把增长做成一门工程。",
+      "difficulty": 7,
+      "keywords": [
+        "增长黑客",
+        "AARRR",
+        "A/B测试",
+        "裂变",
+        "留存",
+        "漏斗",
+        "北极星指标"
+      ],
+      "cognition_tags": [
+        "logic",
+        "modeling",
+        "system"
+      ]
+    },
+    {
+      "id": "mkt_communication",
+      "subjectId": "marketing",
+      "name": "广告与传播",
+      "plain_name": "把卖点说进心坎里",
+      "description": "创意策略、媒介组合与公关——用对的方式在对的地方说对的话。",
+      "difficulty": 5,
+      "keywords": [
+        "广告",
+        "传播",
+        "创意",
+        "媒介",
+        "公关",
+        "文案",
+        "整合营销"
+      ],
+      "cognition_tags": [
+        "expression",
+        "aesthetic"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "mkt_intro",
+      "target": "mkt_consumer",
+      "type": "prerequisite",
+      "reason": "营销以需求为起点，研究消费者行为就是把'需求'这个抽象概念拆到个体层面。"
+    },
+    {
+      "source": "mkt_intro",
+      "target": "mkt_research",
+      "type": "prerequisite",
+      "reason": "知道营销要回答什么问题，才能设计出有效的调研去收集对的数据。"
+    },
+    {
+      "source": "mkt_consumer",
+      "target": "mkt_stp",
+      "type": "prerequisite",
+      "reason": "市场细分的维度（需求、动机、习惯）全部来自对消费者行为的理解。"
+    },
+    {
+      "source": "mkt_research",
+      "target": "mkt_stp",
+      "type": "prerequisite",
+      "reason": "细分和选择目标市场需要调研数据支撑：没有数据的定位只是自我感动。"
+    },
+    {
+      "source": "mkt_stp",
+      "target": "mkt_4p",
+      "type": "prerequisite",
+      "reason": "4P 是定位的执行层：先定'打动谁'，再决定产品怎么做、价格怎么定。"
+    },
+    {
+      "source": "mkt_4p",
+      "target": "mkt_pricing",
+      "type": "prerequisite",
+      "reason": "定价策略是 4P 中'价格'一环的深入展开，需要先有组合视角再单独精修。"
+    },
+    {
+      "source": "mkt_4p",
+      "target": "mkt_channel",
+      "type": "prerequisite",
+      "reason": "渠道与零售是 4P 中'渠道'一环的子分支：组合框架告诉你渠道要与定价推广联动。"
+    },
+    {
+      "source": "mkt_4p",
+      "target": "mkt_communication",
+      "type": "prerequisite",
+      "reason": "广告与传播是 4P 中'推广'的展开：媒介与创意选择要服从整体营销组合。"
+    },
+    {
+      "source": "mkt_stp",
+      "target": "mkt_brand",
+      "type": "prerequisite",
+      "reason": "品牌是定位的长期沉淀：在消费者心智中占住的位置，靠品牌资产持续巩固。"
+    },
+    {
+      "source": "mkt_communication",
+      "target": "mkt_brand",
+      "type": "related",
+      "reason": "品牌形象靠日复一日的传播塑造，广告创意是品牌故事最主要的扩音器。"
+    },
+    {
+      "source": "mkt_4p",
+      "target": "mkt_digital",
+      "type": "prerequisite",
+      "reason": "数字营销是 4P 在线上的重组：投放即推广、电商即渠道，框架不变战场变了。"
+    },
+    {
+      "source": "mkt_digital",
+      "target": "mkt_content",
+      "type": "prerequisite",
+      "reason": "内容营销是数字营销的子分支：理解平台流量逻辑后，内容才知道往哪发、怎么火。"
+    },
+    {
+      "source": "mkt_digital",
+      "target": "mkt_growth",
+      "type": "prerequisite",
+      "reason": "增长黑客的实验场就是数字渠道：投放、落地页、转化追踪是 A/B 测试的基础设施。"
+    },
+    {
+      "source": "mkt_consumer",
+      "target": "mkt_pricing",
+      "type": "related",
+      "reason": "心理定价直接利用消费者的锚定效应和损失厌恶，定价是消费心理的应用题。"
+    },
+    {
+      "source": "mkt_consumer",
+      "target": "mkt_content",
+      "type": "related",
+      "reason": "爆款内容的选题和钩子都建立在对用户情绪与从众心理的精准把握上。"
+    },
+    {
+      "source": "mkt_research",
+      "target": "mkt_growth",
+      "type": "related",
+      "reason": "增长实验与市场调研共享方法论：假设、抽样、验证，只是节奏从月变成了天。"
+    }
+  ]
+}

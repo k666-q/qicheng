@@ -1,0 +1,125 @@
+{
+  "subject": {
+    "id": "medicine",
+    "name": "医学与健康",
+    "color": "#ef4444",
+    "description": "研究人体健康与疾病的科学，从认识身体到防病治病，守护每个人的生命质量。",
+    "category": "自然科学与工程"
+  },
+  "nodes": [
+    {
+      "id": "med_anatomy",
+      "subjectId": "medicine",
+      "name": "人体解剖",
+      "plain_name": "身体里都装了些什么",
+      "description": "认识骨骼、肌肉、器官的位置与结构，是理解人体如何运作的第一步。",
+      "difficulty": 4,
+      "keywords": ["解剖", "人体结构", "器官", "骨骼", "肌肉", "系统"],
+      "cognition_tags": ["system", "expression"]
+    },
+    {
+      "id": "med_physiology",
+      "subjectId": "medicine",
+      "name": "生理学基础",
+      "plain_name": "身体正常时怎么运转",
+      "description": "研究器官与系统的正常功能，比如心脏怎么跳、肺怎么换气、肾怎么过滤。",
+      "difficulty": 5,
+      "keywords": ["生理学", "功能", "稳态", "代谢", "调节"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "med_pathology",
+      "subjectId": "medicine",
+      "name": "病理学",
+      "plain_name": "身体出问题时发生了什么",
+      "description": "研究疾病状态下细胞、组织和器官的异常变化，揭示生病的根本原因。",
+      "difficulty": 6,
+      "keywords": ["病理学", "病变", "炎症", "肿瘤", "病因", "发病机制"],
+      "cognition_tags": ["logic", "system"]
+    },
+    {
+      "id": "med_pharmacology",
+      "subjectId": "medicine",
+      "name": "药理学基础",
+      "plain_name": "药是怎么在身体里起作用的",
+      "description": "研究药物如何被吸收、起效又排出，以及它对身体的作用和副作用。",
+      "difficulty": 6,
+      "keywords": ["药理学", "药物", "副作用", "剂量", "代谢", "靶点"],
+      "cognition_tags": ["logic", "modeling"]
+    },
+    {
+      "id": "med_immunology",
+      "subjectId": "medicine",
+      "name": "免疫系统",
+      "plain_name": "身体里的防御部队",
+      "description": "白细胞、抗体如何识别并消灭入侵的病菌，构筑抵抗疾病的防线。",
+      "difficulty": 6,
+      "keywords": ["免疫", "抗体", "白细胞", "疫苗", "抗原", "免疫力"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "med_disease_prevention",
+      "subjectId": "medicine",
+      "name": "常见疾病与预防",
+      "plain_name": "认识常见病并提前防住",
+      "description": "了解感冒、高血压、糖尿病等常见病的成因与预防,做自己健康的第一责任人。",
+      "difficulty": 4,
+      "keywords": ["常见病", "预防", "高血压", "糖尿病", "传染病", "健康管理"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "med_nutrition",
+      "subjectId": "medicine",
+      "name": "营养学",
+      "plain_name": "吃什么才健康",
+      "description": "研究食物中的营养素如何被身体利用，怎样搭配饮食才能均衡健康。",
+      "difficulty": 4,
+      "keywords": ["营养学", "营养素", "膳食", "维生素", "蛋白质", "膳食平衡"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "med_first_aid",
+      "subjectId": "medicine",
+      "name": "急救常识",
+      "plain_name": "关键时刻能救命的技能",
+      "description": "心肺复苏、止血包扎、海姆立克法等，紧急时刻为生命争取宝贵时间。",
+      "difficulty": 3,
+      "keywords": ["急救", "心肺复苏", "CPR", "止血", "海姆立克", "急救常识"],
+      "cognition_tags": ["expression", "logic"]
+    },
+    {
+      "id": "med_public_health",
+      "subjectId": "medicine",
+      "name": "公共卫生",
+      "plain_name": "保护一群人的健康",
+      "description": "通过疾病监测、疫苗接种与卫生政策，从群体层面预防疾病、增进健康。",
+      "difficulty": 6,
+      "keywords": ["公共卫生", "流行病学", "疾病监测", "防疫", "卫生政策"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "med_cardiovascular_health",
+      "subjectId": "medicine",
+      "name": "心血管健康",
+      "plain_name": "护好你的心脏和血管",
+      "description": "了解血压、血脂与心脏功能，预防心梗、中风等威胁生命的心血管疾病。",
+      "difficulty": 5,
+      "keywords": ["心血管", "心脏", "血压", "血脂", "动脉", "中风"],
+      "cognition_tags": ["system", "logic"]
+    }
+  ],
+  "edges": [
+    { "source": "med_anatomy", "target": "med_physiology", "type": "prerequisite", "reason": "先认识器官的结构,才能理解这些器官如何发挥正常的生理功能。" },
+    { "source": "med_physiology", "target": "med_pathology", "type": "prerequisite", "reason": "病理是对正常生理的偏离,理解正常功能才能识别疾病状态下的异常。" },
+    { "source": "med_pathology", "target": "med_pharmacology", "type": "prerequisite", "reason": "药物针对疾病机制起作用,理解病理才能明白药物为何及如何治病。" },
+    { "source": "med_physiology", "target": "med_immunology", "type": "prerequisite", "reason": "免疫系统是人体生理功能的重要组成,建立在对正常生理的理解之上。" },
+    { "source": "med_pathology", "target": "med_disease_prevention", "type": "prerequisite", "reason": "了解疾病的成因机制,才能有针对性地预防常见疾病。" },
+    { "source": "med_immunology", "target": "med_disease_prevention", "type": "related", "reason": "疫苗接种通过激活免疫系统来预防传染病,免疫与疾病预防密切相关。" },
+    { "source": "med_physiology", "target": "med_nutrition", "type": "prerequisite", "reason": "营养学研究营养素如何参与代谢,需要以基础生理学为支撑。" },
+    { "source": "med_nutrition", "target": "med_cardiovascular_health", "type": "related", "reason": "合理饮食控制血脂血压,营养与心血管健康息息相关。" },
+    { "source": "med_pathology", "target": "med_cardiovascular_health", "type": "prerequisite", "reason": "心血管疾病是病理学的具体应用领域,理解病变机制才能防治心血管病。" },
+    { "source": "med_anatomy", "target": "med_first_aid", "type": "prerequisite", "reason": "急救操作如心肺复苏需要了解胸腔与心脏的位置,解剖知识是基础。" },
+    { "source": "med_disease_prevention", "target": "med_public_health", "type": "prerequisite", "reason": "公共卫生把个体的疾病预防扩展到群体层面,是其规模化的延伸。" },
+    { "source": "med_immunology", "target": "med_public_health", "type": "related", "reason": "群体免疫与疫苗接种是公共卫生防疫的核心手段,二者紧密关联。" }
+  ]
+}

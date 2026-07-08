@@ -1,0 +1,67 @@
+{
+  "parentId": "net_layering",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "layer_osi_seven",
+      "subjectId": "programming",
+      "parentId": "net_layering",
+      "name": "OSI七层模型",
+      "plain_name": "网络分七层，各管各的事",
+      "description": "从下往上依次堆叠物理层、数据链路层、网络层、传输层、会话层、表示层、应用层七个色块，数据从顶层应用出发逐层向下传递、再从对端逐层向上交付，每层只和上下相邻层打交道。",
+      "difficulty": 4,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["OSI", "七层模型", "分层", "物理层", "应用层"],
+      "prerequisites": [],
+      "cognition_tags": ["system", "abstract"]
+    },
+    {
+      "id": "layer_tcpip_four",
+      "subjectId": "programming",
+      "parentId": "net_layering",
+      "name": "TCP/IP四层模型",
+      "plain_name": "实际用的精简四层栈",
+      "description": "把OSI七层合并成四层方块：网络接口层、网络层、传输层、应用层。动画把OSI右侧的七个色块合并箭头指向左侧四个色块，标出IP在网络层、TCP/UDP在传输层、HTTP在应用层。",
+      "difficulty": 4,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["TCP/IP", "四层模型", "网络层", "传输层", "应用层"],
+      "prerequisites": ["layer_osi_seven"],
+      "cognition_tags": ["system", "abstract"]
+    },
+    {
+      "id": "layer_encapsulation",
+      "subjectId": "programming",
+      "parentId": "net_layering",
+      "name": "数据封装过程",
+      "plain_name": "每下一层就套一层信封",
+      "description": "应用数据从上往下穿过各层，每经过一层就在数据块左侧加一个头部：传输层加TCP头变成段，网络层加IP头变成包，链路层加帧头帧尾变成帧。动画显示数据块像套信封一样逐层变长。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["封装", "头部", "段", "包", "帧"],
+      "prerequisites": ["layer_tcpip_four"],
+      "cognition_tags": ["system", "abstract"]
+    },
+    {
+      "id": "layer_decapsulation",
+      "subjectId": "programming",
+      "parentId": "net_layering",
+      "name": "数据解封装",
+      "plain_name": "对端逐层拆掉信封",
+      "description": "接收端反过来从下往上逐层处理：链路层剥掉帧头帧尾、网络层剥掉IP头、传输层剥掉TCP头，每层读完自己的头部后把剩下的载荷交给上一层。动画显示数据块逐层剥皮变短直到还原应用数据。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["解封装", "剥头部", "交付", "载荷", "接收端"],
+      "prerequisites": ["layer_encapsulation"],
+      "cognition_tags": ["system", "abstract"]
+    }
+  ],
+  "edges": [
+    { "source": "layer_osi_seven", "target": "layer_tcpip_four", "type": "related" },
+    { "source": "layer_tcpip_four", "target": "layer_encapsulation", "type": "prerequisite" },
+    { "source": "layer_encapsulation", "target": "layer_decapsulation", "type": "prerequisite" }
+  ]
+}

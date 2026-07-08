@@ -1,0 +1,346 @@
+{
+  "subject": {
+    "id": "management",
+    "name": "管理学",
+    "color": "#64748b",
+    "description": "让一群人朝同一个方向使劲，把目标变成结果。",
+    "category": "商科与应用"
+  },
+  "nodes": [
+    {
+      "id": "mgmt_principles",
+      "subjectId": "management",
+      "name": "管理学原理",
+      "plain_name": "当头儿的基本功",
+      "description": "计划、组织、领导、控制四大职能，管理这门手艺的总纲。",
+      "difficulty": 2,
+      "keywords": [
+        "管理职能",
+        "计划",
+        "组织",
+        "控制",
+        "法约尔",
+        "科学管理",
+        "管理学"
+      ],
+      "cognition_tags": [
+        "system"
+      ]
+    },
+    {
+      "id": "mgmt_org_behavior",
+      "subjectId": "management",
+      "name": "组织行为学",
+      "plain_name": "公司里的人为什么这样做事",
+      "description": "研究个体、群体与组织的行为规律——为什么有的团队齐心，有的内耗。",
+      "difficulty": 4,
+      "keywords": [
+        "组织行为",
+        "群体动力",
+        "组织文化",
+        "团队",
+        "人际关系",
+        "霍桑实验"
+      ],
+      "cognition_tags": [
+        "system",
+        "abstract"
+      ]
+    },
+    {
+      "id": "mgmt_motivation",
+      "subjectId": "management",
+      "name": "激励理论",
+      "plain_name": "怎么让人真心想干活",
+      "description": "马斯洛需求层次、双因素理论、期望理论——钱之外，人还为什么而努力。",
+      "difficulty": 4,
+      "keywords": [
+        "激励",
+        "马斯洛",
+        "需求层次",
+        "双因素理论",
+        "期望理论",
+        "内在动机"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "logic"
+      ]
+    },
+    {
+      "id": "mgmt_leadership",
+      "subjectId": "management",
+      "name": "领导力",
+      "plain_name": "让人愿意跟着你走",
+      "description": "从权力到影响力：领导风格、情境领导与变革领导，带队伍的核心能力。",
+      "difficulty": 6,
+      "keywords": [
+        "领导力",
+        "领导风格",
+        "影响力",
+        "情境领导",
+        "变革管理",
+        "魅力型领导"
+      ],
+      "cognition_tags": [
+        "expression",
+        "system"
+      ]
+    },
+    {
+      "id": "mgmt_team",
+      "subjectId": "management",
+      "name": "团队管理",
+      "plain_name": "把一群人捏成一支队伍",
+      "description": "团队组建、角色分工、冲突处理与高效会议——让 1+1 真的大于 2。",
+      "difficulty": 5,
+      "keywords": [
+        "团队管理",
+        "团队建设",
+        "分工",
+        "冲突管理",
+        "协作",
+        "贝尔宾角色"
+      ],
+      "cognition_tags": [
+        "system",
+        "expression"
+      ]
+    },
+    {
+      "id": "mgmt_hr",
+      "subjectId": "management",
+      "name": "人力资源管理",
+      "plain_name": "招人、用人、留人",
+      "description": "招聘选拔、绩效考核、薪酬设计与培训发展，围绕'人'的全套体系。",
+      "difficulty": 5,
+      "keywords": [
+        "人力资源",
+        "HR",
+        "招聘",
+        "绩效考核",
+        "薪酬",
+        "培训",
+        "OKR"
+      ],
+      "cognition_tags": [
+        "system"
+      ]
+    },
+    {
+      "id": "mgmt_strategy",
+      "subjectId": "management",
+      "name": "战略管理",
+      "plain_name": "决定公司往哪儿打",
+      "description": "SWOT、波特五力、竞争战略——在迷雾中为整个组织选方向、定打法。",
+      "difficulty": 7,
+      "keywords": [
+        "战略",
+        "SWOT",
+        "波特五力",
+        "竞争优势",
+        "差异化",
+        "战略规划"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "system",
+        "logic"
+      ]
+    },
+    {
+      "id": "mgmt_operations",
+      "subjectId": "management",
+      "name": "运营管理",
+      "plain_name": "让生产线和流程转得顺",
+      "description": "流程优化、供应链、质量管理与精益生产——把产品又快又好地做出来。",
+      "difficulty": 6,
+      "keywords": [
+        "运营管理",
+        "供应链",
+        "精益生产",
+        "质量管理",
+        "流程优化",
+        "丰田模式",
+        "六西格玛"
+      ],
+      "cognition_tags": [
+        "system",
+        "logic"
+      ]
+    },
+    {
+      "id": "mgmt_project",
+      "subjectId": "management",
+      "name": "项目管理",
+      "plain_name": "按时按预算把事办成",
+      "description": "范围、进度、成本三角，甘特图与敏捷方法——管好一件有始有终的大事。",
+      "difficulty": 5,
+      "keywords": [
+        "项目管理",
+        "甘特图",
+        "敏捷",
+        "Scrum",
+        "里程碑",
+        "PMP",
+        "进度管理"
+      ],
+      "cognition_tags": [
+        "system",
+        "logic"
+      ]
+    },
+    {
+      "id": "mgmt_entrepreneurship",
+      "subjectId": "management",
+      "name": "创业管理",
+      "plain_name": "从零搭起一家公司",
+      "description": "机会识别、精益创业、最小可行产品——在资源最少的时候把想法验证成生意。",
+      "difficulty": 7,
+      "keywords": [
+        "创业",
+        "精益创业",
+        "MVP",
+        "融资",
+        "初创公司",
+        "机会识别"
+      ],
+      "cognition_tags": [
+        "system",
+        "modeling"
+      ]
+    },
+    {
+      "id": "mgmt_business_model",
+      "subjectId": "management",
+      "name": "商业模式",
+      "plain_name": "这门生意靠什么赚钱",
+      "description": "商业模式画布九宫格：客户、价值、渠道、收入——一张图讲清生意的逻辑。",
+      "difficulty": 6,
+      "keywords": [
+        "商业模式",
+        "商业画布",
+        "价值主张",
+        "盈利模式",
+        "客户细分",
+        "Business Model Canvas"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "abstract"
+      ]
+    },
+    {
+      "id": "mgmt_decision",
+      "subjectId": "management",
+      "name": "决策科学",
+      "plain_name": "把'拍脑袋'变成讲依据",
+      "description": "决策树、期望值、有限理性与认知偏差——在不确定中做出更靠谱的选择。",
+      "difficulty": 7,
+      "keywords": [
+        "决策",
+        "决策树",
+        "期望值",
+        "有限理性",
+        "认知偏差",
+        "数据驱动"
+      ],
+      "cognition_tags": [
+        "logic",
+        "modeling"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "mgmt_principles",
+      "target": "mgmt_org_behavior",
+      "type": "prerequisite",
+      "reason": "先了解管理的四大职能，才能深入研究'组织'这个职能背后的人类行为规律。"
+    },
+    {
+      "source": "mgmt_principles",
+      "target": "mgmt_strategy",
+      "type": "prerequisite",
+      "reason": "战略管理是'计划'职能的最高层级：先懂基本的计划与控制，再谈全局的方向选择。"
+    },
+    {
+      "source": "mgmt_principles",
+      "target": "mgmt_operations",
+      "type": "prerequisite",
+      "reason": "运营管理是'组织'与'控制'职能在生产流程上的具体化，离不开管理学的基本框架。"
+    },
+    {
+      "source": "mgmt_principles",
+      "target": "mgmt_project",
+      "type": "prerequisite",
+      "reason": "项目管理把计划、组织、控制压缩到一个有期限的任务里，是管理职能的微缩演练场。"
+    },
+    {
+      "source": "mgmt_org_behavior",
+      "target": "mgmt_motivation",
+      "type": "prerequisite",
+      "reason": "激励理论是组织行为学的核心分支：先理解人在组织中的行为，再研究如何点燃他们。"
+    },
+    {
+      "source": "mgmt_org_behavior",
+      "target": "mgmt_leadership",
+      "type": "prerequisite",
+      "reason": "领导力建立在对个体与群体行为的理解之上：不懂人，就谈不上影响人。"
+    },
+    {
+      "source": "mgmt_motivation",
+      "target": "mgmt_hr",
+      "type": "prerequisite",
+      "reason": "薪酬设计与绩效体系都是激励理论的落地：双因素理论直接指导'保健'与'激励'的搭配。"
+    },
+    {
+      "source": "mgmt_leadership",
+      "target": "mgmt_team",
+      "type": "prerequisite",
+      "reason": "团队管理是领导力的日常实战：风格选择、授权与冲突处理都依赖领导力的基本功。"
+    },
+    {
+      "source": "mgmt_team",
+      "target": "mgmt_project",
+      "type": "related",
+      "reason": "项目的成败一半在团队：敏捷开发中的站会、回顾会就是团队管理方法在项目中的应用。"
+    },
+    {
+      "source": "mgmt_strategy",
+      "target": "mgmt_business_model",
+      "type": "related",
+      "reason": "战略回答'在哪竞争、怎么赢'，商业模式回答'怎么赚钱'，两者互为表里。"
+    },
+    {
+      "source": "mgmt_business_model",
+      "target": "mgmt_entrepreneurship",
+      "type": "prerequisite",
+      "reason": "创业的第一步就是画出并验证商业模式画布：没想清楚怎么赚钱，融资和产品都是空谈。"
+    },
+    {
+      "source": "mgmt_decision",
+      "target": "mgmt_strategy",
+      "type": "related",
+      "reason": "战略选择本质是高风险决策：决策树与期望值分析为'往哪打'提供量化依据。"
+    },
+    {
+      "source": "mgmt_decision",
+      "target": "mgmt_entrepreneurship",
+      "type": "related",
+      "reason": "创业者每天都在不确定中做关键决策，认知偏差理论能帮他们避开'过度自信'的坑。"
+    },
+    {
+      "source": "mgmt_hr",
+      "target": "mgmt_team",
+      "type": "related",
+      "reason": "招对人是带好团队的前提：人才画像与团队角色互补理论在选人环节就要配合使用。"
+    },
+    {
+      "source": "mgmt_operations",
+      "target": "mgmt_project",
+      "type": "related",
+      "reason": "运营关注持续重复的流程，项目关注一次性的任务，两者共享进度与质量控制的方法论。"
+    }
+  ]
+}

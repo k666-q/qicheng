@@ -1,0 +1,83 @@
+{
+  "parentId": "dsa_graph",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "graph_adjacency_list",
+      "subjectId": "programming",
+      "parentId": "dsa_graph",
+      "name": "图的邻接表表示",
+      "plain_name": "每个顶点挂一串它的邻居",
+      "description": "邻接表用一个数组存放所有顶点，每个顶点后面挂一条链表记录与它相连的邻居。动画演示遍历一条边 (u,v) 时把 v 追加到 u 的链表尾部，逐条边构建出整张表，对比邻接矩阵的稀疏省空间优势。",
+      "difficulty": 4,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["图", "邻接表", "顶点", "边", "链表存储"],
+      "prerequisites": [],
+      "cognition_tags": ["abstract", "system"]
+    },
+    {
+      "id": "graph_bfs",
+      "subjectId": "programming",
+      "parentId": "dsa_graph",
+      "name": "BFS广度优先遍历",
+      "plain_name": "一层一层像水波扩散",
+      "description": "从起点出发，用队列管理待访问顶点：先把起点入队并标记，每次出队一个顶点就把它所有未访问邻居入队并标记。动画展示顶点像水波一圈圈被染色，配合右侧队列的入队出队，体现按层扩展。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["BFS", "广度优先", "队列", "按层扩展", "访问标记"],
+      "prerequisites": ["graph_adjacency_list"],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "graph_dfs",
+      "subjectId": "programming",
+      "parentId": "dsa_graph",
+      "name": "DFS深度优先遍历",
+      "plain_name": "一条路走到底再回头",
+      "description": "从起点沿一条路径不断深入，每到一个顶点就标记并递归访问其第一个未访问邻居，走到死路再回溯换下一条分支。动画用栈展示递归过程，高亮当前路径并在回溯时弹栈退回上一个顶点。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["DFS", "深度优先", "递归", "栈", "回溯"],
+      "prerequisites": ["graph_adjacency_list"],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "graph_dijkstra_relax",
+      "subjectId": "programming",
+      "parentId": "dsa_graph",
+      "name": "Dijkstra最短路径的松弛",
+      "plain_name": "不断用更短的路更新距离",
+      "description": "每个顶点维护一个当前最短距离估计。每轮从未确定顶点中取出距离最小者锁定，再对它的每条出边做松弛：若 dist[u]+边权 < dist[v] 就更新 dist[v]。动画高亮被取出的顶点和被松弛变小的邻居距离值。",
+      "difficulty": 7,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["Dijkstra", "最短路径", "松弛", "贪心", "优先队列"],
+      "prerequisites": ["graph_bfs"],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "graph_mst_prim_kruskal",
+      "subjectId": "programming",
+      "parentId": "dsa_graph",
+      "name": "最小生成树Prim与Kruskal",
+      "plain_name": "用最便宜的边连通所有点",
+      "description": "Prim 从一个顶点出发，每次选连接已选集合与外部的最小边并入树；Kruskal 则把所有边按权重排序，依次选不构成环的边(用并查集判环)。动画分别高亮被选中的边逐步生长成一棵覆盖全部顶点的最小生成树。",
+      "difficulty": 7,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["最小生成树", "Prim", "Kruskal", "贪心", "并查集"],
+      "prerequisites": ["graph_dijkstra_relax"],
+      "cognition_tags": ["logic", "abstract"]
+    }
+  ],
+  "edges": [
+    { "source": "graph_adjacency_list", "target": "graph_bfs", "type": "prerequisite" },
+    { "source": "graph_adjacency_list", "target": "graph_dfs", "type": "prerequisite" },
+    { "source": "graph_bfs", "target": "graph_dfs", "type": "related" },
+    { "source": "graph_bfs", "target": "graph_dijkstra_relax", "type": "prerequisite" },
+    { "source": "graph_dijkstra_relax", "target": "graph_mst_prim_kruskal", "type": "related" }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "parentId": "cs_db",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "db_relational_model",
+      "subjectId": "programming",
+      "parentId": "cs_db",
+      "name": "关系模型",
+      "plain_name": "用表格组织数据",
+      "description": "表、行、列、主键与外键——关系模型用二维表和它们之间的联系来组织世间万物。",
+      "difficulty": 4,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["关系模型", "表", "主键", "外键", "范式"],
+      "prerequisites": [],
+      "cognition_tags": ["modeling", "abstract"]
+    },
+    {
+      "id": "db_sql",
+      "subjectId": "programming",
+      "parentId": "cs_db",
+      "name": "SQL 查询",
+      "plain_name": "和数据库对话的语言",
+      "description": "SELECT、WHERE、JOIN、GROUP BY——几句声明式语句就能从百万行里捞出答案。",
+      "difficulty": 4,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["SQL", "SELECT", "JOIN", "GROUP BY", "查询"],
+      "prerequisites": ["db_relational_model"],
+      "cognition_tags": ["logic", "system"]
+    },
+    {
+      "id": "db_index",
+      "subjectId": "programming",
+      "parentId": "cs_db",
+      "name": "索引与 B+ 树",
+      "plain_name": "数据库的目录页",
+      "description": "B+ 树索引如何把全表扫描变成几次磁盘跳转——理解为什么加了索引查询快如闪电。",
+      "difficulty": 7,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["索引", "B+树", "查询优化", "全表扫描", "磁盘IO"],
+      "prerequisites": ["db_sql"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "db_transaction",
+      "subjectId": "programming",
+      "parentId": "cs_db",
+      "name": "事务与并发控制",
+      "plain_name": "保证转账绝不出错",
+      "description": "ACID 特性、隔离级别、锁与 MVCC——多人同时操作时如何既不出错又不互相拖慢。",
+      "difficulty": 8,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["事务", "ACID", "隔离级别", "锁", "MVCC"],
+      "prerequisites": ["db_sql"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "db_nosql",
+      "subjectId": "programming",
+      "parentId": "cs_db",
+      "name": "NoSQL 与分布式",
+      "plain_name": "海量数据的另一种存法",
+      "description": "键值、文档、列族数据库与 CAP 定理——当单机关系库扛不住时的取舍之道。",
+      "difficulty": 7,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["NoSQL", "键值", "文档数据库", "CAP", "分布式", "分片"],
+      "prerequisites": ["db_transaction"],
+      "cognition_tags": ["system", "modeling"]
+    }
+  ],
+  "edges": [
+    { "source": "db_relational_model", "target": "db_sql", "type": "prerequisite" },
+    { "source": "db_sql", "target": "db_index", "type": "prerequisite" },
+    { "source": "db_sql", "target": "db_transaction", "type": "prerequisite" },
+    { "source": "db_transaction", "target": "db_nosql", "type": "prerequisite" }
+  ]
+}

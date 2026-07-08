@@ -1,0 +1,213 @@
+{
+  "subject": {
+    "id": "politics",
+    "name": "政治学",
+    "color": "#be123c",
+    "description": "研究权力如何产生、分配与运行的科学——读懂新闻背后的深层博弈。",
+    "category": "人文社科"
+  },
+  "nodes": [
+    {
+      "id": "pol_intro",
+      "subjectId": "politics",
+      "name": "政治学导论",
+      "plain_name": "权力的游戏怎么玩",
+      "description": "什么是权力、什么是合法性、政治和你有什么关系——用基本概念地图打开政治学的大门。",
+      "difficulty": 3,
+      "keywords": ["政治学", "权力", "合法性", "政治入门", "国家"],
+      "cognition_tags": ["abstract", "system"]
+    },
+    {
+      "id": "pol_methods",
+      "subjectId": "politics",
+      "name": "政治学研究方法",
+      "plain_name": "怎么科学地研究政治",
+      "description": "案例比较、问卷调查、统计回归——把'我觉得'变成'数据显示'，政治学因此成为一门科学。",
+      "difficulty": 6,
+      "keywords": ["研究方法", "比较方法", "案例研究", "定量分析", "因果推断"],
+      "cognition_tags": ["logic", "modeling"]
+    },
+    {
+      "id": "pol_thought",
+      "subjectId": "politics",
+      "name": "政治思想史",
+      "plain_name": "古人怎么想象好政治",
+      "description": "从柏拉图的哲人王到马基雅维利的君主论——两千年来最聪明的头脑如何回答'谁该统治'。",
+      "difficulty": 6,
+      "keywords": ["政治思想史", "柏拉图", "马基雅维利", "社会契约", "政治哲学"],
+      "cognition_tags": ["abstract", "expression"]
+    },
+    {
+      "id": "pol_western_thought",
+      "subjectId": "politics",
+      "name": "西方政治思想",
+      "plain_name": "自由民主理念的来龙去脉",
+      "description": "洛克的自然权利、孟德斯鸠的三权分立、密尔的自由论——现代西方政治制度的思想图纸。",
+      "difficulty": 6,
+      "keywords": ["西方政治思想", "洛克", "孟德斯鸠", "三权分立", "自由主义", "卢梭"],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "pol_chinese_thought",
+      "subjectId": "politics",
+      "name": "中国政治思想",
+      "plain_name": "从民本到天下的中国智慧",
+      "description": "儒家的仁政、法家的权术、'民为邦本'的治理传统——中国两千年政治实践背后的思想资源。",
+      "difficulty": 6,
+      "keywords": ["中国政治思想", "民本思想", "仁政", "法家", "天下观", "儒法之争"],
+      "cognition_tags": ["abstract", "system"]
+    },
+    {
+      "id": "pol_state",
+      "subjectId": "politics",
+      "name": "国家与政体",
+      "plain_name": "国家机器的各种型号",
+      "description": "总统制还是议会制、单一制还是联邦制——拆解国家机器的结构图，看不同政体如何组织权力。",
+      "difficulty": 5,
+      "keywords": ["国家", "政体", "总统制", "议会制", "联邦制", "政府形式"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "pol_comparative",
+      "subjectId": "politics",
+      "name": "比较政治",
+      "plain_name": "横着比才能看明白",
+      "description": "为什么有的国家富有的国家穷？为什么民主在有的地方扎根有的地方失败？把国家放在一起比，规律就浮现了。",
+      "difficulty": 7,
+      "keywords": ["比较政治", "政治制度", "民主化", "政治发展", "国家能力"],
+      "cognition_tags": ["logic", "system"]
+    },
+    {
+      "id": "pol_ir",
+      "subjectId": "politics",
+      "name": "国际关系理论",
+      "plain_name": "国家之间凭什么打交道",
+      "description": "现实主义说丛林法则、自由主义信制度合作、建构主义看观念认同——三副眼镜看懂国际新闻。",
+      "difficulty": 6,
+      "keywords": ["国际关系", "现实主义", "自由主义", "建构主义", "无政府状态", "均势"],
+      "cognition_tags": ["abstract", "system"]
+    },
+    {
+      "id": "pol_diplomacy",
+      "subjectId": "politics",
+      "name": "外交与全球治理",
+      "plain_name": "世界事务的谈判桌",
+      "description": "气候大会怎么谈、联合国怎么运转、大国怎么博弈——没有世界政府的世界如何管理共同问题。",
+      "difficulty": 6,
+      "keywords": ["外交", "全球治理", "联合国", "国际组织", "多边主义", "大国博弈"],
+      "cognition_tags": ["system", "expression"]
+    },
+    {
+      "id": "pol_policy",
+      "subjectId": "politics",
+      "name": "公共政策",
+      "plain_name": "政府决定怎么做事",
+      "description": "一项政策从议程设定到执行评估的全生命周期——为什么好心的政策常办坏事？答案在过程里。",
+      "difficulty": 5,
+      "keywords": ["公共政策", "政策分析", "议程设定", "政策执行", "政策评估"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "pol_political_economy",
+      "subjectId": "politics",
+      "name": "政治经济学",
+      "plain_name": "权力与金钱的纠缠",
+      "description": "为什么贸易政策总有人欢喜有人愁？政治决定经济规则，经济塑造政治力量——理解二者的双向缠绕。",
+      "difficulty": 7,
+      "keywords": ["政治经济学", "国家与市场", "贸易政治", "福利国家", "利益集团"],
+      "cognition_tags": ["system", "abstract", "logic"]
+    }
+  ],
+  "edges": [
+    {
+      "source": "pol_intro",
+      "target": "pol_thought",
+      "type": "prerequisite",
+      "reason": "带着权力、合法性等基本概念读思想史，才能看懂柏拉图和马基雅维利在回答什么问题。"
+    },
+    {
+      "source": "pol_thought",
+      "target": "pol_western_thought",
+      "type": "prerequisite",
+      "reason": "西方政治思想是思想史的主脉之一，需要先有整体脉络再深入洛克、卢梭的具体论证。"
+    },
+    {
+      "source": "pol_thought",
+      "target": "pol_chinese_thought",
+      "type": "prerequisite",
+      "reason": "中国政治思想需放在思想史的比较框架中理解：民本与民主的异同才有参照系。"
+    },
+    {
+      "source": "pol_intro",
+      "target": "pol_state",
+      "type": "prerequisite",
+      "reason": "分析政体类型之前，要先掌握导论中国家、政府、政权这些基础概念的区分。"
+    },
+    {
+      "source": "pol_state",
+      "target": "pol_comparative",
+      "type": "prerequisite",
+      "reason": "比较政治比较的正是不同国家的政体与制度：政体分类是比较的基本单位。"
+    },
+    {
+      "source": "pol_methods",
+      "target": "pol_comparative",
+      "type": "prerequisite",
+      "reason": "比较政治高度依赖研究方法：没有控制变量的意识，跨国比较就成了讲故事。"
+    },
+    {
+      "source": "pol_intro",
+      "target": "pol_methods",
+      "type": "prerequisite",
+      "reason": "先知道政治学研究什么问题，再学习用什么方法回答这些问题。"
+    },
+    {
+      "source": "pol_intro",
+      "target": "pol_ir",
+      "type": "prerequisite",
+      "reason": "国际关系是政治学向国家之间的延伸：权力与无政府状态的概念一脉相承。"
+    },
+    {
+      "source": "pol_ir",
+      "target": "pol_diplomacy",
+      "type": "prerequisite",
+      "reason": "外交实践与全球治理机制要用国际关系理论来解释：制度合作正是自由制度主义的预言。"
+    },
+    {
+      "source": "pol_intro",
+      "target": "pol_policy",
+      "type": "prerequisite",
+      "reason": "公共政策是政治系统的'输出端'，需要先理解政治系统如何运作。"
+    },
+    {
+      "source": "pol_intro",
+      "target": "pol_political_economy",
+      "type": "prerequisite",
+      "reason": "政治经济学以权力概念为起点分析经济规则的制定，是导论概念的进阶应用。"
+    },
+    {
+      "source": "pol_western_thought",
+      "target": "pol_state",
+      "type": "related",
+      "reason": "三权分立、联邦主义等政体设计直接来自孟德斯鸠、麦迪逊的思想方案。"
+    },
+    {
+      "source": "pol_policy",
+      "target": "pol_political_economy",
+      "type": "related",
+      "reason": "税收、福利、产业政策既是公共政策议题，也是政治经济学的核心案例。"
+    },
+    {
+      "source": "pol_comparative",
+      "target": "pol_political_economy",
+      "type": "related",
+      "reason": "为什么有的国家发展快有的慢，是比较政治与政治经济学共享的核心问题。"
+    },
+    {
+      "source": "pol_chinese_thought",
+      "target": "pol_state",
+      "type": "related",
+      "reason": "中央集权、郡县制等中国政治传统为政体研究提供了西方之外的重要样本。"
+    }
+  ]
+}

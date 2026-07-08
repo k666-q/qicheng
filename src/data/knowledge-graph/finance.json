@@ -1,0 +1,354 @@
+{
+  "subject": {
+    "id": "finance",
+    "name": "金融学",
+    "color": "#ca8a04",
+    "description": "理解钱的时间价值与风险游戏，让财富为你工作。",
+    "category": "商科与应用"
+  },
+  "nodes": [
+    {
+      "id": "fin_tvm",
+      "subjectId": "finance",
+      "name": "货币时间价值",
+      "plain_name": "今天的100块比明天的值钱",
+      "description": "现值、终值与复利——金融世界的第一公理，所有定价的起点。",
+      "difficulty": 3,
+      "keywords": [
+        "时间价值",
+        "复利",
+        "现值",
+        "终值",
+        "折现",
+        "利率",
+        "72法则"
+      ],
+      "cognition_tags": [
+        "logic",
+        "modeling"
+      ]
+    },
+    {
+      "id": "fin_personal",
+      "subjectId": "finance",
+      "name": "个人理财",
+      "plain_name": "管好自己的钱包",
+      "description": "记账、预算、应急金与保险——先守住钱，再谈让钱生钱。",
+      "difficulty": 2,
+      "keywords": [
+        "理财",
+        "预算",
+        "记账",
+        "应急金",
+        "保险",
+        "储蓄",
+        "财务规划"
+      ],
+      "cognition_tags": [
+        "system"
+      ]
+    },
+    {
+      "id": "fin_risk_return",
+      "subjectId": "finance",
+      "name": "风险与收益",
+      "plain_name": "想赚多少，先看敢亏多少",
+      "description": "波动率、夏普比率与风险溢价——高收益必然伴随高风险的数学表达。",
+      "difficulty": 5,
+      "keywords": [
+        "风险",
+        "收益",
+        "波动率",
+        "夏普比率",
+        "风险溢价",
+        "分散化"
+      ],
+      "cognition_tags": [
+        "logic",
+        "modeling"
+      ]
+    },
+    {
+      "id": "fin_stocks",
+      "subjectId": "finance",
+      "name": "股票投资",
+      "plain_name": "买下公司的一小块",
+      "description": "股票本质是公司所有权：市盈率、股息与基本面分析的入门逻辑。",
+      "difficulty": 5,
+      "keywords": [
+        "股票",
+        "市盈率",
+        "股息",
+        "基本面",
+        "A股",
+        "美股",
+        "炒股"
+      ],
+      "cognition_tags": [
+        "logic",
+        "modeling"
+      ]
+    },
+    {
+      "id": "fin_bonds",
+      "subjectId": "finance",
+      "name": "债券",
+      "plain_name": "借钱给别人收利息",
+      "description": "票面利率、到期收益率与久期——理解'借条'如何定价和交易。",
+      "difficulty": 5,
+      "keywords": [
+        "债券",
+        "国债",
+        "票息",
+        "到期收益率",
+        "久期",
+        "信用评级"
+      ],
+      "cognition_tags": [
+        "logic",
+        "modeling"
+      ]
+    },
+    {
+      "id": "fin_funds",
+      "subjectId": "finance",
+      "name": "基金与资产配置",
+      "plain_name": "鸡蛋别放一个篮子",
+      "description": "指数基金、定投与股债搭配——普通人最可行的长期投资方案。",
+      "difficulty": 4,
+      "keywords": [
+        "基金",
+        "指数基金",
+        "定投",
+        "资产配置",
+        "ETF",
+        "股债平衡"
+      ],
+      "cognition_tags": [
+        "system",
+        "modeling"
+      ]
+    },
+    {
+      "id": "fin_markets",
+      "subjectId": "finance",
+      "name": "金融市场与机构",
+      "plain_name": "钱在哪些场子里流动",
+      "description": "银行、交易所、央行与监管——看懂金融体系这张大水管网。",
+      "difficulty": 4,
+      "keywords": [
+        "金融市场",
+        "银行",
+        "央行",
+        "交易所",
+        "货币政策",
+        "监管",
+        "利率传导"
+      ],
+      "cognition_tags": [
+        "system"
+      ]
+    },
+    {
+      "id": "fin_corporate",
+      "subjectId": "finance",
+      "name": "公司金融",
+      "plain_name": "公司怎么找钱、花钱、分钱",
+      "description": "融资结构、资本预算与股利政策——站在 CFO 视角管理公司的钱。",
+      "difficulty": 7,
+      "keywords": [
+        "公司金融",
+        "融资",
+        "资本结构",
+        "资本预算",
+        "NPV",
+        "股利政策",
+        "杠杆"
+      ],
+      "cognition_tags": [
+        "logic",
+        "system",
+        "modeling"
+      ]
+    },
+    {
+      "id": "fin_valuation",
+      "subjectId": "finance",
+      "name": "公司估值",
+      "plain_name": "一家公司到底值多少钱",
+      "description": "现金流折现、可比公司法——把未来的赚钱能力折算成今天的价格。",
+      "difficulty": 8,
+      "keywords": [
+        "估值",
+        "DCF",
+        "现金流折现",
+        "可比公司",
+        "市值",
+        "内在价值"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "logic"
+      ]
+    },
+    {
+      "id": "fin_derivatives",
+      "subjectId": "finance",
+      "name": "衍生品初步",
+      "plain_name": "对赌未来价格的合约",
+      "description": "期货、期权与互换的基本原理——既能对冲风险，也能放大风险的双刃剑。",
+      "difficulty": 8,
+      "keywords": [
+        "衍生品",
+        "期货",
+        "期权",
+        "对冲",
+        "杠杆",
+        "互换",
+        "保证金"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "modeling"
+      ]
+    },
+    {
+      "id": "fin_behavioral",
+      "subjectId": "finance",
+      "name": "行为金融",
+      "plain_name": "为什么人总在高点接盘",
+      "description": "损失厌恶、羊群效应与过度自信——市场并不理性，因为人不理性。",
+      "difficulty": 6,
+      "keywords": [
+        "行为金融",
+        "损失厌恶",
+        "羊群效应",
+        "过度自信",
+        "锚定",
+        "心理账户"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "logic"
+      ]
+    },
+    {
+      "id": "fin_fintech",
+      "subjectId": "finance",
+      "name": "金融科技",
+      "plain_name": "科技重新发明钱的玩法",
+      "description": "移动支付、智能投顾与区块链——技术正在改写金融的底层管道。",
+      "difficulty": 6,
+      "keywords": [
+        "金融科技",
+        "FinTech",
+        "移动支付",
+        "智能投顾",
+        "区块链",
+        "数字货币"
+      ],
+      "cognition_tags": [
+        "system",
+        "abstract"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "fin_tvm",
+      "target": "fin_personal",
+      "type": "prerequisite",
+      "reason": "复利是理财的发动机：理解时间价值才明白为什么储蓄要趁早、负债要趁早还。"
+    },
+    {
+      "source": "fin_tvm",
+      "target": "fin_bonds",
+      "type": "prerequisite",
+      "reason": "债券价格就是未来票息和本金的折现之和，时间价值是债券定价的全部数学基础。"
+    },
+    {
+      "source": "fin_tvm",
+      "target": "fin_stocks",
+      "type": "prerequisite",
+      "reason": "股票的内在价值来自未来现金流的折现，不懂折现就只能跟着消息炒股。"
+    },
+    {
+      "source": "fin_tvm",
+      "target": "fin_corporate",
+      "type": "prerequisite",
+      "reason": "资本预算的核心工具 NPV 与 IRR 都建立在现金流折现之上。"
+    },
+    {
+      "source": "fin_risk_return",
+      "target": "fin_funds",
+      "type": "prerequisite",
+      "reason": "资产配置的本质是用分散化降低组合波动，先懂风险收益的权衡才会配资产。"
+    },
+    {
+      "source": "fin_stocks",
+      "target": "fin_funds",
+      "type": "prerequisite",
+      "reason": "基金是打包的股票和债券：理解了单个资产，才能看懂基金持仓和指数的构成。"
+    },
+    {
+      "source": "fin_bonds",
+      "target": "fin_funds",
+      "type": "prerequisite",
+      "reason": "股债搭配是资产配置的经典骨架，债券知识决定了你能否理解'防守资产'的角色。"
+    },
+    {
+      "source": "fin_personal",
+      "target": "fin_funds",
+      "type": "related",
+      "reason": "定投指数基金是个人理财进阶的常见路径：先有预算和应急金，再谈长期投资。"
+    },
+    {
+      "source": "fin_risk_return",
+      "target": "fin_derivatives",
+      "type": "prerequisite",
+      "reason": "衍生品的存在意义就是转移和重组风险，不懂风险度量就看不懂期权的杠杆本质。"
+    },
+    {
+      "source": "fin_stocks",
+      "target": "fin_derivatives",
+      "type": "prerequisite",
+      "reason": "股票期权、股指期货都以股票为标的资产，先懂现货市场再碰衍生品。"
+    },
+    {
+      "source": "fin_corporate",
+      "target": "fin_valuation",
+      "type": "prerequisite",
+      "reason": "估值需要读懂公司的融资结构和自由现金流，公司金融提供了这些分析框架。"
+    },
+    {
+      "source": "fin_valuation",
+      "target": "fin_stocks",
+      "type": "related",
+      "reason": "价值投资的核心动作就是估值：算出内在价值，再和市场价格比较找出便宜货。"
+    },
+    {
+      "source": "fin_markets",
+      "target": "fin_stocks",
+      "type": "related",
+      "reason": "股票在交易所发行和交易，IPO、涨跌停等规则都由市场与监管制度决定。"
+    },
+    {
+      "source": "fin_markets",
+      "target": "fin_fintech",
+      "type": "prerequisite",
+      "reason": "金融科技是对传统市场与机构的改造：先知道旧管道怎么流，才懂新管道改了什么。"
+    },
+    {
+      "source": "fin_behavioral",
+      "target": "fin_stocks",
+      "type": "related",
+      "reason": "追涨杀跌、处置效应等行为偏差是散户亏损的主因，行为金融帮你识别自己的非理性。"
+    },
+    {
+      "source": "fin_behavioral",
+      "target": "fin_personal",
+      "type": "related",
+      "reason": "心理账户解释了为什么人乱花年终奖却舍不得动工资，理财习惯的敌人是心理偏差。"
+    }
+  ]
+}

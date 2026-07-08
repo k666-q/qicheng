@@ -84,7 +84,7 @@ export function detectProactiveMessage(): ProactiveMessage | null {
     const moodTime = new Date(lastMood.created_at);
     const hoursSinceMood = (Date.now() - moodTime.getTime()) / (1000 * 60 * 60);
 
-    if (moodValue === "😫" && hoursSinceMood < 24) {
+    if (moodValue === "struggling" && hoursSinceMood < 24) {
       messages.push({
         type: "low_mood_detected",
         emoji: "☕",

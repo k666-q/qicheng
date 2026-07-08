@@ -46,5 +46,10 @@ export function getMilestonesByType(type: MilestoneType): Milestone[] {
 export function getGrowthContrast(): { then: Milestone | null; now: Milestone | null } {
   const all = getMilestones();
   if (all.length < 2) return { then: null, now: null };
-  return { then: all[0], now: all[all.length - 1] };
+  const firstWords = all.find((m) => m.type === "first_words") || all[0];
+  const stageCompletes = all.filter((m) => m.type === "stage_complete");
+  const latestProgress = stageCompletes.length > 0
+    ? stageCompletes[stageCompletes.length - 1]
+    : all[all.length - 1];
+  return { then: firstWords, now: latestProgress };
 }

@@ -1,0 +1,147 @@
+{
+  "subject": {
+    "id": "mechanical",
+    "name": "机械工程",
+    "color": "#94a3b8",
+    "description": "研究机械系统设计、制造与运行的工程学科,把力学原理变成转动起来的机器。",
+    "category": "自然科学与工程"
+  },
+  "nodes": [
+    {
+      "id": "mech_engineering_drawing",
+      "subjectId": "mechanical",
+      "name": "工程制图",
+      "plain_name": "工程师之间的通用语言",
+      "description": "用三视图、剖视图和尺寸标注精确表达零件的形状,是设计与制造的图纸基础。",
+      "difficulty": 3,
+      "keywords": ["工程制图", "三视图", "投影", "尺寸标注", "图纸", "公差"],
+      "cognition_tags": ["expression", "abstract"]
+    },
+    {
+      "id": "mech_cad_cam",
+      "subjectId": "mechanical",
+      "name": "CAD与CAM",
+      "plain_name": "用电脑设计和加工",
+      "description": "计算机辅助设计与制造,把图纸变成三维模型再驱动机床自动加工。",
+      "difficulty": 5,
+      "keywords": ["CAD", "CAM", "三维建模", "数控", "计算机辅助", "建模"],
+      "cognition_tags": ["modeling", "expression"]
+    },
+    {
+      "id": "mech_theoretical_mechanics",
+      "subjectId": "mechanical",
+      "name": "理论力学",
+      "plain_name": "物体受力与运动的规律",
+      "description": "研究刚体的静力平衡与运动规律,是分析一切机械受力与运动的根基。",
+      "difficulty": 6,
+      "keywords": ["理论力学", "静力学", "动力学", "受力分析", "刚体", "牛顿定律"],
+      "cognition_tags": ["logic", "modeling"]
+    },
+    {
+      "id": "mech_material_mechanics",
+      "subjectId": "mechanical",
+      "name": "材料力学",
+      "plain_name": "零件能承受多大力",
+      "description": "研究构件在拉压、弯曲、扭转下的强度与变形,确保零件结实又不浪费材料。",
+      "difficulty": 6,
+      "keywords": ["材料力学", "强度", "应力", "应变", "弯曲", "变形"],
+      "cognition_tags": ["logic", "modeling"]
+    },
+    {
+      "id": "mech_mechanism",
+      "subjectId": "mechanical",
+      "name": "机械原理",
+      "plain_name": "机器是怎么传动的",
+      "description": "研究连杆、齿轮、凸轮等机构如何传递运动和动力,是机械的骨架与关节。",
+      "difficulty": 6,
+      "keywords": ["机械原理", "机构", "连杆", "齿轮", "凸轮", "传动"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "mech_machine_design",
+      "subjectId": "mechanical",
+      "name": "机械设计",
+      "plain_name": "把想法变成能用的机器",
+      "description": "综合运用力学与材料知识设计轴、轴承、齿轮等零部件,造出可靠的机械。",
+      "difficulty": 7,
+      "keywords": ["机械设计", "零件设计", "轴承", "齿轮", "选材", "可靠性"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "mech_manufacturing",
+      "subjectId": "mechanical",
+      "name": "制造工艺",
+      "plain_name": "零件是怎么造出来的",
+      "description": "车铣刨磨、铸造焊接等加工方法,把原材料变成符合精度要求的零件。",
+      "difficulty": 5,
+      "keywords": ["制造工艺", "切削", "铸造", "焊接", "加工", "精度"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "mech_thermo_fluid",
+      "subjectId": "mechanical",
+      "name": "热力学与流体",
+      "plain_name": "热和流体的运动规律",
+      "description": "研究热量、能量转换与流体流动,是发动机、泵、空调等设备的理论支撑。",
+      "difficulty": 7,
+      "keywords": ["热力学", "流体力学", "能量转换", "流动", "传热", "热机"],
+      "cognition_tags": ["abstract", "modeling"]
+    },
+    {
+      "id": "mech_hydraulics_pneumatics",
+      "subjectId": "mechanical",
+      "name": "液压与气动",
+      "plain_name": "用油和气来传递动力",
+      "description": "利用液体和压缩空气传递与控制动力,广泛用于工程机械和自动化产线。",
+      "difficulty": 6,
+      "keywords": ["液压", "气动", "液压系统", "压力", "执行器", "传动"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "mech_vibration",
+      "subjectId": "mechanical",
+      "name": "机械振动",
+      "plain_name": "机器为何会抖动",
+      "description": "研究机械系统的振动与共振,避免抖动损坏设备、产生噪声。",
+      "difficulty": 7,
+      "keywords": ["机械振动", "共振", "固有频率", "阻尼", "减振"],
+      "cognition_tags": ["abstract", "modeling"]
+    },
+    {
+      "id": "mech_control_theory",
+      "subjectId": "mechanical",
+      "name": "自动控制原理",
+      "plain_name": "让机器自己稳定工作",
+      "description": "用反馈控制让机械系统自动跟踪目标并保持稳定,是自动化的核心方法。",
+      "difficulty": 7,
+      "keywords": ["自动控制", "反馈", "PID", "稳定性", "闭环", "控制理论"],
+      "cognition_tags": ["abstract", "modeling"]
+    },
+    {
+      "id": "mech_robotics",
+      "subjectId": "mechanical",
+      "name": "机器人学基础",
+      "plain_name": "让机器拥有手脚和智能",
+      "description": "综合机构、控制与传感技术,研究机器人的运动规划与操作,是机械的前沿。",
+      "difficulty": 8,
+      "keywords": ["机器人", "运动学", "自由度", "执行器", "路径规划", "机械臂"],
+      "cognition_tags": ["system", "modeling"]
+    }
+  ],
+  "edges": [
+    { "source": "mech_engineering_drawing", "target": "mech_cad_cam", "type": "prerequisite", "reason": "CAD是工程制图的数字化升级,先懂图纸表达才能用软件建模。" },
+    { "source": "mech_engineering_drawing", "target": "mech_machine_design", "type": "prerequisite", "reason": "机械设计的成果要用工程图纸表达,制图是设计的基本技能。" },
+    { "source": "mech_theoretical_mechanics", "target": "mech_material_mechanics", "type": "prerequisite", "reason": "材料力学在理论力学的受力分析基础上,进一步研究内部应力与变形。" },
+    { "source": "mech_theoretical_mechanics", "target": "mech_mechanism", "type": "prerequisite", "reason": "机构的运动与受力分析建立在理论力学的运动学与动力学之上。" },
+    { "source": "mech_material_mechanics", "target": "mech_machine_design", "type": "prerequisite", "reason": "设计零件需要用材料力学校核强度,确保安全可靠。" },
+    { "source": "mech_mechanism", "target": "mech_machine_design", "type": "prerequisite", "reason": "机械设计需要选择合适的传动机构,机械原理是其重要基础。" },
+    { "source": "mech_machine_design", "target": "mech_manufacturing", "type": "prerequisite", "reason": "设计完成后需通过制造工艺加工出来,设计与工艺紧密衔接。" },
+    { "source": "mech_cad_cam", "target": "mech_manufacturing", "type": "related", "reason": "CAM直接驱动数控机床加工,与制造工艺密切配合。" },
+    { "source": "mech_theoretical_mechanics", "target": "mech_vibration", "type": "prerequisite", "reason": "机械振动是动力学的专门分支,需要理论力学的动力学基础。" },
+    { "source": "mech_thermo_fluid", "target": "mech_hydraulics_pneumatics", "type": "prerequisite", "reason": "液压气动利用流体传递动力,需要流体力学的基本原理。" },
+    { "source": "mech_control_theory", "target": "mech_robotics", "type": "prerequisite", "reason": "机器人的稳定运动依赖反馈控制,自动控制原理是其核心理论。" },
+    { "source": "mech_mechanism", "target": "mech_robotics", "type": "prerequisite", "reason": "机器人的机械臂本质是多自由度机构,机械原理是其结构基础。" },
+    { "source": "mech_hydraulics_pneumatics", "target": "mech_robotics", "type": "related", "reason": "液压气动常作为机器人的执行驱动方式,二者在自动化中结合。" },
+    { "source": "mech_vibration", "target": "mech_machine_design", "type": "related", "reason": "设计时需考虑振动与共振问题,振动分析为可靠设计提供依据。" }
+  ]
+}

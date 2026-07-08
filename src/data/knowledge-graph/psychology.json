@@ -1,0 +1,435 @@
+{
+  "subject": {
+    "id": "psychology",
+    "name": "心理学",
+    "color": "#ec4899",
+    "description": "研究人的思维、情感和行为规律的科学。",
+    "category": "人文社科"
+  },
+  "nodes": [
+    {
+      "id": "psy_cognitive",
+      "subjectId": "psychology",
+      "name": "认知心理学",
+      "plain_name": "大脑怎么处理信息",
+      "description": "注意、记忆、思维、决策——理解人类信息加工的机制。",
+      "difficulty": 4,
+      "keywords": [
+        "认知心理",
+        "记忆",
+        "注意力",
+        "思维",
+        "决策",
+        "信息加工"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "system"
+      ]
+    },
+    {
+      "id": "psy_developmental",
+      "subjectId": "psychology",
+      "name": "发展心理学",
+      "plain_name": "人的一生怎么变化",
+      "description": "从婴儿到老年的心理发展规律——皮亚杰、维果斯基的理论框架。",
+      "difficulty": 4,
+      "keywords": [
+        "发展心理",
+        "皮亚杰",
+        "认知发展",
+        "人格发展",
+        "生命周期"
+      ],
+      "cognition_tags": [
+        "system",
+        "expression"
+      ]
+    },
+    {
+      "id": "psy_social",
+      "subjectId": "psychology",
+      "name": "社会心理学",
+      "plain_name": "人在群体中为什么这样",
+      "description": "从众、服从、偏见、态度改变——理解社会影响和群体行为。",
+      "difficulty": 4,
+      "keywords": [
+        "社会心理",
+        "从众",
+        "偏见",
+        "社会影响",
+        "态度",
+        "群体"
+      ],
+      "cognition_tags": [
+        "expression",
+        "system"
+      ]
+    },
+    {
+      "id": "psy_neuroscience",
+      "subjectId": "psychology",
+      "name": "神经科学基础",
+      "plain_name": "大脑的硬件结构",
+      "description": "神经元、突触传递、脑区功能——从生物层面理解心理现象。",
+      "difficulty": 7,
+      "keywords": [
+        "神经科学",
+        "神经元",
+        "大脑",
+        "突触",
+        "脑区"
+      ],
+      "cognition_tags": [
+        "system",
+        "logic"
+      ]
+    },
+    {
+      "id": "psy_clinical",
+      "subjectId": "psychology",
+      "name": "临床与异常心理学",
+      "plain_name": "心理'生病'了怎么办",
+      "description": "焦虑障碍、抑郁症、心理治疗方法——理解心理障碍和干预手段。",
+      "difficulty": 6,
+      "keywords": [
+        "临床心理",
+        "焦虑",
+        "抑郁",
+        "心理治疗",
+        "异常心理"
+      ],
+      "cognition_tags": [
+        "expression",
+        "system"
+      ]
+    },
+    {
+      "id": "psy_educational",
+      "subjectId": "psychology",
+      "name": "教育心理学",
+      "plain_name": "学习的科学",
+      "description": "学习理论、动机、元认知、教学设计——如何让学习更高效。",
+      "difficulty": 4,
+      "keywords": [
+        "教育心理",
+        "学习理论",
+        "动机",
+        "元认知",
+        "教学"
+      ],
+      "cognition_tags": [
+        "expression",
+        "system"
+      ]
+    },
+    {
+      "id": "psy_attention_memory",
+      "subjectId": "psychology",
+      "name": "注意与记忆",
+      "plain_name": "为什么你记不住刚见过的人名",
+      "description": "选择性注意、工作记忆、遗忘曲线——大脑是一个容量有限却很会偷懒的信息仓库。",
+      "difficulty": 5,
+      "keywords": [
+        "注意",
+        "记忆",
+        "工作记忆",
+        "遗忘曲线",
+        "选择性注意",
+        "短时记忆",
+        "认知心理"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "system"
+      ]
+    },
+    {
+      "id": "psy_thinking_decision",
+      "subjectId": "psychology",
+      "name": "思维与决策",
+      "plain_name": "大脑的'快'与'慢'",
+      "description": "启发式、认知偏差、双系统理论——人脑常用直觉抄近道，所以会系统性地犯错。",
+      "difficulty": 5,
+      "keywords": [
+        "思维",
+        "决策",
+        "认知偏差",
+        "启发式",
+        "双系统",
+        "判断",
+        "认知心理"
+      ],
+      "cognition_tags": [
+        "logic",
+        "abstract"
+      ]
+    },
+    {
+      "id": "psy_emotion",
+      "subjectId": "psychology",
+      "name": "情绪与动机",
+      "plain_name": "你为什么会高兴、生气、想行动",
+      "description": "情绪理论、需要层次、内在动机——情绪是身体的警报系统，动机是行为的发动机。",
+      "difficulty": 4,
+      "keywords": [
+        "情绪",
+        "动机",
+        "马斯洛",
+        "需要层次",
+        "情绪调节",
+        "内在动机"
+      ],
+      "cognition_tags": [
+        "expression",
+        "system"
+      ]
+    },
+    {
+      "id": "psy_personality",
+      "subjectId": "psychology",
+      "name": "人格心理学",
+      "plain_name": "你为什么是'这样的你'",
+      "description": "大五人格、特质论、精神分析——刻画人与人之间稳定差异的理论地图。",
+      "difficulty": 5,
+      "keywords": [
+        "人格",
+        "大五人格",
+        "特质",
+        "精神分析",
+        "弗洛伊德",
+        "人格测验",
+        "性格"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "expression"
+      ]
+    },
+    {
+      "id": "psy_counseling",
+      "subjectId": "psychology",
+      "name": "心理咨询与治疗",
+      "plain_name": "心理'医生'怎么工作",
+      "description": "认知行为疗法、人本主义、咨询伦理——用专业对话帮人走出心理困境的方法体系。",
+      "difficulty": 6,
+      "keywords": [
+        "心理咨询",
+        "心理治疗",
+        "CBT",
+        "认知行为疗法",
+        "人本主义",
+        "咨询伦理",
+        "来访者"
+      ],
+      "cognition_tags": [
+        "expression",
+        "system"
+      ]
+    },
+    {
+      "id": "psy_research_methods",
+      "subjectId": "psychology",
+      "name": "心理统计与研究方法",
+      "plain_name": "心理学怎么做实验",
+      "description": "实验设计、变量控制、显著性检验、信效度——让'人心'这种看不见的东西变得可测量、可验证。",
+      "difficulty": 6,
+      "keywords": [
+        "心理统计",
+        "研究方法",
+        "实验设计",
+        "显著性",
+        "信度",
+        "效度",
+        "心理学考研",
+        "统计"
+      ],
+      "cognition_tags": [
+        "logic",
+        "modeling"
+      ]
+    },
+    {
+      "id": "psy_measurement",
+      "subjectId": "psychology",
+      "name": "心理测量",
+      "plain_name": "给心理'称重'的尺子",
+      "description": "智力测验、人格量表、常模与标准化——把抽象的心理特质变成可比较的分数。",
+      "difficulty": 6,
+      "keywords": [
+        "心理测量",
+        "量表",
+        "智力测验",
+        "常模",
+        "标准化",
+        "测验",
+        "心理学考研"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "logic"
+      ]
+    },
+    {
+      "id": "psy_perception",
+      "subjectId": "psychology",
+      "name": "感觉与知觉",
+      "plain_name": "世界如何'进入'你的大脑",
+      "description": "感觉阈限、知觉组织、错觉——你看到的不是世界本身，而是大脑加工后的版本。",
+      "difficulty": 4,
+      "keywords": [
+        "感觉",
+        "知觉",
+        "错觉",
+        "阈限",
+        "知觉组织",
+        "格式塔",
+        "认知心理"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "aesthetic"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "psy_cognitive",
+      "target": "psy_neuroscience",
+      "type": "prerequisite",
+      "reason": "神经科学从生物层面解释认知现象：记忆对应海马体长时程增强，注意力对应前额叶皮层激活。"
+    },
+    {
+      "source": "psy_cognitive",
+      "target": "psy_social",
+      "type": "related",
+      "reason": "社会认知是两者的交叉：我们如何加工他人信息（面孔识别、归因）本质是认知过程在社会情境中的应用。"
+    },
+    {
+      "source": "psy_cognitive",
+      "target": "psy_educational",
+      "type": "related",
+      "reason": "教育心理学的学习理论建立在认知心理学之上：工作记忆容量限制教学信息量，元认知指导自主学习策略。"
+    },
+    {
+      "source": "psy_developmental",
+      "target": "psy_educational",
+      "type": "related",
+      "reason": "教学必须适应学生的认知发展阶段：皮亚杰的具体/形式运算期直接影响不同年龄段的教学设计。"
+    },
+    {
+      "source": "psy_cognitive",
+      "target": "psy_clinical",
+      "type": "prerequisite",
+      "reason": "认知行为疗法(CBT)直接源于认知心理学：抑郁的认知模型认为负面自动思维是核心机制。"
+    },
+    {
+      "source": "psy_social",
+      "target": "psy_clinical",
+      "type": "related",
+      "reason": "社会支持影响心理健康，社会排斥导致抑郁，群体治疗利用社会心理学的群体动力学原理。"
+    },
+    {
+      "source": "psy_developmental",
+      "target": "psy_clinical",
+      "type": "related",
+      "reason": "许多心理障碍有发展根源：依恋理论解释人格障碍，儿童期创伤是多种成年期障碍的风险因素。"
+    },
+    {
+      "source": "psy_cognitive",
+      "target": "psy_perception",
+      "type": "prerequisite",
+      "reason": "感知觉是认知加工的第一道工序：先建立信息加工的整体框架，再深入输入端的感觉与知觉机制。"
+    },
+    {
+      "source": "psy_cognitive",
+      "target": "psy_attention_memory",
+      "type": "prerequisite",
+      "reason": "注意与记忆是认知心理学的核心章节：多重记忆系统模型建立在信息加工范式之上。"
+    },
+    {
+      "source": "psy_cognitive",
+      "target": "psy_thinking_decision",
+      "type": "prerequisite",
+      "reason": "思维决策是认知加工的高级阶段：理解启发式偏差需要先掌握表征、加工容量等认知基本概念。"
+    },
+    {
+      "source": "psy_perception",
+      "target": "psy_attention_memory",
+      "type": "prerequisite",
+      "reason": "知觉提供注意筛选的原材料：信息先被感知，才谈得上被注意和进入记忆系统。"
+    },
+    {
+      "source": "psy_attention_memory",
+      "target": "psy_thinking_decision",
+      "type": "prerequisite",
+      "reason": "推理和决策在工作记忆中进行：工作记忆容量限制了思考的复杂度，记忆提取偏差导致判断偏差。"
+    },
+    {
+      "source": "psy_thinking_decision",
+      "target": "psy_social",
+      "type": "related",
+      "reason": "社会判断充满认知偏差：刻板印象是社会版的启发式，归因偏差是决策偏差在人际领域的表现。"
+    },
+    {
+      "source": "psy_cognitive",
+      "target": "psy_emotion",
+      "type": "related",
+      "reason": "情绪与认知互相塑造：情绪评价理论认为情绪源于认知解释，而情绪又反过来影响注意和记忆。"
+    },
+    {
+      "source": "psy_emotion",
+      "target": "psy_clinical",
+      "type": "related",
+      "reason": "情绪失调是多数心理障碍的核心特征：抑郁是持续低落情绪，焦虑是失控的恐惧反应。"
+    },
+    {
+      "source": "psy_developmental",
+      "target": "psy_personality",
+      "type": "related",
+      "reason": "人格在毕生发展中逐渐成形：早期依恋风格、养育方式深刻影响成年后的人格特质。"
+    },
+    {
+      "source": "psy_personality",
+      "target": "psy_clinical",
+      "type": "related",
+      "reason": "人格障碍的诊断以人格理论为参照系：偏离正常人格维度的极端模式才被界定为障碍。"
+    },
+    {
+      "source": "psy_clinical",
+      "target": "psy_counseling",
+      "type": "prerequisite",
+      "reason": "心理咨询需要先识别问题：不了解焦虑抑郁的机制和诊断标准，就无法选择合适的干预方法。"
+    },
+    {
+      "source": "psy_emotion",
+      "target": "psy_counseling",
+      "type": "related",
+      "reason": "情绪调节是咨询的核心工作之一：帮助来访者觉察、接纳和管理情绪贯穿各流派治疗。"
+    },
+    {
+      "source": "psy_research_methods",
+      "target": "psy_cognitive",
+      "type": "related",
+      "reason": "认知心理学的结论全部来自实验：反应时范式、双任务设计都是研究方法在认知领域的应用。"
+    },
+    {
+      "source": "psy_research_methods",
+      "target": "psy_measurement",
+      "type": "prerequisite",
+      "reason": "心理测量的信效度检验依赖统计方法：常模建立、项目分析都是统计技术在测验编制中的应用。"
+    },
+    {
+      "source": "psy_measurement",
+      "target": "psy_personality",
+      "type": "related",
+      "reason": "大五人格的发现本身就是测量的成果：因素分析从海量形容词中提炼出五个稳定维度。"
+    },
+    {
+      "source": "psy_research_methods",
+      "target": "psy_social",
+      "type": "related",
+      "reason": "社会心理学的经典结论（从众、服从）都来自精心设计的实验，重复危机也促使方法学反思。"
+    }
+  ]
+}

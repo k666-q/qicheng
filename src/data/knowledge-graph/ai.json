@@ -1,0 +1,356 @@
+{
+  "subject": {
+    "id": "ai",
+    "name": "人工智能",
+    "color": "#7c3aed",
+    "description": "教机器学习与思考，理解正在改变世界的智能革命。",
+    "category": "商科与应用"
+  },
+  "nodes": [
+    {
+      "id": "ai_intro",
+      "subjectId": "ai",
+      "name": "AI 导论与历史",
+      "plain_name": "机器能思考吗",
+      "description": "图灵测试、达特茅斯会议与几次AI寒冬——这场智能革命从哪里来。",
+      "difficulty": 2,
+      "keywords": [
+        "人工智能",
+        "图灵测试",
+        "AI历史",
+        "达特茅斯",
+        "AI寒冬",
+        "智能"
+      ],
+      "cognition_tags": [
+        "abstract"
+      ]
+    },
+    {
+      "id": "ai_search",
+      "subjectId": "ai",
+      "name": "搜索与推理",
+      "plain_name": "教电脑下棋的老办法",
+      "description": "状态空间搜索、A* 算法与知识推理——深度学习之前 AI 的看家本领。",
+      "difficulty": 5,
+      "keywords": [
+        "搜索算法",
+        "A*",
+        "状态空间",
+        "推理",
+        "专家系统",
+        "博弈树",
+        "启发式"
+      ],
+      "cognition_tags": [
+        "logic",
+        "abstract"
+      ]
+    },
+    {
+      "id": "ai_ml",
+      "subjectId": "ai",
+      "name": "机器学习基础",
+      "plain_name": "让机器从数据里找规律",
+      "description": "监督与无监督学习、过拟合与泛化——不写规则，喂数据让机器自己学。",
+      "difficulty": 6,
+      "keywords": [
+        "机器学习",
+        "监督学习",
+        "无监督学习",
+        "过拟合",
+        "训练集",
+        "回归",
+        "分类"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "logic"
+      ]
+    },
+    {
+      "id": "ai_nn",
+      "subjectId": "ai",
+      "name": "神经网络",
+      "plain_name": "仿照大脑搭的计算网",
+      "description": "神经元、权重与反向传播——用无数个简单单元堆出复杂智能。",
+      "difficulty": 7,
+      "keywords": [
+        "神经网络",
+        "神经元",
+        "反向传播",
+        "权重",
+        "激活函数",
+        "梯度下降"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "abstract"
+      ]
+    },
+    {
+      "id": "ai_deep",
+      "subjectId": "ai",
+      "name": "深度学习",
+      "plain_name": "把网络叠得足够深",
+      "description": "深层网络、GPU 训练与表示学习——层数堆上去之后，奇迹发生了。",
+      "difficulty": 7,
+      "keywords": [
+        "深度学习",
+        "深层网络",
+        "GPU",
+        "表示学习",
+        "特征提取",
+        "端到端"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "system"
+      ]
+    },
+    {
+      "id": "ai_cnn",
+      "subjectId": "ai",
+      "name": "卷积神经网络",
+      "plain_name": "教机器看图的眼睛",
+      "description": "卷积核像滑动的放大镜，逐层提取边缘到物体——计算机视觉的功臣。",
+      "difficulty": 7,
+      "keywords": [
+        "CNN",
+        "卷积",
+        "计算机视觉",
+        "图像识别",
+        "池化",
+        "卷积核"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "system"
+      ]
+    },
+    {
+      "id": "ai_rnn_transformer",
+      "subjectId": "ai",
+      "name": "序列模型与 Transformer",
+      "plain_name": "教机器读句子的耳朵",
+      "description": "从 RNN 的逐词记忆到 Transformer 的注意力机制——'Attention is all you need'。",
+      "difficulty": 8,
+      "keywords": [
+        "Transformer",
+        "RNN",
+        "注意力机制",
+        "序列模型",
+        "LSTM",
+        "自注意力",
+        "NLP"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "abstract"
+      ]
+    },
+    {
+      "id": "ai_llm",
+      "subjectId": "ai",
+      "name": "大语言模型",
+      "plain_name": "会聊天的超级大脑",
+      "description": "预训练、微调与涌现能力——GPT 们如何从'补全下一个词'长出智能。",
+      "difficulty": 8,
+      "keywords": [
+        "大语言模型",
+        "LLM",
+        "GPT",
+        "预训练",
+        "微调",
+        "涌现",
+        "ChatGPT"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "system"
+      ]
+    },
+    {
+      "id": "ai_rl",
+      "subjectId": "ai",
+      "name": "强化学习",
+      "plain_name": "靠奖惩自己摸索着学",
+      "description": "智能体在试错中学策略：AlphaGo 战胜人类棋手背后的学习范式。",
+      "difficulty": 8,
+      "keywords": [
+        "强化学习",
+        "奖励",
+        "智能体",
+        "AlphaGo",
+        "Q学习",
+        "策略",
+        "试错"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "logic"
+      ]
+    },
+    {
+      "id": "ai_genai",
+      "subjectId": "ai",
+      "name": "生成式 AI",
+      "plain_name": "会画画写歌的AI",
+      "description": "扩散模型与多模态生成——AI 从'识别世界'进化到'创造内容'。",
+      "difficulty": 7,
+      "keywords": [
+        "生成式AI",
+        "AIGC",
+        "扩散模型",
+        "文生图",
+        "Midjourney",
+        "Sora",
+        "多模态"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "ai_prompt",
+      "subjectId": "ai",
+      "name": "提示工程",
+      "plain_name": "跟AI说话的艺术",
+      "description": "角色设定、思维链与少样本示例——同一个模型，会问的人能多榨出十倍能力。",
+      "difficulty": 4,
+      "keywords": [
+        "提示工程",
+        "Prompt",
+        "提示词",
+        "思维链",
+        "CoT",
+        "少样本",
+        "指令"
+      ],
+      "cognition_tags": [
+        "expression",
+        "logic"
+      ]
+    },
+    {
+      "id": "ai_ethics",
+      "subjectId": "ai",
+      "name": "AI 伦理与安全",
+      "plain_name": "AI越强，缰绳越要紧",
+      "description": "偏见、幻觉、隐私与对齐问题——确保越来越强的 AI 始终向善可控。",
+      "difficulty": 6,
+      "keywords": [
+        "AI伦理",
+        "AI安全",
+        "对齐",
+        "偏见",
+        "幻觉",
+        "隐私",
+        "监管"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "logic"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "ai_intro",
+      "target": "ai_search",
+      "type": "prerequisite",
+      "reason": "搜索与推理是符号主义AI的代表：先了解AI的流派之争，才明白这些'老办法'的位置。"
+    },
+    {
+      "source": "ai_intro",
+      "target": "ai_ml",
+      "type": "prerequisite",
+      "reason": "机器学习是连接主义路线的胜利成果，AI历史脉络帮你理解'从规则到数据'的范式转移。"
+    },
+    {
+      "source": "ai_ml",
+      "target": "ai_nn",
+      "type": "prerequisite",
+      "reason": "神经网络是机器学习的一类模型：损失函数、梯度下降等概念都在机器学习中先行建立。"
+    },
+    {
+      "source": "ai_nn",
+      "target": "ai_deep",
+      "type": "prerequisite",
+      "reason": "深度学习就是层数更多的神经网络：先懂单层网络的反向传播，再理解深层堆叠的威力。"
+    },
+    {
+      "source": "ai_deep",
+      "target": "ai_cnn",
+      "type": "prerequisite",
+      "reason": "CNN 是深度学习在图像领域的专用架构，卷积层的设计建立在深层网络的训练方法之上。"
+    },
+    {
+      "source": "ai_deep",
+      "target": "ai_rnn_transformer",
+      "type": "prerequisite",
+      "reason": "序列模型是深度学习处理文本和语音的分支，Transformer 的训练同样依赖深度学习全套工具。"
+    },
+    {
+      "source": "ai_rnn_transformer",
+      "target": "ai_llm",
+      "type": "prerequisite",
+      "reason": "大语言模型的骨架就是 Transformer：不懂注意力机制，就无法理解 GPT 的工作原理。"
+    },
+    {
+      "source": "ai_ml",
+      "target": "ai_rl",
+      "type": "prerequisite",
+      "reason": "强化学习是机器学习三大范式之一，与监督学习共享'目标函数+优化'的基本思想。"
+    },
+    {
+      "source": "ai_search",
+      "target": "ai_rl",
+      "type": "related",
+      "reason": "AlphaGo 同时使用了博弈树搜索和强化学习：老牌搜索算法在新范式里依然是主力。"
+    },
+    {
+      "source": "ai_deep",
+      "target": "ai_genai",
+      "type": "prerequisite",
+      "reason": "扩散模型、GAN 等生成技术都是深度网络的变体，生成式AI是深度学习的创造性应用。"
+    },
+    {
+      "source": "ai_llm",
+      "target": "ai_genai",
+      "type": "related",
+      "reason": "大语言模型本身就是文本生成器，且常作为多模态生成系统的'大脑'统筹图文创作。"
+    },
+    {
+      "source": "ai_llm",
+      "target": "ai_prompt",
+      "type": "prerequisite",
+      "reason": "提示工程的对象就是大语言模型：理解LLM按概率补全的本质，才知道提示词为何有效。"
+    },
+    {
+      "source": "ai_llm",
+      "target": "ai_ethics",
+      "type": "related",
+      "reason": "幻觉、偏见和滥用风险随LLM的普及被急剧放大，对齐研究主要围绕大模型展开。"
+    },
+    {
+      "source": "ai_rl",
+      "target": "ai_llm",
+      "type": "related",
+      "reason": "RLHF（人类反馈强化学习）是让 ChatGPT 听话的关键工序，强化学习深度参与LLM训练。"
+    },
+    {
+      "source": "ai_genai",
+      "target": "ai_ethics",
+      "type": "related",
+      "reason": "深度伪造、版权争议等问题由生成式AI直接引发，伦理讨论是AIGC绕不开的必修课。"
+    },
+    {
+      "source": "ai_intro",
+      "target": "ai_ethics",
+      "type": "related",
+      "reason": "'机器能否思考'的哲学追问从图灵时代延续至今，伦理与安全是这条思想线的当代续篇。"
+    }
+  ]
+}

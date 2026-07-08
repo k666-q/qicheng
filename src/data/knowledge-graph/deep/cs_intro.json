@@ -1,0 +1,82 @@
+{
+  "parentId": "cs_intro",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "intro_variables",
+      "subjectId": "programming",
+      "parentId": "cs_intro",
+      "name": "变量与数据类型",
+      "plain_name": "给数据起名字、贴标签",
+      "description": "变量是内存中带名字的盒子，数据类型决定盒子能装什么、占多大、能做什么运算。",
+      "difficulty": 2,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["变量", "数据类型", "整数", "浮点", "字符串", "赋值"],
+      "prerequisites": [],
+      "cognition_tags": ["logic"]
+    },
+    {
+      "id": "intro_control_flow",
+      "subjectId": "programming",
+      "parentId": "cs_intro",
+      "name": "条件与循环",
+      "plain_name": "让程序会判断、会重复",
+      "description": "if/else 让程序根据条件分岔，for/while 让程序重复执行——控制流是逻辑的骨架。",
+      "difficulty": 2,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["条件", "if", "循环", "for", "while", "分支"],
+      "prerequisites": ["intro_variables"],
+      "cognition_tags": ["logic"]
+    },
+    {
+      "id": "intro_functions",
+      "subjectId": "programming",
+      "parentId": "cs_intro",
+      "name": "函数",
+      "plain_name": "把一段逻辑打包复用",
+      "description": "函数把一段逻辑封装起来，通过参数输入、返回值输出，是代码复用与抽象的第一步。",
+      "difficulty": 3,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["函数", "参数", "返回值", "作用域", "调用栈"],
+      "prerequisites": ["intro_control_flow"],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "intro_recursion",
+      "subjectId": "programming",
+      "parentId": "cs_intro",
+      "name": "递归入门",
+      "plain_name": "函数自己调用自己",
+      "description": "递归通过函数调用自身解决问题，需要基准情形与递推关系——理解调用栈如何展开与回收。",
+      "difficulty": 5,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["递归", "基准情形", "调用栈", "阶乘", "斐波那契"],
+      "prerequisites": ["intro_functions"],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "intro_io_errors",
+      "subjectId": "programming",
+      "parentId": "cs_intro",
+      "name": "输入输出与异常",
+      "plain_name": "和外界交互、处理意外",
+      "description": "读写控制台与文件，用 try/catch 优雅地处理运行中可能出现的错误。",
+      "difficulty": 3,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["输入输出", "IO", "异常", "try-catch", "错误处理"],
+      "prerequisites": ["intro_control_flow"],
+      "cognition_tags": ["logic"]
+    }
+  ],
+  "edges": [
+    { "source": "intro_variables", "target": "intro_control_flow", "type": "prerequisite" },
+    { "source": "intro_control_flow", "target": "intro_functions", "type": "prerequisite" },
+    { "source": "intro_functions", "target": "intro_recursion", "type": "prerequisite" },
+    { "source": "intro_control_flow", "target": "intro_io_errors", "type": "prerequisite" }
+  ]
+}

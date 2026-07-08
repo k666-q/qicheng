@@ -65,7 +65,7 @@ function buildSystemPrompt(domain: string, goal: string): string {
 
 ### 第四步：叙事锚点
 告诉用户：
-- 这个记录会被保存在「启程」里
+- 这个记录会被保存在「Nexiova」里
 - 4周后会拿出来跟那时候的你对比
 - "伟大都以渺小启程。今天就是你故事的第一页。"
 

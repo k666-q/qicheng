@@ -1,0 +1,334 @@
+{
+  "subject": {
+    "id": "music",
+    "name": "音乐",
+    "color": "#ec4899",
+    "description": "用声音组织时间与情感，听懂并创造打动人的旋律。",
+    "category": "艺术与生活"
+  },
+  "nodes": [
+    {
+      "id": "mus_theory",
+      "subjectId": "music",
+      "name": "乐理基础",
+      "plain_name": "音乐世界的拼音字母",
+      "description": "音名、音程、调号与五线谱——读懂音乐这门语言的最小单元。",
+      "difficulty": 3,
+      "keywords": [
+        "乐理",
+        "音程",
+        "调号",
+        "五线谱",
+        "音阶",
+        "简谱",
+        "基本乐理"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "logic"
+      ]
+    },
+    {
+      "id": "mus_rhythm",
+      "subjectId": "music",
+      "name": "节奏与节拍",
+      "plain_name": "音乐的心跳",
+      "description": "拍号、切分与律动——为什么有的歌让你忍不住跟着点头。",
+      "difficulty": 3,
+      "keywords": [
+        "节奏",
+        "节拍",
+        "拍号",
+        "切分",
+        "律动",
+        "groove",
+        "鼓点"
+      ],
+      "cognition_tags": [
+        "logic",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "mus_harmony",
+      "subjectId": "music",
+      "name": "和声学",
+      "plain_name": "几个音叠在一起的化学反应",
+      "description": "三和弦、和弦进行与功能和声——流行歌'万能四和弦'背后的原理。",
+      "difficulty": 6,
+      "keywords": [
+        "和声",
+        "和弦",
+        "和弦进行",
+        "三和弦",
+        "七和弦",
+        "功能和声",
+        "451"
+      ],
+      "cognition_tags": [
+        "logic",
+        "abstract",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "mus_melody_form",
+      "subjectId": "music",
+      "name": "旋律与曲式",
+      "plain_name": "歌是怎么搭起来的",
+      "description": "动机发展、乐句与主歌副歌结构——一首歌的骨架与起承转合。",
+      "difficulty": 5,
+      "keywords": [
+        "旋律",
+        "曲式",
+        "动机",
+        "乐句",
+        "主歌",
+        "副歌",
+        "结构"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "mus_ear",
+      "subjectId": "music",
+      "name": "视唱练耳",
+      "plain_name": "把耳朵练尖",
+      "description": "听音辨程、看谱即唱——让耳朵和眼睛直接连通音乐的训练。",
+      "difficulty": 5,
+      "keywords": [
+        "视唱",
+        "练耳",
+        "听音",
+        "音准",
+        "节奏听写",
+        "扒谱"
+      ],
+      "cognition_tags": [
+        "logic",
+        "expression"
+      ]
+    },
+    {
+      "id": "mus_piano",
+      "subjectId": "music",
+      "name": "钢琴入门",
+      "plain_name": "黑白键上的第一步",
+      "description": "手型、音阶与简单曲目——钢琴是理解乐理最直观的可视化键盘。",
+      "difficulty": 4,
+      "keywords": [
+        "钢琴",
+        "键盘",
+        "手型",
+        "音阶练习",
+        "哈农",
+        "拜厄",
+        "弹琴"
+      ],
+      "cognition_tags": [
+        "expression",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "mus_guitar",
+      "subjectId": "music",
+      "name": "吉他入门",
+      "plain_name": "抱起琴就能弹唱",
+      "description": "和弦按法、扫弦节奏与弹唱——门槛最低、最适合自娱的乐器之一。",
+      "difficulty": 4,
+      "keywords": [
+        "吉他",
+        "和弦按法",
+        "扫弦",
+        "弹唱",
+        "民谣吉他",
+        "指弹",
+        "爬格子"
+      ],
+      "cognition_tags": [
+        "expression",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "mus_history_classical",
+      "subjectId": "music",
+      "name": "古典音乐史",
+      "plain_name": "从巴赫到贝多芬的三百年",
+      "description": "巴洛克、古典与浪漫主义——听懂交响曲与奏鸣曲背后的时代故事。",
+      "difficulty": 4,
+      "keywords": [
+        "古典音乐",
+        "巴赫",
+        "贝多芬",
+        "莫扎特",
+        "交响曲",
+        "浪漫主义",
+        "巴洛克"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "mus_history_pop",
+      "subjectId": "music",
+      "name": "流行音乐史",
+      "plain_name": "从猫王到说唱的演化史",
+      "description": "布鲁斯、摇滚、嘻哈到电子——百年流行乐就是一部青年文化史。",
+      "difficulty": 3,
+      "keywords": [
+        "流行音乐",
+        "摇滚",
+        "嘻哈",
+        "布鲁斯",
+        "爵士",
+        "电子音乐",
+        "华语流行"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "mus_composition",
+      "subjectId": "music",
+      "name": "作曲与编曲",
+      "plain_name": "从哼歌到写出整首歌",
+      "description": "写旋律、配和声、安排乐器——把脑中的乐思变成完整作品。",
+      "difficulty": 8,
+      "keywords": [
+        "作曲",
+        "编曲",
+        "配器",
+        "写歌",
+        "和弦编配",
+        "音色搭配"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "aesthetic",
+        "expression"
+      ]
+    },
+    {
+      "id": "mus_production",
+      "subjectId": "music",
+      "name": "音乐制作与混音",
+      "plain_name": "让录音棚住进电脑",
+      "description": "DAW 软件、录音、混音与母带——把一首歌打磨到能上架发行。",
+      "difficulty": 7,
+      "keywords": [
+        "音乐制作",
+        "混音",
+        "DAW",
+        "录音",
+        "母带",
+        "FL Studio",
+        "效果器"
+      ],
+      "cognition_tags": [
+        "system",
+        "aesthetic"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "mus_theory",
+      "target": "mus_rhythm",
+      "type": "related",
+      "reason": "音高与节奏是音乐的两大维度，乐谱上音符的时值记法把两者绑在同一套符号体系里。"
+    },
+    {
+      "source": "mus_theory",
+      "target": "mus_harmony",
+      "type": "prerequisite",
+      "reason": "和弦由音程叠置而成：不懂大小三度，就无法理解大三和弦与小三和弦的差别。"
+    },
+    {
+      "source": "mus_theory",
+      "target": "mus_melody_form",
+      "type": "prerequisite",
+      "reason": "旋律写作建立在音阶与调式之上，曲式分析也要先能读谱认调。"
+    },
+    {
+      "source": "mus_theory",
+      "target": "mus_ear",
+      "type": "prerequisite",
+      "reason": "视唱练耳是把乐理知识内化成听觉本能：先知道音程的概念，再练出听辨它的耳朵。"
+    },
+    {
+      "source": "mus_theory",
+      "target": "mus_piano",
+      "type": "prerequisite",
+      "reason": "钢琴键盘是乐理的实体化：认识音名和调号后，琴键位置与指法才有意义。"
+    },
+    {
+      "source": "mus_theory",
+      "target": "mus_guitar",
+      "type": "prerequisite",
+      "reason": "吉他和弦图、变调夹的使用都以基础乐理为前提，懂乐理才能举一反三换调弹唱。"
+    },
+    {
+      "source": "mus_rhythm",
+      "target": "mus_guitar",
+      "type": "related",
+      "reason": "扫弦型就是节奏型：吉他弹唱的律动感全靠对拍子与切分的把握。"
+    },
+    {
+      "source": "mus_harmony",
+      "target": "mus_composition",
+      "type": "prerequisite",
+      "reason": "编配和声是作曲的核心工序：和弦进行决定了整首歌的情绪走向。"
+    },
+    {
+      "source": "mus_melody_form",
+      "target": "mus_composition",
+      "type": "prerequisite",
+      "reason": "写歌需要先懂歌的结构：动机如何发展成乐句、主副歌如何制造对比与记忆点。"
+    },
+    {
+      "source": "mus_ear",
+      "target": "mus_composition",
+      "type": "related",
+      "reason": "好耳朵是作曲的质检员：能听出和声错误与旋律走音，才能不断修正自己的作品。"
+    },
+    {
+      "source": "mus_composition",
+      "target": "mus_production",
+      "type": "prerequisite",
+      "reason": "制作的对象是编曲完成的作品：先有分轨与配器方案，录音混音才有施展空间。"
+    },
+    {
+      "source": "mus_history_classical",
+      "target": "mus_harmony",
+      "type": "related",
+      "reason": "功能和声体系正是在巴洛克到浪漫主义时期发展成熟的，听古典作品就是读和声史。"
+    },
+    {
+      "source": "mus_history_pop",
+      "target": "mus_production",
+      "type": "related",
+      "reason": "流行乐风格的演变与录音技术互相成就：从磁带到数字工作站，制作方式定义了时代音色。"
+    },
+    {
+      "source": "mus_history_classical",
+      "target": "mus_history_pop",
+      "type": "related",
+      "reason": "流行音乐的和声语言与配器手法大量借鉴古典传统，两段历史是同一条河的上下游。"
+    },
+    {
+      "source": "mus_piano",
+      "target": "mus_composition",
+      "type": "related",
+      "reason": "钢琴是作曲家的草稿纸：88个键覆盖全部音域，试和弦、写旋律都离不开它。"
+    }
+  ]
+}

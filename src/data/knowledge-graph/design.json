@@ -1,0 +1,431 @@
+{
+  "subject": {
+    "id": "design",
+    "name": "视觉设计",
+    "color": "#f59e0b",
+    "description": "用形式与美感传达信息，打动眼睛与人心。",
+    "category": "艺术与生活"
+  },
+  "nodes": [
+    {
+      "id": "design_principles",
+      "subjectId": "design",
+      "name": "设计基础原则",
+      "plain_name": "好看背后的规律",
+      "description": "对齐、对比、重复、亲密性，让画面有秩序感。",
+      "difficulty": 2,
+      "keywords": [
+        "对齐",
+        "对比",
+        "重复",
+        "亲密性",
+        "设计原则",
+        "排版基础"
+      ],
+      "cognition_tags": [
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "design_color",
+      "subjectId": "design",
+      "name": "色彩理论",
+      "plain_name": "颜色怎么搭才不土",
+      "description": "色相、明度、饱和度、配色方案与情绪表达。",
+      "difficulty": 4,
+      "keywords": [
+        "色彩",
+        "配色",
+        "色相",
+        "饱和度",
+        "色彩理论",
+        "调色板"
+      ],
+      "cognition_tags": [
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "design_typography",
+      "subjectId": "design",
+      "name": "字体排版",
+      "plain_name": "文字也要会穿衣服",
+      "description": "字体分类、字号层级、行距字距，提升可读性与气质。",
+      "difficulty": 4,
+      "keywords": [
+        "字体",
+        "排版",
+        "字号",
+        "行距",
+        "字距",
+        "可读性",
+        "层级"
+      ],
+      "cognition_tags": [
+        "aesthetic",
+        "expression"
+      ]
+    },
+    {
+      "id": "design_layout",
+      "subjectId": "design",
+      "name": "版式与网格",
+      "plain_name": "把东西摆到对的位置",
+      "description": "网格系统、留白、视觉动线，构建专业的版面。",
+      "difficulty": 5,
+      "keywords": [
+        "网格",
+        "版式",
+        "留白",
+        "布局",
+        "视觉动线",
+        "栅格"
+      ],
+      "cognition_tags": [
+        "aesthetic",
+        "system"
+      ]
+    },
+    {
+      "id": "design_tool",
+      "subjectId": "design",
+      "name": "设计工具",
+      "plain_name": "把想法画出来",
+      "description": "Figma / Photoshop / Illustrator 的核心操作与协作。",
+      "difficulty": 4,
+      "keywords": [
+        "Figma",
+        "Photoshop",
+        "Illustrator",
+        "设计工具",
+        "PS",
+        "AI软件"
+      ],
+      "cognition_tags": [
+        "aesthetic",
+        "expression"
+      ]
+    },
+    {
+      "id": "design_ui",
+      "subjectId": "design",
+      "name": "UI 界面设计",
+      "plain_name": "做出好用又好看的界面",
+      "description": "组件、控件、设计规范、响应式，面向产品的界面设计。",
+      "difficulty": 6,
+      "keywords": [
+        "UI",
+        "界面设计",
+        "组件",
+        "设计规范",
+        "响应式",
+        "控件"
+      ],
+      "cognition_tags": [
+        "aesthetic",
+        "system"
+      ]
+    },
+    {
+      "id": "design_ux",
+      "subjectId": "design",
+      "name": "用户体验",
+      "plain_name": "让人用得顺心",
+      "description": "用户研究、信息架构、可用性、交互流程。",
+      "difficulty": 7,
+      "keywords": [
+        "用户体验",
+        "UX",
+        "用户研究",
+        "信息架构",
+        "可用性",
+        "交互"
+      ],
+      "cognition_tags": [
+        "system",
+        "expression"
+      ]
+    },
+    {
+      "id": "design_interaction",
+      "subjectId": "design",
+      "name": "交互设计",
+      "plain_name": "设计'点下去会发生什么'",
+      "description": "交互流程、状态反馈、手势与微交互——让用户的每次点击都得到恰到好处的回应。",
+      "difficulty": 6,
+      "keywords": [
+        "交互设计",
+        "交互",
+        "微交互",
+        "反馈",
+        "手势",
+        "原型",
+        "交互流程"
+      ],
+      "cognition_tags": [
+        "system",
+        "expression"
+      ]
+    },
+    {
+      "id": "design_brand",
+      "subjectId": "design",
+      "name": "品牌视觉设计",
+      "plain_name": "让人一眼认出'这是你家的'",
+      "description": "Logo、VI 系统、品牌色与调性——把品牌性格翻译成统一的视觉语言。",
+      "difficulty": 6,
+      "keywords": [
+        "品牌设计",
+        "Logo",
+        "VI",
+        "品牌视觉",
+        "标志设计",
+        "品牌识别",
+        "调性"
+      ],
+      "cognition_tags": [
+        "aesthetic",
+        "expression"
+      ]
+    },
+    {
+      "id": "design_motion",
+      "subjectId": "design",
+      "name": "动效设计",
+      "plain_name": "让界面'活'起来",
+      "description": "缓动曲线、转场动画、加载反馈——恰当的动效引导视线、缓解等待、传递愉悦。",
+      "difficulty": 7,
+      "keywords": [
+        "动效",
+        "动画",
+        "缓动",
+        "转场",
+        "微动效",
+        "motion",
+        "AE"
+      ],
+      "cognition_tags": [
+        "aesthetic",
+        "system"
+      ]
+    },
+    {
+      "id": "design_history",
+      "subjectId": "design",
+      "name": "设计史",
+      "plain_name": "好设计是怎么一路进化来的",
+      "description": "包豪斯、瑞士平面风格、极简主义——理解经典从何而来，才能知道潮流往哪去。",
+      "difficulty": 4,
+      "keywords": [
+        "设计史",
+        "包豪斯",
+        "瑞士风格",
+        "极简主义",
+        "现代主义",
+        "设计流派",
+        "艺术史"
+      ],
+      "cognition_tags": [
+        "aesthetic",
+        "abstract"
+      ]
+    },
+    {
+      "id": "design_icon_illustration",
+      "subjectId": "design",
+      "name": "图标与插画",
+      "plain_name": "画出有性格的小图形",
+      "description": "图标网格、线面风格、插画构图——用最小的图形面积传递最准确的信息和情绪。",
+      "difficulty": 5,
+      "keywords": [
+        "图标",
+        "插画",
+        "icon",
+        "矢量",
+        "图形设计",
+        "线性图标",
+        "扁平插画"
+      ],
+      "cognition_tags": [
+        "aesthetic",
+        "expression"
+      ]
+    },
+    {
+      "id": "design_system",
+      "subjectId": "design",
+      "name": "设计系统",
+      "plain_name": "设计界的'乐高说明书'",
+      "description": "设计令牌、组件库、规范文档——让几十人的团队做出像一个人设计的产品。",
+      "difficulty": 7,
+      "keywords": [
+        "设计系统",
+        "组件库",
+        "设计规范",
+        "Design System",
+        "设计令牌",
+        "Token",
+        "一致性"
+      ],
+      "cognition_tags": [
+        "system",
+        "abstract"
+      ]
+    },
+    {
+      "id": "design_graphic",
+      "subjectId": "design",
+      "name": "平面与海报设计",
+      "plain_name": "一张图讲清一件事",
+      "description": "海报构图、视觉冲击力、信息层级——在一秒的注视里抓住眼球并传达主旨。",
+      "difficulty": 5,
+      "keywords": [
+        "平面设计",
+        "海报",
+        "构图",
+        "视觉冲击",
+        "印刷",
+        "版面",
+        "宣传物料"
+      ],
+      "cognition_tags": [
+        "aesthetic",
+        "expression"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "design_principles",
+      "target": "design_color",
+      "type": "prerequisite",
+      "reason": "色彩运用的前提是理解对比和层级原则：配色方案本身就是对比原则的颜色维度应用。"
+    },
+    {
+      "source": "design_principles",
+      "target": "design_typography",
+      "type": "prerequisite",
+      "reason": "字体排版的字号层级、对齐方式直接来自设计四大原则（对齐、对比、重复、亲密性）。"
+    },
+    {
+      "source": "design_principles",
+      "target": "design_layout",
+      "type": "prerequisite",
+      "reason": "版式设计是四大原则在空间上的综合运用：网格是对齐的系统化，留白是亲密性的反面。"
+    },
+    {
+      "source": "design_color",
+      "target": "design_ui",
+      "type": "related",
+      "reason": "UI设计中按钮状态、主题色、反馈色等都依赖色彩理论：主色传达品牌，功能色引导操作。"
+    },
+    {
+      "source": "design_typography",
+      "target": "design_ui",
+      "type": "related",
+      "reason": "界面中90%的信息通过文字传达，字体层级决定了用户的阅读顺序和信息获取效率。"
+    },
+    {
+      "source": "design_layout",
+      "target": "design_ui",
+      "type": "prerequisite",
+      "reason": "UI界面的组件排列遵循网格系统，卡片布局、响应式断点都是版式理论在屏幕上的直接应用。"
+    },
+    {
+      "source": "design_tool",
+      "target": "design_ui",
+      "type": "prerequisite",
+      "reason": "UI设计需要在Figma等工具中输出高保真原型，不会工具就无法将设计想法转化为可交付物。"
+    },
+    {
+      "source": "design_ui",
+      "target": "design_ux",
+      "type": "prerequisite",
+      "reason": "用户体验建立在界面设计之上：先有可用的界面方案，才能进行用户研究和可用性测试来优化体验。"
+    },
+    {
+      "source": "design_ui",
+      "target": "design_interaction",
+      "type": "prerequisite",
+      "reason": "交互设计为界面注入行为逻辑：按钮的悬停、按下、禁用状态都要先有静态界面作为载体。"
+    },
+    {
+      "source": "design_interaction",
+      "target": "design_ux",
+      "type": "related",
+      "reason": "交互流程的顺畅度直接决定体验好坏：可用性测试中暴露的问题大多出在交互环节。"
+    },
+    {
+      "source": "design_color",
+      "target": "design_brand",
+      "type": "prerequisite",
+      "reason": "品牌色是品牌识别的核心资产：可口可乐红、蒂芙尼蓝的选择和延展全靠色彩理论支撑。"
+    },
+    {
+      "source": "design_typography",
+      "target": "design_brand",
+      "type": "related",
+      "reason": "品牌专属字体传达品牌性格：衬线体显经典，无衬线体显现代，字体选择是品牌调性的一半。"
+    },
+    {
+      "source": "design_ui",
+      "target": "design_motion",
+      "type": "prerequisite",
+      "reason": "动效是界面状态之间的过渡：先定义好静态界面的各个状态，才能设计它们之间的动画衔接。"
+    },
+    {
+      "source": "design_motion",
+      "target": "design_ux",
+      "type": "related",
+      "reason": "恰当的动效提升体验，过度的动效拖慢操作：动效时长与缓动的拿捏是体验打磨的细节功夫。"
+    },
+    {
+      "source": "design_history",
+      "target": "design_principles",
+      "type": "related",
+      "reason": "今天的设计原则源自历史沉淀：网格系统来自瑞士平面风格，'少即是多'来自现代主义运动。"
+    },
+    {
+      "source": "design_history",
+      "target": "design_brand",
+      "type": "related",
+      "reason": "经典品牌案例是设计史的活教材：理解不同流派的视觉语言能为品牌定位提供风格参照。"
+    },
+    {
+      "source": "design_tool",
+      "target": "design_icon_illustration",
+      "type": "prerequisite",
+      "reason": "图标和插画依赖矢量工具：钢笔工具、布尔运算是绘制规整图形的基本功。"
+    },
+    {
+      "source": "design_icon_illustration",
+      "target": "design_ui",
+      "type": "related",
+      "reason": "图标是界面的'文字'：导航栏、功能入口都靠图标传达含义，风格统一的图标库是 UI 的标配。"
+    },
+    {
+      "source": "design_ui",
+      "target": "design_system",
+      "type": "prerequisite",
+      "reason": "设计系统是 UI 设计的规模化：先做好单个界面的组件，再沉淀为可复用的规范和组件库。"
+    },
+    {
+      "source": "design_typography",
+      "target": "design_system",
+      "type": "related",
+      "reason": "字阶与行高规范是设计系统的基础层：字体令牌的定义直接沿用排版理论的层级体系。"
+    },
+    {
+      "source": "design_layout",
+      "target": "design_graphic",
+      "type": "prerequisite",
+      "reason": "海报设计是版式理论的集中演练：视觉动线引导读者先看标题再看正文，网格保证信息有序。"
+    },
+    {
+      "source": "design_graphic",
+      "target": "design_brand",
+      "type": "related",
+      "reason": "品牌物料（海报、包装、宣传册）是品牌视觉落地的主要载体，两者在实战中密不可分。"
+    }
+  ]
+}

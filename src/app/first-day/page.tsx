@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { ChatBubbleGroup } from "@/components/onboarding/ChatBubble";
 import { saveMilestone } from "@/lib/milestones/store";
 import { trackEvent } from "@/lib/profile/events";
+import { CosmicBackground } from "@/components/universe/CosmicBackground";
+import { CyberOverlay } from "@/components/universe/CyberOverlay";
 
 type ChatMessage = { role: "ai" | "user"; content: string };
 
@@ -32,7 +34,7 @@ export default function FirstDayPage() {
 
     const draftStr = sessionStorage.getItem("qicheng_draft") || localStorage.getItem("qicheng_draft_backup");
     if (!draftStr) {
-      router.replace("/plan");
+      router.replace("/plan/detail");
       return;
     }
 
@@ -129,13 +131,15 @@ export default function FirstDayPage() {
   }
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-stone-50 via-white to-stone-50/80">
+    <div className="flex h-screen bg-[#050510]">
+      <CosmicBackground />
+      <CyberOverlay />
       {/* Chat area */}
-      <div className="flex flex-1 flex-col">
-        <header className="border-b border-stone-100/80 px-6 py-4 backdrop-blur-sm bg-white/70">
+      <div className="relative z-10 flex flex-1 flex-col">
+        <header className="border-b border-cyan-400/15 px-6 py-4 backdrop-blur-xl bg-[#0a0a14]/60">
           <button
-            onClick={() => router.push("/plan")}
-            className="text-xs text-stone-400 hover:text-stone-600 mb-2 flex items-center gap-1 transition-colors"
+            onClick={() => router.push("/plan/detail")}
+            className="font-mono text-xs text-cyan-300/40 hover:text-cyan-200 mb-2 flex items-center gap-1 transition-colors"
           >
             <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -143,10 +147,11 @@ export default function FirstDayPage() {
             返回计划
           </button>
           <div className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-lg bg-stone-900 flex items-center justify-center text-white text-[10px] font-bold">D1</div>
+            <div className="w-7 h-7 border border-cyan-400/40 bg-cyan-400/10 flex items-center justify-center text-cyan-300 text-[10px] font-bold font-mono shadow-[0_0_12px_rgba(34,211,238,0.25)]">D1</div>
             <div>
-              <h1 className="text-sm font-semibold text-stone-800">第一天 · 从今天开始</h1>
-              <p className="text-[11px] text-stone-400">
+              <h1 className="cyber-glitch text-sm font-semibold text-white/90" data-text="第一天 · 从今天开始">第一天 · 从今天开始</h1>
+              <p className="mt-1 font-mono text-xs uppercase tracking-[0.3em] text-cyan-300/40">day_one // first_contact</p>
+              <p className="text-[11px] text-white/35">
                 做完一件小事，你就已经开始了
               </p>
             </div>
@@ -162,13 +167,13 @@ export default function FirstDayPage() {
             <div className="space-y-1.5">
               {streamingText.split("|||SPLIT|||").map((part, i, arr) => (
                 <div key={i} className="flex justify-start">
-                  <div className="max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed bg-stone-100 text-stone-800 whitespace-pre-wrap">
+                  <div className="cyber-panel max-w-[85%] px-4 py-2.5 text-sm leading-relaxed backdrop-blur-xl text-white/85 whitespace-pre-wrap">
                     {part.trim()}
                     {i === arr.length - 1 && (
                       <span className="inline-flex items-center ml-1.5 gap-0.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-stone-400 animate-bounce [animation-delay:0ms]" />
-                        <span className="w-1.5 h-1.5 rounded-full bg-stone-400 animate-bounce [animation-delay:150ms]" />
-                        <span className="w-1.5 h-1.5 rounded-full bg-stone-400 animate-bounce [animation-delay:300ms]" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/60 animate-bounce [animation-delay:0ms]" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/60 animate-bounce [animation-delay:150ms]" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/60 animate-bounce [animation-delay:300ms]" />
                       </span>
                     )}
                   </div>
@@ -179,12 +184,12 @@ export default function FirstDayPage() {
 
           {loading && !streamingText && (
             <div className="flex justify-start">
-              <div className="bg-stone-100 rounded-2xl px-4 py-2.5 text-sm text-stone-400 flex items-center gap-2">
+              <div className="cyber-panel backdrop-blur-xl px-4 py-2.5 text-sm font-mono text-cyan-300/60 flex items-center gap-2">
                 <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                 </svg>
-                思考中...
+                <span className="cyber-cursor">思考中...</span>
               </div>
             </div>
           )}
@@ -192,15 +197,15 @@ export default function FirstDayPage() {
           <div ref={chatEndRef} />
         </div>
 
-        <div className="border-t border-stone-100 px-6 py-4">
+        <div className="border-t border-cyan-400/15 px-6 py-4">
           {completed ? (
             <div className="text-center">
-              <p className="text-sm text-stone-600 mb-3">
+              <p className="cyber-neon text-sm text-cyan-100/80 mb-3">
                 第一天完成 ✓ 这个记录已经保存了。
               </p>
               <button
-                onClick={() => router.push("/plan")}
-                className="rounded-lg bg-stone-800 px-6 py-3 text-sm font-medium text-white hover:bg-stone-700 transition-colors"
+                onClick={() => router.push("/plan/detail")}
+                className="border border-cyan-400/40 bg-cyan-400/10 px-6 py-3 text-sm font-medium font-mono text-cyan-200 hover:bg-cyan-400/20 transition-all shadow-[0_0_16px_rgba(34,211,238,0.15)]"
               >
                 回到我的计划
               </button>
@@ -214,12 +219,12 @@ export default function FirstDayPage() {
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="说说你做了什么..."
                   disabled={loading}
-                  className="flex-1 rounded-lg border border-stone-200 bg-white px-4 py-2.5 text-sm text-stone-800 placeholder:text-stone-400 focus:border-stone-400 focus:outline-none disabled:opacity-50"
+                  className="flex-1 border border-cyan-400/20 bg-cyan-400/[0.03] px-4 py-2.5 text-sm text-white/85 placeholder:text-white/25 focus:border-cyan-400/50 focus:shadow-[0_0_16px_rgba(34,211,238,0.1)] focus:outline-none disabled:opacity-50 transition-all"
                 />
                 <button
                   type="submit"
                   disabled={loading || !input.trim()}
-                  className="rounded-lg bg-stone-800 px-4 py-2.5 text-sm font-medium text-white hover:bg-stone-700 transition-colors disabled:opacity-50"
+                  className="border border-cyan-400/40 bg-cyan-400/10 px-4 py-2.5 text-sm font-medium font-mono text-cyan-200 hover:bg-cyan-400/20 transition-all disabled:opacity-50 shadow-[0_0_16px_rgba(34,211,238,0.15)]"
                 >
                   发送
                 </button>
@@ -227,7 +232,7 @@ export default function FirstDayPage() {
               {messages.length >= 4 && (
                 <button
                   onClick={handleComplete}
-                  className="mt-3 w-full rounded-lg border border-stone-200 px-4 py-2 text-xs text-stone-500 hover:bg-stone-50 transition-colors"
+                  className="mt-3 w-full border border-fuchsia-400/25 bg-fuchsia-500/[0.05] px-4 py-2 font-mono text-xs text-fuchsia-100/60 hover:border-fuchsia-400/50 hover:bg-fuchsia-500/15 transition-all"
                 >
                   我今天完成了，记录这一刻
                 </button>
@@ -238,28 +243,29 @@ export default function FirstDayPage() {
       </div>
 
       {/* Right: motivation panel */}
-      <div className="w-[320px] border-l border-stone-200 bg-white px-6 py-6 max-lg:hidden overflow-y-auto">
-        <h2 className="text-sm font-semibold text-stone-500 uppercase tracking-wide mb-4">今天的意义</h2>
+      <div className="relative z-10 w-[320px] border-l border-cyan-400/15 bg-[#0a0a14]/50 backdrop-blur-xl px-6 py-6 max-lg:hidden overflow-y-auto">
+        <h2 className="cyber-neon font-mono text-sm font-semibold text-cyan-300/80 uppercase tracking-wide mb-3">今天的意义</h2>
+        <div className="cyber-dataline mb-4" />
 
         <div className="space-y-4">
-          <div className="rounded-lg bg-stone-50 p-4">
-            <p className="text-xs font-medium text-stone-500 mb-1">⚡ 物质层面</p>
-            <p className="text-sm text-stone-700">做完一件事，手上多一个"东西"——一段代码、一条记录、一张截图。</p>
+          <div className="cyber-panel p-4">
+            <p className="text-xs font-medium text-cyan-200/50 mb-1">⚡ 物质层面</p>
+            <p className="text-sm text-white/75">做完一件事，手上多一个"东西"——一段代码、一条记录、一张截图。</p>
           </div>
 
-          <div className="rounded-lg bg-stone-50 p-4">
-            <p className="text-xs font-medium text-stone-500 mb-1">🤝 社交层面</p>
-            <p className="text-sm text-stone-700">给一个人看。不需要解释，就说"我开始了"。一旦有人知道，放弃的成本就高了。</p>
+          <div className="cyber-panel p-4">
+            <p className="text-xs font-medium text-cyan-200/50 mb-1">🤝 社交层面</p>
+            <p className="text-sm text-white/75">给一个人看。不需要解释，就说"我开始了"。一旦有人知道，放弃的成本就高了。</p>
           </div>
 
-          <div className="rounded-lg bg-stone-50 p-4">
-            <p className="text-xs font-medium text-stone-500 mb-1">📖 叙事层面</p>
-            <p className="text-sm text-stone-700">今天是你故事的第一页。4 周后你会回来看这个记录，然后说："当初连这都不会。"</p>
+          <div className="cyber-panel p-4">
+            <p className="text-xs font-medium text-cyan-200/50 mb-1">📖 叙事层面</p>
+            <p className="text-sm text-white/75">今天是你故事的第一页。4 周后你会回来看这个记录，然后说："当初连这都不会。"</p>
           </div>
         </div>
 
-        <div className="mt-6 p-4 border border-stone-100 rounded-lg">
-          <p className="text-xs text-stone-400 italic leading-relaxed">
+        <div className="cyber-panel cyber-corner mt-6 p-4">
+          <p className="text-xs text-fuchsia-200/50 italic leading-relaxed">
             "伟大都以渺小启程。<br />今天不需要完美，只需要开始。"
           </p>
         </div>

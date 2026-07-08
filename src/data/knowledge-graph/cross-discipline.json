@@ -1,0 +1,665 @@
+{
+  "description": "跨学科关联边：基于学术共识的跨领域知识联系",
+  "edges": [
+    {
+      "source": "math_linear_algebra",
+      "target": "prog_algorithm",
+      "type": "cross",
+      "reason": "线性代数的矩阵运算是图算法（PageRank）、动态规划优化、计算几何的数学基础。——《Introduction to Algorithms》(CLRS) Ch.28"
+    },
+    {
+      "source": "math_discrete",
+      "target": "prog_data_structure",
+      "type": "cross",
+      "reason": "离散数学的图论直接对应树、图等数据结构；集合论是哈希表的理论基础。——Rosen《Discrete Mathematics and Its Applications》"
+    },
+    {
+      "source": "math_discrete",
+      "target": "prog_algorithm",
+      "type": "cross",
+      "reason": "组合计数用于算法复杂度分析，图论是BFS/DFS/最短路径等经典算法的理论框架。——Knuth《The Art of Computer Programming》"
+    },
+    {
+      "source": "math_probability",
+      "target": "ds_statistics",
+      "type": "cross",
+      "reason": "概率论是统计推断的数学基础：从大数定律到中心极限定理，统计方法均建立在概率公理之上。——Casella & Berger《Statistical Inference》"
+    },
+    {
+      "source": "math_linear_algebra",
+      "target": "ds_ml_basics",
+      "type": "cross",
+      "reason": "机器学习中PCA降维、SVD分解、神经网络的前向传播本质都是矩阵乘法。——Goodfellow《Deep Learning》Ch.2"
+    },
+    {
+      "source": "math_optimization",
+      "target": "ds_ml_basics",
+      "type": "cross",
+      "reason": "模型训练的核心是最优化：梯度下降最小化损失函数，凸优化保证全局最优。——Boyd《Convex Optimization》"
+    },
+    {
+      "source": "math_calculus",
+      "target": "phys_mechanics",
+      "type": "cross",
+      "reason": "牛顿力学本身就是用微积分表述的：速度是位移的导数，加速度是速度的导数，F=ma是微分方程。——Newton《Principia Mathematica》(1687)"
+    },
+    {
+      "source": "math_calculus",
+      "target": "phys_electromagnetism",
+      "type": "cross",
+      "reason": "麦克斯韦方程组是偏微分方程，电磁场的散度、旋度都是微积分概念。——Griffiths《Introduction to Electrodynamics》"
+    },
+    {
+      "source": "math_linear_algebra",
+      "target": "phys_quantum",
+      "type": "cross",
+      "reason": "量子力学在Hilbert空间中描述状态向量，可观测量是算符（矩阵），测量是特征值问题。——Dirac《The Principles of Quantum Mechanics》"
+    },
+    {
+      "source": "math_probability",
+      "target": "econ_econometrics",
+      "type": "cross",
+      "reason": "计量经济学的OLS回归、假设检验、置信区间全部建立在概率论和数理统计之上。——Wooldridge《Introductory Econometrics》"
+    },
+    {
+      "source": "math_probability",
+      "target": "econ_finance",
+      "type": "cross",
+      "reason": "金融定价模型（Black-Scholes、CAPM）、风险度量（VaR）的底层是随机过程和概率分布。——Hull《Options, Futures, and Other Derivatives》"
+    },
+    {
+      "source": "econ_game_theory",
+      "target": "math_optimization",
+      "type": "cross",
+      "reason": "纳什均衡的求解本质是多人优化问题：每个玩家在约束下最大化自身收益函数。——Nash (1950) 《Non-Cooperative Games》"
+    },
+    {
+      "source": "psy_cognitive",
+      "target": "design_ux",
+      "type": "cross",
+      "reason": "UX设计的核心原则来自认知心理学：Miller的7±2法则、Hick定律、格式塔原理都直接指导界面设计。——Norman《The Design of Everyday Things》"
+    },
+    {
+      "source": "psy_cognitive",
+      "target": "econ_behavioral",
+      "type": "cross",
+      "reason": "行为经济学由认知心理学家Kahneman和Tversky创立，前景理论、锚定效应等均源于认知偏差研究。——Kahneman《Thinking, Fast and Slow》"
+    },
+    {
+      "source": "psy_educational",
+      "target": "design_ux",
+      "type": "cross",
+      "reason": "教育心理学的认知负荷理论、脚手架理论直接影响交互设计中的信息架构和引导流程设计。——Sweller (1988) Cognitive Load Theory"
+    },
+    {
+      "source": "psy_social",
+      "target": "econ_behavioral",
+      "type": "cross",
+      "reason": "社会心理学的从众效应、社会认同理论解释了行为经济学中的羊群效应和市场泡沫现象。——Cialdini《Influence: The Psychology of Persuasion》"
+    },
+    {
+      "source": "ds_data_viz",
+      "target": "design_color",
+      "type": "cross",
+      "reason": "数据可视化直接应用色彩理论：色相区分类别、明度表示数值、色盲友好配色等。——Tufte《The Visual Display of Quantitative Information》"
+    },
+    {
+      "source": "prog_web_frontend",
+      "target": "design_ux",
+      "type": "cross",
+      "reason": "前端开发是UX设计的技术实现层：交互原型、响应式布局、动画反馈都需要前端技术落地。——行业共识"
+    },
+    {
+      "source": "prog_web_frontend",
+      "target": "design_layout",
+      "type": "cross",
+      "reason": "CSS Flexbox/Grid布局系统直接对应平面设计的栅格系统和排版理论。——Müller-Brockmann《Grid Systems in Graphic Design》"
+    },
+    {
+      "source": "eng_academic",
+      "target": "ds_statistics",
+      "type": "cross",
+      "reason": "统计学的研究成果以英文论文为主要载体，阅读和撰写统计论文需要学术英语能力。——学术写作规范共识"
+    },
+    {
+      "source": "psy_neuroscience",
+      "target": "phys_electromagnetism",
+      "type": "cross",
+      "reason": "神经科学研究大脑的电信号传导（动作电位、EEG），其底层物理机制是生物电磁学。——Kandel《Principles of Neural Science》"
+    },
+    {
+      "source": "econ_econometrics",
+      "target": "ds_statistics",
+      "type": "cross",
+      "reason": "计量经济学和统计学共享回归分析、假设检验等核心方法，区别仅在应用场景和因果推断侧重。——Angrist《Mostly Harmless Econometrics》"
+    },
+    {
+      "source": "prog_database",
+      "target": "ds_statistics",
+      "type": "cross",
+      "reason": "统计分析的数据存储、查询、聚合操作依赖数据库技术，SQL本身就是数据分析的重要工具。——行业实践共识"
+    },
+    {
+      "source": "math_stochastic_processes",
+      "target": "econ_finance",
+      "type": "cross",
+      "reason": "Black-Scholes期权定价公式建立在几何布朗运动和伊藤引理之上，金融工程的核心数学就是随机过程。——Hull《Options, Futures, and Other Derivatives》Ch.14"
+    },
+    {
+      "source": "math_pde",
+      "target": "phys_electromagnetism",
+      "type": "cross",
+      "reason": "麦克斯韦方程组本质是一阶偏微分方程组，波动方程描述电磁波传播，求解电磁场就是解PDE边值问题。——Griffiths《Introduction to Electrodynamics》"
+    },
+    {
+      "source": "math_functional_analysis",
+      "target": "phys_quantum",
+      "type": "cross",
+      "reason": "量子力学的数学基础正是泛函分析：态是Hilbert空间中的向量，可观测量是自伴算子，谱定理给出测量值。——von Neumann《Mathematical Foundations of Quantum Mechanics》"
+    },
+    {
+      "source": "math_numerical_analysis",
+      "target": "prog_algorithm",
+      "type": "cross",
+      "reason": "数值算法（牛顿迭代、高斯消元、FFT）是算法设计的重要分支，浮点误差分析决定程序的数值稳定性。——《Numerical Recipes》"
+    },
+    {
+      "source": "math_abstract_algebra",
+      "target": "prog_algorithm",
+      "type": "cross",
+      "reason": "RSA加密基于数论与群论（欧拉定理），椭圆曲线密码、纠错码（Reed-Solomon）都是抽象代数在计算中的直接应用。——Katz & Lindell《Introduction to Modern Cryptography》"
+    },
+    {
+      "source": "math_stochastic_processes",
+      "target": "ds_ml_basics",
+      "type": "cross",
+      "reason": "马尔可夫链是强化学习（MDP）与MCMC采样的理论基础，隐马尔可夫模型曾是语音识别的主流方法。——Sutton & Barto《Reinforcement Learning》"
+    },
+    {
+      "source": "math_differential_geometry",
+      "target": "phys_relativity",
+      "type": "cross",
+      "reason": "广义相对论把引力描述为时空流形的曲率，爱因斯坦场方程用黎曼几何的语言书写。——Misner, Thorne & Wheeler《Gravitation》"
+    },
+    {
+      "source": "chem_atomic_structure",
+      "target": "phys_quantum_intro",
+      "type": "cross",
+      "reason": "电子轨道、能级跃迁、电子云的概念全部来自量子力学：薛定谔方程的解就是原子轨道。——Atkins《Physical Chemistry》"
+    },
+    {
+      "source": "chem_thermodynamics",
+      "target": "phys_thermo_laws",
+      "type": "cross",
+      "reason": "化学热力学（焓、熵、吉布斯自由能）直接建立在热力学三定律之上，判断反应能否自发就是算 ΔG。——Atkins《Physical Chemistry》"
+    },
+    {
+      "source": "chem_kinetics",
+      "target": "math_ode",
+      "type": "cross",
+      "reason": "反应速率方程本质是微分方程：一级反应的指数衰减、连串反应的耦合方程组都靠 ODE 求解。——Levine《Physical Chemistry》"
+    },
+    {
+      "source": "bio_dna_molecular_genetics",
+      "target": "chem_functional_groups",
+      "type": "cross",
+      "reason": "DNA 双螺旋靠碱基间氢键维系，磷酸二酯键、糖苷键都是有机官能团化学的直接应用。——Watson & Crick (1953)"
+    },
+    {
+      "source": "bio_neurobiology",
+      "target": "psy_neuroscience",
+      "type": "cross",
+      "reason": "心理学的神经科学分支以神经生物学为生理基础：神经元放电、突触可塑性解释记忆与学习。——Kandel《Principles of Neural Science》"
+    },
+    {
+      "source": "bio_ecosystem",
+      "target": "env_ecology_basics",
+      "type": "cross",
+      "reason": "环境科学的生态学基础直接来自生物学的生态系统理论：能量流动、物质循环、营养级联。——Odum《Fundamentals of Ecology》"
+    },
+    {
+      "source": "med_physiology",
+      "target": "bio_animal_physiology",
+      "type": "cross",
+      "reason": "医学生理学是动物生理学在人体上的深化：循环、呼吸、神经调节的机制一脉相承。——Guyton《Textbook of Medical Physiology》"
+    },
+    {
+      "source": "med_pharmacology",
+      "target": "chem_organic",
+      "type": "cross",
+      "reason": "药物设计的核心是有机化学：药物分子的官能团决定它与受体的结合方式与代谢途径。——《Foye's Principles of Medicinal Chemistry》"
+    },
+    {
+      "source": "med_nutrition",
+      "target": "sport_nutrition",
+      "type": "cross",
+      "reason": "运动营养学是营养学在训练场景的应用：宏量营养素配比、补剂时机都源于代谢生理学。——ACSM 立场声明"
+    },
+    {
+      "source": "med_anatomy",
+      "target": "sport_anatomy",
+      "type": "cross",
+      "reason": "运动解剖学与医学解剖学共享同一套肌肉骨骼系统知识，训练动作设计依赖肌肉起止点知识。——《Gray's Anatomy》"
+    },
+    {
+      "source": "astro_celestial_mechanics",
+      "target": "phys_newton_laws",
+      "type": "cross",
+      "reason": "开普勒三定律可由牛顿万有引力定律严格推出，天体力学就是牛顿力学在天体尺度的应用。——Newton《Principia》"
+    },
+    {
+      "source": "astro_cosmology",
+      "target": "phys_relativity",
+      "type": "cross",
+      "reason": "现代宇宙学建立在广义相对论之上：弗里德曼方程描述宇宙膨胀，引力透镜验证时空弯曲。——Weinberg《Cosmology》"
+    },
+    {
+      "source": "astro_stellar_evolution",
+      "target": "phys_quantum",
+      "type": "cross",
+      "reason": "恒星核聚变靠量子隧穿效应突破库仑势垒，白矮星靠电子简并压（泡利不相容原理）支撑。——Chandrasekhar (1931)"
+    },
+    {
+      "source": "geo_atmosphere_climate",
+      "target": "env_climate_change",
+      "type": "cross",
+      "reason": "理解气候变化必须先懂大气环流与气候系统：温室效应、碳循环、海气相互作用是共同基础。——IPCC 评估报告"
+    },
+    {
+      "source": "geo_cartography_gis",
+      "target": "ds_data_viz",
+      "type": "cross",
+      "reason": "GIS 本质是空间数据的可视化与分析：热力图、等值线图是数据可视化在地理空间的应用。——《Geographic Information Science and Systems》"
+    },
+    {
+      "source": "env_energy_sustainability",
+      "target": "phys_thermodynamics",
+      "type": "cross",
+      "reason": "能源转换效率的上限由热力学第二定律（卡诺效率）决定，评估能源方案绕不开热力学。——《Sustainable Energy - Without the Hot Air》"
+    },
+    {
+      "source": "ee_circuit_analysis",
+      "target": "phys_circuits",
+      "type": "cross",
+      "reason": "电路分析的基尔霍夫定律、欧姆定律与物理学电路同源，工程电路是物理电路的系统化深入。——Nilsson《Electric Circuits》"
+    },
+    {
+      "source": "ee_electromagnetics",
+      "target": "phys_electromagnetism",
+      "type": "cross",
+      "reason": "工程电磁场直接以麦克斯韦方程组为出发点：天线、波导、电磁兼容都是其工程应用。——Pozar《Microwave Engineering》"
+    },
+    {
+      "source": "ee_signals_systems",
+      "target": "math_complex_analysis",
+      "type": "cross",
+      "reason": "傅里叶变换与拉普拉斯变换在复平面上展开：极点零点分析、频率响应都依赖复变函数。——Oppenheim《Signals and Systems》"
+    },
+    {
+      "source": "ee_embedded_system",
+      "target": "prog_computer_org",
+      "type": "cross",
+      "reason": "嵌入式开发要直接面对寄存器、中断、总线时序，计算机组成原理是看懂芯片手册的前提。——《Computer Organization and Design》"
+    },
+    {
+      "source": "ee_digital_circuit",
+      "target": "prog_computer_org",
+      "type": "cross",
+      "reason": "CPU 就是用门电路、触发器、时序逻辑搭出来的：数字电路是计算机组成的硬件底座。——Harris《Digital Design and Computer Architecture》"
+    },
+    {
+      "source": "mech_theoretical_mechanics",
+      "target": "phys_newton_laws",
+      "type": "cross",
+      "reason": "工程理论力学（静力学、运动学、动力学）是牛顿定律在工程对象上的系统应用。——Hibbeler《Engineering Mechanics》"
+    },
+    {
+      "source": "mech_thermo_fluid",
+      "target": "phys_thermo_laws",
+      "type": "cross",
+      "reason": "发动机循环、换热器设计的理论基础就是热力学定律与传热学。——Cengel《Thermodynamics: An Engineering Approach》"
+    },
+    {
+      "source": "mech_control_theory",
+      "target": "math_ode",
+      "type": "cross",
+      "reason": "控制系统用微分方程建模，传递函数是 ODE 的拉普拉斯变换形式，稳定性分析看特征根。——Ogata《Modern Control Engineering》"
+    },
+    {
+      "source": "mech_robotics",
+      "target": "ai_rl",
+      "type": "cross",
+      "reason": "机器人运动控制正越来越多采用强化学习：从波士顿动力到机械臂抓取，RL 替代了部分传统控制。——Levine et al. (2016)"
+    },
+    {
+      "source": "ai_ml",
+      "target": "ds_ml_basics",
+      "type": "cross",
+      "reason": "机器学习同时是 AI 的核心方法与数据科学的建模工具，两个学科在此完全交汇。——Mitchell《Machine Learning》"
+    },
+    {
+      "source": "ai_deep",
+      "target": "ds_deep_learning",
+      "type": "cross",
+      "reason": "深度学习架构（CNN/RNN/Transformer）既是 AI 的前沿也是数据科学的高级建模手段。——Goodfellow《Deep Learning》"
+    },
+    {
+      "source": "ai_nn",
+      "target": "math_linear_algebra",
+      "type": "cross",
+      "reason": "神经网络的前向传播就是矩阵乘法链，反向传播是链式法则求导，全程线性代数。——Goodfellow《Deep Learning》Ch.2"
+    },
+    {
+      "source": "ai_rl",
+      "target": "math_probability",
+      "type": "cross",
+      "reason": "强化学习的马尔可夫决策过程、值函数期望、探索策略全部建立在概率论之上。——Sutton & Barto《Reinforcement Learning》"
+    },
+    {
+      "source": "ai_llm",
+      "target": "ling_comp",
+      "type": "cross",
+      "reason": "大语言模型是计算语言学的最新形态：分词、句法、语义表示的传统问题被统一进 Transformer。——Jurafsky《Speech and Language Processing》"
+    },
+    {
+      "source": "ai_ethics",
+      "target": "phil_ethics",
+      "type": "cross",
+      "reason": "AI 伦理的核心框架（功利主义、义务论、美德伦理）直接取自规范伦理学。——Russell《Human Compatible》"
+    },
+    {
+      "source": "phil_logic",
+      "target": "math_discrete",
+      "type": "cross",
+      "reason": "命题逻辑与谓词逻辑既是哲学的形式逻辑也是离散数学的开篇章节，推理规则完全同源。——Rosen《Discrete Mathematics》"
+    },
+    {
+      "source": "phil_science",
+      "target": "psy_research_methods",
+      "type": "cross",
+      "reason": "可证伪性、范式转换等科学哲学概念直接塑造了心理学研究方法论中的假设检验思想。——Popper《The Logic of Scientific Discovery》"
+    },
+    {
+      "source": "phil_aesthetics",
+      "target": "art_history_west",
+      "type": "cross",
+      "reason": "美学理论与艺术史互为表里：康德的审美判断、黑格尔的艺术终结论都在艺术史中找例证。——Gombrich《The Story of Art》"
+    },
+    {
+      "source": "phil_political",
+      "target": "pol_thought",
+      "type": "cross",
+      "reason": "政治思想史的研究对象（柏拉图、霍布斯、罗尔斯）正是政治哲学的经典文本。——Strauss《History of Political Philosophy》"
+    },
+    {
+      "source": "phil_neo_confucianism",
+      "target": "hist_tang_song",
+      "type": "cross",
+      "reason": "宋明理学的兴起离不开唐宋变革的历史语境：科举制度、士大夫阶层与书院制度。——余英时《朱熹的历史世界》"
+    },
+    {
+      "source": "hist_globalization",
+      "target": "econ_international_trade",
+      "type": "cross",
+      "reason": "全球化史与国际贸易理论互证：大航海、关税同盟、WTO 的历史就是比较优势理论的实践史。——《Globalization: A Very Short Introduction》"
+    },
+    {
+      "source": "hist_china_modern",
+      "target": "pol_chinese_thought",
+      "type": "cross",
+      "reason": "中国近现代史与近代政治思想（维新、革命、共和）相互交织，思想史是历史的另一面。——李泽厚《中国近代思想史论》"
+    },
+    {
+      "source": "lit_classical_poetry",
+      "target": "hist_tang_song",
+      "type": "cross",
+      "reason": "唐诗宋词的鉴赏离不开时代背景：安史之乱之于杜甫、靖康之变之于李清照。——钱穆《国史大纲》"
+    },
+    {
+      "source": "lit_theory",
+      "target": "phil_aesthetics",
+      "type": "cross",
+      "reason": "文学理论的核心问题（什么是美、何为艺术价值）来自美学，接受美学、阐释学均为哲学分支。——Eagleton《Literary Theory》"
+    },
+    {
+      "source": "lit_narratology",
+      "target": "film_script",
+      "type": "cross",
+      "reason": "剧本创作直接套用叙事学工具：三幕结构、视角选择、不可靠叙事者在影视中通用。——McKee《Story》"
+    },
+    {
+      "source": "ling_phonetics",
+      "target": "eng_pronunciation",
+      "type": "cross",
+      "reason": "英语发音训练的理论基础是语音学：音标、发音部位、连读弱读规则全部来自语音学描述。——Roach《English Phonetics and Phonology》"
+    },
+    {
+      "source": "ling_sla",
+      "target": "eng_conversation",
+      "type": "cross",
+      "reason": "二语习得理论（可理解输入、输出假说）直接指导口语学习方法：大量输入+低焦虑输出。——Krashen 输入假说"
+    },
+    {
+      "source": "ling_socio",
+      "target": "soc_intro",
+      "type": "cross",
+      "reason": "社会语言学是语言学与社会学的交叉学科：方言、语码转换、语言身份都需要社会学视角。——Labov 的社会分层研究"
+    },
+    {
+      "source": "law_jurisprudence",
+      "target": "phil_political",
+      "type": "cross",
+      "reason": "法理学的核心论辩（自然法 vs 实证法、正义论）就是政治哲学的延伸。——Hart《The Concept of Law》、Rawls《A Theory of Justice》"
+    },
+    {
+      "source": "law_commercial",
+      "target": "mgmt_entrepreneurship",
+      "type": "cross",
+      "reason": "创业绕不开公司法：股权结构、有限责任、合伙协议是商业模式落地的法律骨架。——创业实务共识"
+    },
+    {
+      "source": "pol_political_economy",
+      "target": "econ_macro",
+      "type": "cross",
+      "reason": "政治经济学研究政策如何被政治过程塑造：财政、货币政策的选择从来不只是经济问题。——Acemoglu《Why Nations Fail》"
+    },
+    {
+      "source": "pol_ir",
+      "target": "hist_world_contemporary",
+      "type": "cross",
+      "reason": "国际关系理论以现代世界史为实验场：两次大战检验现实主义，冷战检验威慑理论。——Kissinger《Diplomacy》"
+    },
+    {
+      "source": "soc_methods",
+      "target": "psy_research_methods",
+      "type": "cross",
+      "reason": "问卷设计、抽样、信效度检验是社会学与心理学共享的实证研究方法论。——Babbie《The Practice of Social Research》"
+    },
+    {
+      "source": "soc_network",
+      "target": "media_new_media",
+      "type": "cross",
+      "reason": "网络社会理论与新媒体研究共同解释平台社会：弱连接、信息茧房、病毒式传播。——Castells《The Rise of the Network Society》"
+    },
+    {
+      "source": "edu_learning",
+      "target": "psy_cognitive",
+      "type": "cross",
+      "reason": "学习科学建立在认知心理学之上：工作记忆容量、间隔效应、提取练习直接决定教学设计。——《How People Learn》(NRC)"
+    },
+    {
+      "source": "edu_psych",
+      "target": "psy_educational",
+      "type": "cross",
+      "reason": "教育心理学同属教育学与心理学：动机理论、皮亚杰与维果茨基的发展观是两边共同的核心。——Woolfolk《Educational Psychology》"
+    },
+    {
+      "source": "edu_assessment",
+      "target": "ds_statistics",
+      "type": "cross",
+      "reason": "教育测评的信度、效度、项目反应理论（IRT）全部是统计方法的应用。——《Educational Measurement》(NCME)"
+    },
+    {
+      "source": "media_mass_theory",
+      "target": "psy_social",
+      "type": "cross",
+      "reason": "传播效果研究（议程设置、沉默的螺旋）的心理机制来自社会心理学的态度与从众研究。——McCombs & Shaw (1972)"
+    },
+    {
+      "source": "media_advertising",
+      "target": "mkt_communication",
+      "type": "cross",
+      "reason": "广告学是传播学与市场营销的交汇点：创意策略服务于品牌定位，媒介投放服务于触达。——Kotler《Marketing Management》"
+    },
+    {
+      "source": "media_research",
+      "target": "soc_methods",
+      "type": "cross",
+      "reason": "受众调查、内容分析等传播研究方法直接借自社会研究方法论。——Wimmer《Mass Media Research》"
+    },
+    {
+      "source": "mgmt_decision",
+      "target": "econ_game_theory",
+      "type": "cross",
+      "reason": "商业决策常是多方博弈：定价竞争、谈判策略、拍卖设计都用博弈论建模。——Dixit《Thinking Strategically》"
+    },
+    {
+      "source": "mgmt_org_behavior",
+      "target": "psy_social",
+      "type": "cross",
+      "reason": "组织行为学的群体动力、领导力、激励理论大量取自社会心理学实验研究。——Robbins《Organizational Behavior》"
+    },
+    {
+      "source": "mgmt_operations",
+      "target": "math_optimization",
+      "type": "cross",
+      "reason": "运营管理的排产、库存、物流问题是线性规划与整数规划的经典应用场景。——Hillier《Introduction to Operations Research》"
+    },
+    {
+      "source": "fin_tvm",
+      "target": "econ_finance",
+      "type": "cross",
+      "reason": "货币时间价值是金融学与金融经济学共同的第一原理：贴现现金流是一切估值的起点。——Bodie《Investments》"
+    },
+    {
+      "source": "fin_behavioral",
+      "target": "psy_thinking_decision",
+      "type": "cross",
+      "reason": "行为金融的损失厌恶、过度自信、处置效应全部源于决策心理学的认知偏差研究。——Thaler《Misbehaving》"
+    },
+    {
+      "source": "fin_derivatives",
+      "target": "math_stochastic_processes",
+      "type": "cross",
+      "reason": "期权定价的 Black-Scholes 模型建立在几何布朗运动与伊藤引理之上。——Hull《Options, Futures, and Other Derivatives》"
+    },
+    {
+      "source": "mkt_consumer",
+      "target": "psy_social",
+      "type": "cross",
+      "reason": "消费者行为学的态度改变、参照群体、说服路径模型（ELM）来自社会心理学。——Solomon《Consumer Behavior》"
+    },
+    {
+      "source": "mkt_research",
+      "target": "ds_statistics",
+      "type": "cross",
+      "reason": "市场调研的抽样设计、显著性检验、联合分析全是统计方法的商业应用。——Malhotra《Marketing Research》"
+    },
+    {
+      "source": "mkt_digital",
+      "target": "media_new_media",
+      "type": "cross",
+      "reason": "数字营销依托新媒体平台生态：算法分发、KOL 传播、私域流量的逻辑来自新媒体研究。——行业实践共识"
+    },
+    {
+      "source": "mkt_pricing",
+      "target": "econ_supply_demand",
+      "type": "cross",
+      "reason": "定价策略的底层是价格弹性与供需关系：撇脂定价、渗透定价都是供需曲线上的选择。——Nagle《The Strategy and Tactics of Pricing》"
+    },
+    {
+      "source": "mus_theory",
+      "target": "math_number_theory",
+      "type": "cross",
+      "reason": "十二平均律把八度按 2^(1/12) 等比分割，和声协和度对应频率的简单整数比——毕达哥拉斯的发现。——《Music: A Mathematical Offering》"
+    },
+    {
+      "source": "mus_production",
+      "target": "ee_signals_systems",
+      "type": "cross",
+      "reason": "混音与母带处理就是信号处理：EQ 是滤波器、压缩是动态范围控制、混响是卷积。——《Mastering Audio》(Bob Katz)"
+    },
+    {
+      "source": "art_perspective",
+      "target": "math_geometry",
+      "type": "cross",
+      "reason": "文艺复兴透视法是射影几何的起源：灭点、视平线的规律后来被数学家严格化。——Alberti《On Painting》(1435)"
+    },
+    {
+      "source": "art_color",
+      "target": "design_color",
+      "type": "cross",
+      "reason": "绘画色彩与设计色彩共享同一套色彩理论：色相环、互补对比、冷暖关系。——Itten《The Art of Color》"
+    },
+    {
+      "source": "art_renaissance",
+      "target": "hist_world_early_modern",
+      "type": "cross",
+      "reason": "文艺复兴艺术是近代早期史的文化面向：美第奇家族赞助、宗教改革都直接塑造艺术走向。——Burckhardt《意大利文艺复兴时期的文化》"
+    },
+    {
+      "source": "film_language",
+      "target": "media_audiovisual",
+      "type": "cross",
+      "reason": "视听语言（景别、蒙太奇、声画关系）既是电影创作工具也是视听传播的分析框架。——Bordwell《Film Art》"
+    },
+    {
+      "source": "film_photo_basic",
+      "target": "phys_geometric_optics",
+      "type": "cross",
+      "reason": "光圈、焦距、景深的成像规律就是几何光学：薄透镜公式直接解释虚化与对焦。——《Optics》(Hecht)"
+    },
+    {
+      "source": "film_post",
+      "target": "design_color",
+      "type": "cross",
+      "reason": "影视调色直接运用色彩理论：互补色对比（橙青色调）、色彩情绪映射都来自色彩学。——《Color Correction Handbook》"
+    },
+    {
+      "source": "arch_structure",
+      "target": "mech_material_mechanics",
+      "type": "cross",
+      "reason": "建筑结构计算的核心是材料力学：梁的弯矩、柱的屈曲、应力应变分析。——《Structures: Or Why Things Don't Fall Down》"
+    },
+    {
+      "source": "arch_history_west",
+      "target": "art_history_west",
+      "type": "cross",
+      "reason": "西方建筑史与艺术史共享风格谱系：哥特、巴洛克、现代主义在建筑与绘画中同步演进。——Pevsner《An Outline of European Architecture》"
+    },
+    {
+      "source": "arch_green",
+      "target": "env_energy_sustainability",
+      "type": "cross",
+      "reason": "绿色建筑是可持续能源理念在建造领域的落地：被动式设计、能耗模拟、LEED 认证。——《Sustainable Construction》"
+    },
+    {
+      "source": "sport_psychology",
+      "target": "psy_emotion",
+      "type": "cross",
+      "reason": "运动心理学的唤醒水平、赛前焦虑调控直接应用情绪心理学的理论与干预方法。——Weinberg《Foundations of Sport and Exercise Psychology》"
+    },
+    {
+      "source": "bio_genetic_engineering",
+      "target": "law_jurisprudence",
+      "type": "cross",
+      "reason": "基因编辑（CRISPR 婴儿事件）把生物技术推到法律与伦理监管的最前沿。——《人类遗传资源管理条例》及国际生命伦理公约"
+    },
+    {
+      "source": "prog_network_security",
+      "target": "law_criminal_specific",
+      "type": "cross",
+      "reason": "网络安全攻防对应刑法中的非法侵入计算机系统罪、数据犯罪条款，白帽与黑帽的边界由法律划定。——《刑法》第 285/286 条"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "parentId": "net_physical_link",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "link_frame_structure",
+      "subjectId": "programming",
+      "parentId": "net_physical_link",
+      "name": "帧的结构",
+      "plain_name": "数据装进固定格子的盒子",
+      "description": "一个以太网帧从左到右排列字段：前导码、目的MAC、源MAC、类型、数据载荷、CRC校验。动画用一条横向格子带逐个高亮每个字段并标注它的字节长度和作用。",
+      "difficulty": 3,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["帧", "以太网", "MAC", "载荷", "CRC"],
+      "prerequisites": [],
+      "cognition_tags": ["system"]
+    },
+    {
+      "id": "link_mac_addressing",
+      "subjectId": "programming",
+      "parentId": "net_physical_link",
+      "name": "MAC地址与寻址",
+      "plain_name": "每块网卡的全球唯一身份证",
+      "description": "每台主机网卡有一个48位MAC地址。动画显示一帧带着目的MAC在总线上广播，所有主机都收到后比对自己的MAC，只有地址匹配的主机绿色接收、其余灰色丢弃。",
+      "difficulty": 4,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["MAC地址", "48位", "寻址", "广播", "网卡"],
+      "prerequisites": ["link_frame_structure"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "link_csma_cd",
+      "subjectId": "programming",
+      "parentId": "net_physical_link",
+      "name": "CSMA/CD冲突检测",
+      "plain_name": "先听再发，撞了就退避重发",
+      "description": "两台主机想发数据先监听总线是否空闲（载波监听），同时发送会在中间相撞产生冲突，双方检测到冲突立刻停止、各自随机等待一段时间后重发。动画显示两个信号波相撞变红、退避后错开重发成功。",
+      "difficulty": 6,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["CSMA/CD", "载波监听", "冲突", "退避", "重发"],
+      "prerequisites": ["link_mac_addressing"],
+      "cognition_tags": ["logic", "system"]
+    },
+    {
+      "id": "link_crc",
+      "subjectId": "programming",
+      "parentId": "net_physical_link",
+      "name": "CRC循环冗余校验",
+      "plain_name": "用除法余数检查数据有没有错",
+      "description": "发送方把数据比特串当作大数除以一个约定的生成多项式，余数作为CRC附在帧尾。接收方用同样的除数对整帧做除法，余数为0表示无误、非0说明传输出错。动画演示长除法竖式逐位异或求余的过程。",
+      "difficulty": 7,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["CRC", "循环冗余", "生成多项式", "异或", "余数"],
+      "prerequisites": ["link_frame_structure"],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "link_switch_learning",
+      "subjectId": "programming",
+      "parentId": "net_physical_link",
+      "name": "交换机的自学习",
+      "plain_name": "交换机边转发边记住谁在哪个口",
+      "description": "交换机收到帧时先记录源MAC和进入端口到MAC地址表；转发时查表，若目的MAC已知就只从对应端口发出，未知则向所有端口泛洪。动画显示地址表逐条填入、后续帧精准单口转发。",
+      "difficulty": 6,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["交换机", "自学习", "MAC地址表", "泛洪", "转发"],
+      "prerequisites": ["link_mac_addressing"],
+      "cognition_tags": ["system", "logic"]
+    }
+  ],
+  "edges": [
+    { "source": "link_frame_structure", "target": "link_mac_addressing", "type": "prerequisite" },
+    { "source": "link_mac_addressing", "target": "link_csma_cd", "type": "prerequisite" },
+    { "source": "link_frame_structure", "target": "link_crc", "type": "related" },
+    { "source": "link_mac_addressing", "target": "link_switch_learning", "type": "prerequisite" }
+  ]
+}

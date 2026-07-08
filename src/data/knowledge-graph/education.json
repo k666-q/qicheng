@@ -1,0 +1,213 @@
+{
+  "subject": {
+    "id": "education",
+    "name": "教育学",
+    "color": "#10b981",
+    "description": "研究'人如何被教成人'的学问——从课堂设计到教育公平，事关每个人的成长。",
+    "category": "人文社科"
+  },
+  "nodes": [
+    {
+      "id": "edu_principles",
+      "subjectId": "education",
+      "name": "教育学原理",
+      "plain_name": "教育到底是干什么的",
+      "description": "教育是灌输还是点燃？学校为什么长这样？追问教育的目的、本质与基本规律，是一切教育实践的出发点。",
+      "difficulty": 3,
+      "keywords": ["教育学", "教育原理", "教育目的", "教育本质", "教育规律"],
+      "cognition_tags": ["abstract", "system"]
+    },
+    {
+      "id": "edu_history",
+      "subjectId": "education",
+      "name": "教育思想史",
+      "plain_name": "大教育家们怎么想",
+      "description": "孔子的因材施教、杜威的做中学、蒙台梭利的儿童中心——今天的教育争论，前人大多吵过了。",
+      "difficulty": 5,
+      "keywords": ["教育思想史", "孔子", "杜威", "蒙台梭利", "因材施教", "教育家"],
+      "cognition_tags": ["abstract", "expression"]
+    },
+    {
+      "id": "edu_learning",
+      "subjectId": "education",
+      "name": "学习科学与认知",
+      "plain_name": "大脑是怎么学会的",
+      "description": "为什么刷题不如间隔复习？工作记忆为什么装不下太多？用脑科学和认知研究破解'怎么学才高效'。",
+      "difficulty": 6,
+      "keywords": ["学习科学", "认知负荷", "记忆", "间隔重复", "刻意练习", "元认知"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "edu_psych",
+      "subjectId": "education",
+      "name": "教育心理学",
+      "plain_name": "学生心里在想什么",
+      "description": "动机从哪来、焦虑怎么破、表扬该夸努力还是夸聪明——理解学习者的心理，教学才能对症下药。",
+      "difficulty": 5,
+      "keywords": ["教育心理学", "学习动机", "成长型思维", "自我效能", "发展阶段"],
+      "cognition_tags": ["system", "expression"]
+    },
+    {
+      "id": "edu_curriculum",
+      "subjectId": "education",
+      "name": "课程论",
+      "plain_name": "学校教什么由谁定",
+      "description": "为什么学三角函数而不是报税？课程是知识的筛选与组织——背后是一整套关于'什么值得教'的判断。",
+      "difficulty": 6,
+      "keywords": ["课程论", "课程设计", "课程标准", "学科结构", "核心素养"],
+      "cognition_tags": ["system", "abstract"]
+    },
+    {
+      "id": "edu_design",
+      "subjectId": "education",
+      "name": "教学设计",
+      "plain_name": "一堂好课怎么备出来",
+      "description": "目标怎么定、活动怎么排、反馈怎么给——像产品经理设计产品一样，系统地设计一次学习体验。",
+      "difficulty": 5,
+      "keywords": ["教学设计", "教学目标", "教学策略", "逆向设计", "学习体验"],
+      "cognition_tags": ["modeling", "system"]
+    },
+    {
+      "id": "edu_assessment",
+      "subjectId": "education",
+      "name": "教育评价",
+      "plain_name": "学得好不好怎么量",
+      "description": "分数能代表学习吗？形成性评价与终结性评价、标准化考试的功与过——测量学习是门精细的技术。",
+      "difficulty": 6,
+      "keywords": ["教育评价", "考试", "形成性评价", "测量", "信度效度", "标准化测试"],
+      "cognition_tags": ["logic", "modeling"]
+    },
+    {
+      "id": "edu_tech",
+      "subjectId": "education",
+      "name": "教育技术",
+      "plain_name": "科技怎么改变学习",
+      "description": "在线课程、自适应学习、AI助教——技术不会自动带来好教育，关键是让工具服务于学习规律。",
+      "difficulty": 5,
+      "keywords": ["教育技术", "在线教育", "自适应学习", "AI教育", "混合式学习"],
+      "cognition_tags": ["modeling", "system"]
+    },
+    {
+      "id": "edu_classroom",
+      "subjectId": "education",
+      "name": "课堂管理与师生互动",
+      "plain_name": "课堂氛围怎么带起来",
+      "description": "为什么有的老师一站上讲台学生就安静又活跃？规则、关系与期望效应，课堂是门微妙的互动艺术。",
+      "difficulty": 4,
+      "keywords": ["课堂管理", "师生关系", "课堂互动", "皮格马利翁效应", "纪律"],
+      "cognition_tags": ["expression", "system"]
+    },
+    {
+      "id": "edu_family",
+      "subjectId": "education",
+      "name": "家庭教育",
+      "plain_name": "父母才是第一任老师",
+      "description": "教养方式如何塑造孩子的性格与学业？权威型、放任型、专制型——家庭是教育最早也最深的现场。",
+      "difficulty": 4,
+      "keywords": ["家庭教育", "教养方式", "亲子关系", "依恋", "早期教育"],
+      "cognition_tags": ["expression", "system"]
+    },
+    {
+      "id": "edu_equity",
+      "subjectId": "education",
+      "name": "教育公平与政策",
+      "plain_name": "好教育凭什么人人有份",
+      "description": "学区房、择校热、城乡差距——教育既能促进流动也能固化阶层，政策如何在效率与公平间走钢丝。",
+      "difficulty": 6,
+      "keywords": ["教育公平", "教育政策", "择校", "城乡差距", "义务教育", "教育资源"],
+      "cognition_tags": ["system", "abstract"]
+    }
+  ],
+  "edges": [
+    {
+      "source": "edu_principles",
+      "target": "edu_history",
+      "type": "prerequisite",
+      "reason": "带着'教育目的是什么'的问题框架读思想史，才能看懂杜威与传统教育在争什么。"
+    },
+    {
+      "source": "edu_principles",
+      "target": "edu_curriculum",
+      "type": "prerequisite",
+      "reason": "课程是教育目的的具体化：'什么值得教'的判断必须回到教育原理。"
+    },
+    {
+      "source": "edu_curriculum",
+      "target": "edu_design",
+      "type": "prerequisite",
+      "reason": "教学设计在课程框架内展开：先有课程目标与内容，才谈得上单课的设计。"
+    },
+    {
+      "source": "edu_learning",
+      "target": "edu_design",
+      "type": "prerequisite",
+      "reason": "好的教学设计建立在学习规律上：认知负荷理论直接决定课件信息量与活动节奏。"
+    },
+    {
+      "source": "edu_principles",
+      "target": "edu_learning",
+      "type": "prerequisite",
+      "reason": "先理解教育的整体框架，再深入'学习如何发生'这一核心机制。"
+    },
+    {
+      "source": "edu_learning",
+      "target": "edu_psych",
+      "type": "related",
+      "reason": "学习科学偏认知机制，教育心理学偏动机情感，两者合起来才是完整的学习者画像。"
+    },
+    {
+      "source": "edu_psych",
+      "target": "edu_classroom",
+      "type": "prerequisite",
+      "reason": "课堂管理的核心是心理学：期望效应、动机理论直接指导师生互动策略。"
+    },
+    {
+      "source": "edu_design",
+      "target": "edu_assessment",
+      "type": "related",
+      "reason": "逆向设计主张'先定评价再设计教学'：目标、教学、评价必须对齐。"
+    },
+    {
+      "source": "edu_principles",
+      "target": "edu_assessment",
+      "type": "prerequisite",
+      "reason": "评价什么、为何评价由教育目的决定：不懂原理的评价容易沦为唯分数论。"
+    },
+    {
+      "source": "edu_learning",
+      "target": "edu_tech",
+      "type": "prerequisite",
+      "reason": "教育技术的价值取决于是否符合学习规律：自适应学习正是间隔重复等原理的工程化。"
+    },
+    {
+      "source": "edu_design",
+      "target": "edu_tech",
+      "type": "related",
+      "reason": "在线课程与混合式学习本质是教学设计在数字环境中的延伸。"
+    },
+    {
+      "source": "edu_psych",
+      "target": "edu_family",
+      "type": "prerequisite",
+      "reason": "教养方式研究源自发展与教育心理学：依恋理论是理解亲子关系的基本工具。"
+    },
+    {
+      "source": "edu_principles",
+      "target": "edu_equity",
+      "type": "prerequisite",
+      "reason": "教育公平的讨论要回到'教育为了谁'的原理问题：公平本身就是教育目的之争。"
+    },
+    {
+      "source": "edu_family",
+      "target": "edu_equity",
+      "type": "related",
+      "reason": "家庭背景差异是教育不平等的重要来源：政策讨论离不开家庭教育资本的研究。"
+    },
+    {
+      "source": "edu_history",
+      "target": "edu_curriculum",
+      "type": "related",
+      "reason": "课程改革的争论大多有思想史渊源：学科中心与儿童中心之争从杜威时代延续至今。"
+    }
+  ]
+}

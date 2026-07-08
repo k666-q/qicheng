@@ -1,0 +1,67 @@
+{
+  "parentId": "net_application",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "app_dns_recursive",
+      "subjectId": "programming",
+      "parentId": "net_application",
+      "name": "DNS递归查询过程",
+      "plain_name": "把域名一级一级问成IP地址",
+      "description": "本地DNS服务器替主机依次询问：先问根服务器得到顶级域（.com）服务器地址，再问.com得到权威服务器地址，最后权威服务器返回域名对应IP。动画显示请求箭头逐级向上跳转、再把IP一路返回给主机。",
+      "difficulty": 6,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["DNS", "递归查询", "根服务器", "权威服务器", "域名解析"],
+      "prerequisites": [],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "app_http_req_resp",
+      "subjectId": "programming",
+      "parentId": "net_application",
+      "name": "HTTP请求响应",
+      "plain_name": "浏览器问，服务器答",
+      "description": "浏览器发送一条HTTP请求（方法GET、路径、请求头），服务器处理后回一条响应（状态码200、响应头、HTML正文）。动画显示左侧请求报文卡片飞向服务器、右侧响应报文卡片飞回并逐行展开各字段。",
+      "difficulty": 4,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["HTTP", "请求", "响应", "状态码", "报文"],
+      "prerequisites": ["app_dns_recursive"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "app_https_tls",
+      "subjectId": "programming",
+      "parentId": "net_application",
+      "name": "HTTPS的TLS握手",
+      "plain_name": "先交换密钥再加密通信",
+      "description": "客户端发ClientHello，服务器回ServerHello并送上证书与公钥，客户端验证证书后用公钥加密一个会话密钥发回，双方此后用该对称密钥加密数据。动画显示握手箭头往返、证书校验打勾、最后建立绿色加密通道。",
+      "difficulty": 8,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["HTTPS", "TLS握手", "证书", "公钥", "会话密钥"],
+      "prerequisites": ["app_http_req_resp"],
+      "cognition_tags": ["system", "abstract"]
+    },
+    {
+      "id": "app_http_cache",
+      "subjectId": "programming",
+      "parentId": "net_application",
+      "name": "HTTP缓存机制",
+      "plain_name": "没变就用本地，省得重新下载",
+      "description": "浏览器首次请求时把响应连同ETag和过期时间存入缓存；再次访问若未过期直接用本地副本，若过期则带If-None-Match询问，服务器内容没变就回304让浏览器复用缓存。动画显示缓存命中走捷径、304跳过下载正文。",
+      "difficulty": 6,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["HTTP缓存", "ETag", "304", "缓存命中", "条件请求"],
+      "prerequisites": ["app_http_req_resp"],
+      "cognition_tags": ["system", "logic"]
+    }
+  ],
+  "edges": [
+    { "source": "app_dns_recursive", "target": "app_http_req_resp", "type": "prerequisite" },
+    { "source": "app_http_req_resp", "target": "app_https_tls", "type": "prerequisite" },
+    { "source": "app_http_req_resp", "target": "app_http_cache", "type": "prerequisite" }
+  ]
+}

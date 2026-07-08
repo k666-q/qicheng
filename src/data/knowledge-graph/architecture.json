@@ -1,0 +1,332 @@
+{
+  "subject": {
+    "id": "architecture",
+    "name": "建筑学",
+    "color": "#78716c",
+    "description": "在技术与艺术之间，为人塑造可栖居的空间。",
+    "category": "艺术与生活"
+  },
+  "nodes": [
+    {
+      "id": "arch_intro",
+      "subjectId": "architecture",
+      "name": "建筑学导论",
+      "plain_name": "房子为什么不只是房子",
+      "description": "坚固、实用、美观三原则——建筑是凝固的音乐，也是生活的容器。",
+      "difficulty": 2,
+      "keywords": [
+        "建筑学",
+        "建筑",
+        "维特鲁威",
+        "空间",
+        "功能",
+        "形式"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "arch_drawing",
+      "subjectId": "architecture",
+      "name": "建筑制图",
+      "plain_name": "看懂和画出图纸",
+      "description": "平面、立面、剖面三视图与比例尺——建筑师之间通用的工程语言。",
+      "difficulty": 4,
+      "keywords": [
+        "建筑制图",
+        "平面图",
+        "立面图",
+        "剖面图",
+        "比例尺",
+        "CAD",
+        "图纸"
+      ],
+      "cognition_tags": [
+        "logic",
+        "expression"
+      ]
+    },
+    {
+      "id": "arch_space",
+      "subjectId": "architecture",
+      "name": "空间与形态",
+      "plain_name": "设计'空'的艺术",
+      "description": "围合、尺度、动线与光——建筑设计的核心是组织空间而非堆砌墙体。",
+      "difficulty": 6,
+      "keywords": [
+        "空间设计",
+        "形态",
+        "尺度",
+        "动线",
+        "围合",
+        "采光",
+        "体块"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "aesthetic",
+        "modeling"
+      ]
+    },
+    {
+      "id": "arch_structure",
+      "subjectId": "architecture",
+      "name": "建筑结构基础",
+      "plain_name": "房子怎么站得住",
+      "description": "梁柱、桁架与受力传递——重力一直在拉房子，结构负责跟它谈判。",
+      "difficulty": 6,
+      "keywords": [
+        "建筑结构",
+        "梁柱",
+        "受力",
+        "桁架",
+        "框架结构",
+        "抗震",
+        "跨度"
+      ],
+      "cognition_tags": [
+        "logic",
+        "system"
+      ]
+    },
+    {
+      "id": "arch_materials",
+      "subjectId": "architecture",
+      "name": "建筑材料",
+      "plain_name": "砖木砼钢各有脾气",
+      "description": "木、砖、混凝土、钢与玻璃——材料的性格决定建筑能长成什么样。",
+      "difficulty": 4,
+      "keywords": [
+        "建筑材料",
+        "混凝土",
+        "钢结构",
+        "木材",
+        "玻璃",
+        "砖",
+        "质感"
+      ],
+      "cognition_tags": [
+        "system",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "arch_history_west",
+      "subjectId": "architecture",
+      "name": "西方建筑史",
+      "plain_name": "从神庙到摩天楼",
+      "description": "希腊柱式、哥特尖拱到现代主义方盒子——石头写成的西方文明史。",
+      "difficulty": 4,
+      "keywords": [
+        "西方建筑史",
+        "柱式",
+        "哥特",
+        "巴洛克",
+        "现代主义",
+        "包豪斯",
+        "柯布西耶"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "arch_history_china",
+      "subjectId": "architecture",
+      "name": "中国建筑史",
+      "plain_name": "斗拱飞檐里的东方智慧",
+      "description": "木构架、斗拱、四合院与园林——中国建筑用木头写诗的千年传统。",
+      "difficulty": 5,
+      "keywords": [
+        "中国建筑史",
+        "斗拱",
+        "木构架",
+        "四合院",
+        "园林",
+        "故宫",
+        "营造法式"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "arch_urban",
+      "subjectId": "architecture",
+      "name": "城市规划初步",
+      "plain_name": "把整座城当作品设计",
+      "description": "街区尺度、功能分区与公共空间——决定千万人生活质量的大尺度设计。",
+      "difficulty": 7,
+      "keywords": [
+        "城市规划",
+        "街区",
+        "功能分区",
+        "公共空间",
+        "城市设计",
+        "雅各布斯"
+      ],
+      "cognition_tags": [
+        "system",
+        "abstract"
+      ]
+    },
+    {
+      "id": "arch_landscape",
+      "subjectId": "architecture",
+      "name": "景观设计",
+      "plain_name": "设计建筑之间的绿色",
+      "description": "植物配置、地形水景与场所感——让室外空间像室内一样被认真对待。",
+      "difficulty": 6,
+      "keywords": [
+        "景观设计",
+        "园林景观",
+        "植物配置",
+        "水景",
+        "场所感",
+        "公园"
+      ],
+      "cognition_tags": [
+        "aesthetic",
+        "system"
+      ]
+    },
+    {
+      "id": "arch_green",
+      "subjectId": "architecture",
+      "name": "绿色建筑",
+      "plain_name": "会呼吸的节能房子",
+      "description": "被动式设计、自然通风与可再生能源——让建筑与气候合作而非对抗。",
+      "difficulty": 7,
+      "keywords": [
+        "绿色建筑",
+        "节能",
+        "被动式",
+        "自然通风",
+        "可持续",
+        "碳中和",
+        "LEED"
+      ],
+      "cognition_tags": [
+        "system",
+        "logic"
+      ]
+    },
+    {
+      "id": "arch_interior",
+      "subjectId": "architecture",
+      "name": "室内设计",
+      "plain_name": "把毛坯变成想住的家",
+      "description": "动线布局、灯光层次与材质搭配——离日常生活最近的空间设计。",
+      "difficulty": 5,
+      "keywords": [
+        "室内设计",
+        "装修",
+        "动线",
+        "灯光设计",
+        "软装",
+        "户型",
+        "材质"
+      ],
+      "cognition_tags": [
+        "aesthetic",
+        "system"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "arch_intro",
+      "target": "arch_drawing",
+      "type": "prerequisite",
+      "reason": "理解建筑的基本议题后，制图是把空间想法落到纸面的第一项专业技能。"
+    },
+    {
+      "source": "arch_intro",
+      "target": "arch_space",
+      "type": "prerequisite",
+      "reason": "空间与形态训练直接展开导论中'建筑即空间艺术'的核心命题。"
+    },
+    {
+      "source": "arch_drawing",
+      "target": "arch_space",
+      "type": "prerequisite",
+      "reason": "空间方案要用平立剖图纸推敲和表达：不会制图，空间想象只能停在脑子里。"
+    },
+    {
+      "source": "arch_space",
+      "target": "arch_interior",
+      "type": "prerequisite",
+      "reason": "室内设计是空间组织在小尺度的精细化：动线、尺度感的功夫直接沿用。"
+    },
+    {
+      "source": "arch_structure",
+      "target": "arch_space",
+      "type": "related",
+      "reason": "结构决定空间的可能性：大跨度结构才撑得起无柱大厅，悬挑才有飘浮的阳台。"
+    },
+    {
+      "source": "arch_materials",
+      "target": "arch_structure",
+      "type": "prerequisite",
+      "reason": "结构选型离不开材料特性：混凝土抗压、钢材抗拉，材料性格决定结构形式。"
+    },
+    {
+      "source": "arch_materials",
+      "target": "arch_interior",
+      "type": "related",
+      "reason": "室内的质感与造价大半由材料决定：木的温润、石的冷峻都是材料知识的应用。"
+    },
+    {
+      "source": "arch_history_west",
+      "target": "arch_space",
+      "type": "related",
+      "reason": "万神庙的穹顶、流水别墅的流动空间都是经典空间范本，历史是设计的素材库。"
+    },
+    {
+      "source": "arch_history_china",
+      "target": "arch_landscape",
+      "type": "related",
+      "reason": "苏州园林'移步换景'的造园智慧至今仍是景观设计的东方教科书。"
+    },
+    {
+      "source": "arch_history_west",
+      "target": "arch_history_china",
+      "type": "related",
+      "reason": "石构与木构两条传统对照着看，更能理解建筑形式背后的文化与技术选择。"
+    },
+    {
+      "source": "arch_intro",
+      "target": "arch_urban",
+      "type": "prerequisite",
+      "reason": "城市是放大的建筑议题：先理解单体建筑与人的关系，再扩展到街区和城市尺度。"
+    },
+    {
+      "source": "arch_urban",
+      "target": "arch_landscape",
+      "type": "related",
+      "reason": "城市的公园绿道系统由规划定框架、景观做深化，两个专业在公共空间上交汇。"
+    },
+    {
+      "source": "arch_structure",
+      "target": "arch_green",
+      "type": "related",
+      "reason": "绿色建筑常用木结构减碳、用结构遮阳一体化设计，结构与节能策略互相牵动。"
+    },
+    {
+      "source": "arch_materials",
+      "target": "arch_green",
+      "type": "prerequisite",
+      "reason": "建材的保温性能与隐含碳排是绿色建筑的核心账本，选材即选能耗。"
+    },
+    {
+      "source": "arch_space",
+      "target": "arch_green",
+      "type": "related",
+      "reason": "被动式设计靠空间布局实现：朝向、进深、天井通风都是用空间手段省能源。"
+    }
+  ]
+}

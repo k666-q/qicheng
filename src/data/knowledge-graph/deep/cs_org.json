@@ -1,0 +1,82 @@
+{
+  "parentId": "cs_org",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "org_data_representation",
+      "subjectId": "programming",
+      "parentId": "cs_org",
+      "name": "数据的表示",
+      "plain_name": "计算机如何用 0 和 1 记数",
+      "description": "二进制、补码、IEEE 754 浮点数——整数与小数如何用一串比特精确（或近似）表示。",
+      "difficulty": 5,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["二进制", "补码", "浮点数", "IEEE754", "数据表示"],
+      "prerequisites": [],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "org_isa",
+      "subjectId": "programming",
+      "parentId": "cs_org",
+      "name": "指令系统与汇编",
+      "plain_name": "CPU 能听懂的母语",
+      "description": "指令格式、寻址方式、汇编语言——高级语言最终都被翻译成一条条机器指令。",
+      "difficulty": 6,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["指令系统", "汇编", "寻址方式", "ISA", "机器指令"],
+      "prerequisites": ["org_data_representation"],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "org_cpu",
+      "subjectId": "programming",
+      "parentId": "cs_org",
+      "name": "CPU 与流水线",
+      "plain_name": "处理器的流水作业",
+      "description": "运算器、控制器、取指译码执行五级流水——流水线让 CPU 像工厂一样同时处理多条指令。",
+      "difficulty": 7,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["CPU", "流水线", "运算器", "控制器", "指令周期"],
+      "prerequisites": ["org_isa"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "org_memory_hierarchy",
+      "subjectId": "programming",
+      "parentId": "cs_org",
+      "name": "存储层次结构",
+      "plain_name": "缓存和内存的金字塔",
+      "description": "寄存器、Cache、内存、磁盘逐级变慢变大——利用局部性原理让快慢设备配合无间。",
+      "difficulty": 7,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["存储层次", "Cache", "局部性原理", "内存", "命中率"],
+      "prerequisites": ["org_data_representation"],
+      "cognition_tags": ["system", "abstract"]
+    },
+    {
+      "id": "org_bus_io",
+      "subjectId": "programming",
+      "parentId": "cs_org",
+      "name": "总线与输入输出",
+      "plain_name": "电脑内部的高速公路",
+      "description": "总线仲裁、中断、DMA——键盘硬盘如何与 CPU 高效交换数据而不互相添堵。",
+      "difficulty": 6,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["总线", "中断", "DMA", "输入输出", "仲裁"],
+      "prerequisites": ["org_cpu"],
+      "cognition_tags": ["system"]
+    }
+  ],
+  "edges": [
+    { "source": "org_data_representation", "target": "org_isa", "type": "prerequisite" },
+    { "source": "org_isa", "target": "org_cpu", "type": "prerequisite" },
+    { "source": "org_data_representation", "target": "org_memory_hierarchy", "type": "prerequisite" },
+    { "source": "org_cpu", "target": "org_bus_io", "type": "prerequisite" }
+  ]
+}

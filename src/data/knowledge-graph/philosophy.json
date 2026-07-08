@@ -1,0 +1,255 @@
+{
+  "subject": {
+    "id": "philosophy",
+    "name": "哲学",
+    "color": "#8b5cf6",
+    "description": "对世界、知识与价值的根本追问——学会把'理所当然'变成问题。",
+    "category": "人文社科"
+  },
+  "nodes": [
+    {
+      "id": "phil_intro",
+      "subjectId": "philosophy",
+      "name": "哲学导论",
+      "plain_name": "哲学到底在问什么",
+      "description": "世界是什么、我能知道什么、我该怎么活——用几个经典思想实验（缸中之脑、电车难题）打开哲学的大门。",
+      "difficulty": 2,
+      "keywords": ["哲学入门", "思想实验", "哲学问题", "缸中之脑", "电车难题"],
+      "cognition_tags": ["abstract"]
+    },
+    {
+      "id": "phil_logic",
+      "subjectId": "philosophy",
+      "name": "形式逻辑",
+      "plain_name": "推理的规则手册",
+      "description": "三段论、命题逻辑、谓词逻辑——把'这个推理对不对'变成可以机械检验的符号运算。",
+      "difficulty": 5,
+      "keywords": ["逻辑学", "三段论", "命题逻辑", "推理", "有效性", "谓词逻辑"],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "phil_critical",
+      "subjectId": "philosophy",
+      "name": "批判性思维",
+      "plain_name": "识破谬误的火眼金睛",
+      "description": "稻草人、滑坡、诉诸权威——学会拆解日常论证里的常见谬误，不再被带节奏。",
+      "difficulty": 3,
+      "keywords": ["批判性思维", "逻辑谬误", "论证分析", "稻草人谬误", "理性思考"],
+      "cognition_tags": ["logic", "expression"]
+    },
+    {
+      "id": "phil_metaphysics",
+      "subjectId": "philosophy",
+      "name": "形而上学",
+      "plain_name": "世界最底层是什么",
+      "description": "存在、时间、因果、自由意志——追问那些科学也无法直接回答的'终极设定'。",
+      "difficulty": 7,
+      "keywords": ["形而上学", "存在", "本体论", "自由意志", "因果", "同一性"],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "phil_epistemology",
+      "subjectId": "philosophy",
+      "name": "认识论",
+      "plain_name": "你怎么知道你知道",
+      "description": "知识是什么？感官可靠吗？从笛卡尔的怀疑到盖梯尔问题，审问'确定性'的来源。",
+      "difficulty": 6,
+      "keywords": ["认识论", "知识论", "怀疑论", "确证", "盖梯尔问题", "经验"],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "phil_ethics",
+      "subjectId": "philosophy",
+      "name": "伦理学",
+      "plain_name": "什么是对的事",
+      "description": "功利主义算总账、康德讲义务、美德伦理看人品——三大流派如何回答'我该怎么做'。",
+      "difficulty": 5,
+      "keywords": ["伦理学", "道德哲学", "功利主义", "义务论", "美德伦理", "道德困境"],
+      "cognition_tags": ["abstract", "expression"]
+    },
+    {
+      "id": "phil_political",
+      "subjectId": "philosophy",
+      "name": "政治哲学",
+      "plain_name": "国家凭什么管你",
+      "description": "从霍布斯的'利维坦'到罗尔斯的'无知之幕'——追问权力的正当性、自由的边界与公正的分配。",
+      "difficulty": 6,
+      "keywords": ["政治哲学", "社会契约", "正义论", "自由", "平等", "罗尔斯"],
+      "cognition_tags": ["abstract", "system"]
+    },
+    {
+      "id": "phil_aesthetics",
+      "subjectId": "philosophy",
+      "name": "美学",
+      "plain_name": "美为什么是美",
+      "description": "为什么落日让人心动、悲剧让人快乐？从康德的'无利害的愉悦'到艺术的定义之争。",
+      "difficulty": 5,
+      "keywords": ["美学", "艺术哲学", "审美", "崇高", "趣味", "艺术定义"],
+      "cognition_tags": ["aesthetic", "abstract"]
+    },
+    {
+      "id": "phil_pre_qin",
+      "subjectId": "philosophy",
+      "name": "先秦诸子",
+      "plain_name": "百家争鸣的思想盛宴",
+      "description": "孔子的仁、老子的道、墨子的兼爱、韩非的法——中国思想的源代码在战国的辩论中写成。",
+      "difficulty": 5,
+      "keywords": ["先秦哲学", "诸子百家", "儒家", "道家", "墨家", "法家", "孔子", "老子"],
+      "cognition_tags": ["abstract", "expression"]
+    },
+    {
+      "id": "phil_neo_confucianism",
+      "subjectId": "philosophy",
+      "name": "宋明理学",
+      "plain_name": "儒家的哲学升级版",
+      "description": "朱熹的'格物穷理'与王阳明的'心即理'——儒学吸收佛道之后，长出了自己的形而上学。",
+      "difficulty": 7,
+      "keywords": ["宋明理学", "朱熹", "王阳明", "心学", "理学", "格物致知", "知行合一"],
+      "cognition_tags": ["abstract", "system"]
+    },
+    {
+      "id": "phil_greek",
+      "subjectId": "philosophy",
+      "name": "古希腊哲学",
+      "plain_name": "西方哲学的起点",
+      "description": "苏格拉底在街头逼问、柏拉图画出洞穴、亚里士多德分类万物——西方两千年哲学都是对他们的注脚。",
+      "difficulty": 5,
+      "keywords": ["古希腊哲学", "苏格拉底", "柏拉图", "亚里士多德", "理念论", "洞穴比喻"],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "phil_modern",
+      "subjectId": "philosophy",
+      "name": "近代理性主义与经验主义",
+      "plain_name": "知识来自理性还是经验",
+      "description": "笛卡尔说'我思故我在'，休谟说一切来自印象，康德出来当裁判——近代哲学的核心大戏。",
+      "difficulty": 7,
+      "keywords": ["理性主义", "经验主义", "笛卡尔", "休谟", "康德", "我思故我在", "近代哲学"],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "phil_contemporary",
+      "subjectId": "philosophy",
+      "name": "现当代西方哲学",
+      "plain_name": "上帝死后哲学往哪走",
+      "description": "尼采宣告重估一切价值，分析哲学转向语言，存在主义直面荒诞——20世纪哲学的多线剧情。",
+      "difficulty": 8,
+      "keywords": ["现代哲学", "尼采", "存在主义", "分析哲学", "现象学", "维特根斯坦"],
+      "cognition_tags": ["abstract", "expression"]
+    },
+    {
+      "id": "phil_science",
+      "subjectId": "philosophy",
+      "name": "科学哲学",
+      "plain_name": "科学为什么可信",
+      "description": "波普尔的'可证伪'、库恩的'范式革命'——追问科学方法的边界：科学到底特殊在哪？",
+      "difficulty": 7,
+      "keywords": ["科学哲学", "可证伪性", "波普尔", "库恩", "范式", "归纳问题"],
+      "cognition_tags": ["logic", "abstract", "system"]
+    }
+  ],
+  "edges": [
+    {
+      "source": "phil_intro",
+      "target": "phil_logic",
+      "type": "prerequisite",
+      "reason": "知道哲学在问什么之后，才需要逻辑这把精确分析论证的手术刀。"
+    },
+    {
+      "source": "phil_logic",
+      "target": "phil_critical",
+      "type": "prerequisite",
+      "reason": "批判性思维是形式逻辑在日常论证中的应用：识别谬误需要先懂有效推理的标准。"
+    },
+    {
+      "source": "phil_intro",
+      "target": "phil_metaphysics",
+      "type": "prerequisite",
+      "reason": "形而上学是哲学导论中'世界是什么'问题的系统深入，需要基本的概念准备。"
+    },
+    {
+      "source": "phil_intro",
+      "target": "phil_epistemology",
+      "type": "prerequisite",
+      "reason": "认识论延伸自导论里'我能知道什么'的追问，怀疑论思想实验是共同起点。"
+    },
+    {
+      "source": "phil_intro",
+      "target": "phil_ethics",
+      "type": "prerequisite",
+      "reason": "电车难题等导论案例正是伦理学的入口，系统学习需要先有问题意识。"
+    },
+    {
+      "source": "phil_ethics",
+      "target": "phil_political",
+      "type": "prerequisite",
+      "reason": "政治哲学是伦理学的放大版：把'个人该怎么做'扩展为'社会该怎么安排'。"
+    },
+    {
+      "source": "phil_intro",
+      "target": "phil_aesthetics",
+      "type": "prerequisite",
+      "reason": "美学需要导论提供的概念分析能力，才能把'好看'变成可以论证的问题。"
+    },
+    {
+      "source": "phil_metaphysics",
+      "target": "phil_epistemology",
+      "type": "related",
+      "reason": "两者互相缠绕：你认为世界是什么样（形而上学），决定了你认为人能认识什么（认识论），反之亦然。"
+    },
+    {
+      "source": "phil_intro",
+      "target": "phil_pre_qin",
+      "type": "prerequisite",
+      "reason": "带着'哲学在问什么'的框架读诸子，才能看出仁、道、法背后的哲学问题。"
+    },
+    {
+      "source": "phil_pre_qin",
+      "target": "phil_neo_confucianism",
+      "type": "prerequisite",
+      "reason": "理学是对先秦儒学的再诠释：不懂孔孟原典，就看不懂朱熹和王阳明在争什么。"
+    },
+    {
+      "source": "phil_intro",
+      "target": "phil_greek",
+      "type": "prerequisite",
+      "reason": "希腊哲学是西方哲学史的第一章，需要导论提供的问题地图来定位各家学说。"
+    },
+    {
+      "source": "phil_greek",
+      "target": "phil_modern",
+      "type": "prerequisite",
+      "reason": "笛卡尔、休谟的问题直接继承自柏拉图和亚里士多德的知识论与本体论遗产。"
+    },
+    {
+      "source": "phil_modern",
+      "target": "phil_contemporary",
+      "type": "prerequisite",
+      "reason": "现当代哲学是对康德体系的回应：分析哲学、现象学、存在主义都从近代哲学的困境出发。"
+    },
+    {
+      "source": "phil_epistemology",
+      "target": "phil_science",
+      "type": "prerequisite",
+      "reason": "科学哲学是认识论的专题化：归纳问题、确证理论都源自认识论的基本框架。"
+    },
+    {
+      "source": "phil_logic",
+      "target": "phil_science",
+      "type": "related",
+      "reason": "可证伪性、假说演绎法都依赖逻辑工具，科学推理的分析离不开形式逻辑。"
+    },
+    {
+      "source": "phil_ethics",
+      "target": "phil_pre_qin",
+      "type": "related",
+      "reason": "儒家的仁与美德伦理、墨家的兼爱与功利主义高度呼应，中西伦理学可互相照亮。"
+    },
+    {
+      "source": "phil_aesthetics",
+      "target": "phil_contemporary",
+      "type": "related",
+      "reason": "现当代哲学深刻改写了美学：艺术终结论、解释学美学都是20世纪哲学的产物。"
+    }
+  ]
+}

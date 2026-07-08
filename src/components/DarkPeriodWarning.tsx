@@ -63,15 +63,15 @@ export function DarkPeriodWarning() {
   };
 
   return (
-    <div className="rounded-lg border border-stone-300 bg-stone-50 p-4 mb-6">
+    <div className="rounded-2xl border border-white/10 bg-white/[0.05] backdrop-blur-md p-4 mb-6">
       <div className="flex items-start gap-3">
         <span className="text-lg shrink-0">{warning.daysUntil <= 2 ? "⚡" : "🌊"}</span>
         <div className="flex-1">
-          <p className="text-sm text-stone-700 leading-relaxed">{warning.message}</p>
+          <p className="text-sm text-white/70 leading-relaxed">{warning.message}</p>
         </div>
         <button
           onClick={handleDismiss}
-          className="text-stone-400 hover:text-stone-600 text-xs shrink-0"
+          className="text-white/35 hover:text-white/65 text-xs shrink-0"
         >
           ✕
         </button>

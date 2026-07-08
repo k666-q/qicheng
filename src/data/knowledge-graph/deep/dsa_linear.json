@@ -1,0 +1,82 @@
+{
+  "parentId": "dsa_linear",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "lin_array_access",
+      "subjectId": "programming",
+      "parentId": "dsa_linear",
+      "name": "数组的随机访问",
+      "plain_name": "用下标一步直达任意元素",
+      "description": "数组在内存中连续排列，访问 a[i] 时通过公式 基地址 + i×元素大小 直接算出地址。动画展示一排等宽内存格子，输入下标 i 后箭头一步跳到对应格子取值，体现 O(1) 随机访问。",
+      "difficulty": 2,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["数组", "随机访问", "连续内存", "下标寻址", "O(1)"],
+      "prerequisites": [],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "lin_linkedlist_insert_delete",
+      "subjectId": "programming",
+      "parentId": "dsa_linear",
+      "name": "链表的插入删除",
+      "plain_name": "改指针就能插入或摘掉节点",
+      "description": "链表节点用箭头表示 next 指针。插入时新节点的 next 指向后继、前驱的 next 指向新节点；删除时让前驱 next 越过被删节点直接指向其后继。动画高亮被修改的两三条指针，体现 O(1) 的指针重连。",
+      "difficulty": 4,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["链表", "节点", "指针重连", "插入", "删除"],
+      "prerequisites": ["lin_array_access"],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "lin_stack_push_pop",
+      "subjectId": "programming",
+      "parentId": "dsa_linear",
+      "name": "栈的压入弹出",
+      "plain_name": "后进先出，只能从顶操作",
+      "description": "栈是一摞盘子，top 指针指向栈顶。压入(push)时新元素放到 top 之上、top 上移；弹出(pop)时取走栈顶元素、top 下移。动画演示连续 push 三个元素再 pop，体现后进先出(LIFO)。",
+      "difficulty": 3,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["栈", "LIFO", "压入", "弹出", "栈顶指针"],
+      "prerequisites": ["lin_array_access"],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "lin_queue_enqueue_dequeue",
+      "subjectId": "programming",
+      "parentId": "dsa_linear",
+      "name": "队列的入队出队",
+      "plain_name": "先进先出，排队办业务",
+      "description": "队列像排队的人群，rear 指针在队尾、front 指针在队头。入队(enqueue)在 rear 端添加元素、rear 后移；出队(dequeue)从 front 端取走元素、front 后移。动画演示元素从右进、从左出，体现先进先出(FIFO)。",
+      "difficulty": 3,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["队列", "FIFO", "入队", "出队", "队头队尾"],
+      "prerequisites": ["lin_stack_push_pop"],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "lin_circular_queue",
+      "subjectId": "programming",
+      "parentId": "dsa_linear",
+      "name": "循环队列",
+      "plain_name": "首尾相连，空间循环利用",
+      "description": "把数组首尾相接画成一个圆环，front 和 rear 指针沿环移动，到达末尾后用取模 (index+1)%n 绕回开头。动画演示入队出队时指针绕圈走，复用前面空出的格子，避免普通队列的假溢出。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["循环队列", "环形数组", "取模", "假溢出", "空间复用"],
+      "prerequisites": ["lin_queue_enqueue_dequeue"],
+      "cognition_tags": ["logic", "abstract"]
+    }
+  ],
+  "edges": [
+    { "source": "lin_array_access", "target": "lin_linkedlist_insert_delete", "type": "related" },
+    { "source": "lin_array_access", "target": "lin_stack_push_pop", "type": "prerequisite" },
+    { "source": "lin_stack_push_pop", "target": "lin_queue_enqueue_dequeue", "type": "related" },
+    { "source": "lin_queue_enqueue_dequeue", "target": "lin_circular_queue", "type": "prerequisite" }
+  ]
+}

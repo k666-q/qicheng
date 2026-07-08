@@ -1,0 +1,81 @@
+{
+  "parentId": "cs_security",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "sec_symmetric",
+      "subjectId": "programming",
+      "parentId": "cs_security",
+      "name": "对称加密",
+      "plain_name": "一把钥匙锁与开",
+      "description": "AES 等对称算法用同一把密钥加解密——速度快，但如何安全地共享这把钥匙是难题。",
+      "difficulty": 5,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["对称加密", "AES", "密钥", "分组密码", "加密"],
+      "prerequisites": [],
+      "cognition_tags": ["logic", "system"]
+    },
+    {
+      "id": "sec_asymmetric",
+      "subjectId": "programming",
+      "parentId": "cs_security",
+      "name": "公钥加密",
+      "plain_name": "公钥锁、私钥开",
+      "description": "RSA 等非对称算法用公钥加密、私钥解密——解决了密钥分发难题，是 HTTPS 的基石。",
+      "difficulty": 7,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["公钥", "非对称加密", "RSA", "私钥", "密钥交换"],
+      "prerequisites": ["sec_symmetric"],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "sec_hash_signature",
+      "subjectId": "programming",
+      "parentId": "cs_security",
+      "name": "哈希与数字签名",
+      "plain_name": "防篡改的指纹",
+      "description": "哈希函数生成数据指纹，数字签名用私钥签、公钥验——确保数据没被篡改且来源可信。",
+      "difficulty": 6,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["哈希", "数字签名", "SHA", "完整性", "认证"],
+      "prerequisites": ["sec_asymmetric"],
+      "cognition_tags": ["logic"]
+    },
+    {
+      "id": "sec_web_attacks",
+      "subjectId": "programming",
+      "parentId": "cs_security",
+      "name": "常见 Web 攻击",
+      "plain_name": "黑客怎么钻空子",
+      "description": "XSS、SQL 注入、CSRF——理解攻击原理才能写出防得住的代码。",
+      "difficulty": 6,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["XSS", "SQL注入", "CSRF", "Web安全", "漏洞"],
+      "prerequisites": [],
+      "cognition_tags": ["logic", "system"]
+    },
+    {
+      "id": "sec_auth",
+      "subjectId": "programming",
+      "parentId": "cs_security",
+      "name": "认证与授权",
+      "plain_name": "你是谁、能干啥",
+      "description": "密码存储、会话、Token、OAuth——系统如何确认身份并控制每个人能访问什么。",
+      "difficulty": 6,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["认证", "授权", "Token", "OAuth", "会话", "JWT"],
+      "prerequisites": ["sec_hash_signature"],
+      "cognition_tags": ["system", "logic"]
+    }
+  ],
+  "edges": [
+    { "source": "sec_symmetric", "target": "sec_asymmetric", "type": "prerequisite" },
+    { "source": "sec_asymmetric", "target": "sec_hash_signature", "type": "prerequisite" },
+    { "source": "sec_hash_signature", "target": "sec_auth", "type": "prerequisite" }
+  ]
+}

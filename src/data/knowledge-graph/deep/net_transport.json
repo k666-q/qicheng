@@ -1,0 +1,82 @@
+{
+  "parentId": "net_transport",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "tcp_handshake",
+      "subjectId": "programming",
+      "parentId": "net_transport",
+      "name": "TCP三次握手",
+      "plain_name": "三个来回确认才建立连接",
+      "description": "客户端先发SYN（带序号x），服务器回SYN+ACK（序号y、确认x+1），客户端再发ACK（确认y+1），三个箭头往返后双方都确认彼此收发正常、连接建立。动画显示左右两端之间三条斜向箭头依次飞过。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["TCP", "三次握手", "SYN", "ACK", "建立连接"],
+      "prerequisites": [],
+      "cognition_tags": ["logic", "system"]
+    },
+    {
+      "id": "tcp_wave",
+      "subjectId": "programming",
+      "parentId": "net_transport",
+      "name": "TCP四次挥手",
+      "plain_name": "四个来回礼貌地断开连接",
+      "description": "主动方发FIN请求关闭，被动方先回ACK确认，待自己数据发完再发FIN，主动方回ACK后进入TIME_WAIT等待。动画显示两端之间四条箭头依次往返，并标出FIN、ACK与TIME_WAIT倒计时。",
+      "difficulty": 6,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["TCP", "四次挥手", "FIN", "ACK", "TIME_WAIT"],
+      "prerequisites": ["tcp_handshake"],
+      "cognition_tags": ["logic", "system"]
+    },
+    {
+      "id": "tcp_sliding_window",
+      "subjectId": "programming",
+      "parentId": "net_transport",
+      "name": "滑动窗口流量控制",
+      "plain_name": "按对方能接多少来控制发送量",
+      "description": "发送方维护一个窗口，只能发送窗口内未确认的字节；每收到一个ACK窗口就向右滑动放进新数据。接收方通过通告窗口大小告诉发送方还能接多少。动画显示一个矩形窗口在字节流上随ACK逐格右移。",
+      "difficulty": 6,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["滑动窗口", "流量控制", "ACK", "通告窗口", "字节流"],
+      "prerequisites": ["tcp_handshake"],
+      "cognition_tags": ["logic", "system"]
+    },
+    {
+      "id": "tcp_congestion_slowstart",
+      "subjectId": "programming",
+      "parentId": "net_transport",
+      "name": "拥塞控制慢启动",
+      "plain_name": "试探着加速，拥堵了就猛减",
+      "description": "连接开始时拥塞窗口很小，每收到一轮ACK就翻倍（指数增长）直到达到阈值转为线性增长；一旦丢包判定拥塞，窗口骤降重新慢启动。动画显示拥塞窗口曲线先指数上升、到阈值变缓、丢包时垂直跌落。",
+      "difficulty": 8,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["拥塞控制", "慢启动", "拥塞窗口", "指数增长", "丢包"],
+      "prerequisites": ["tcp_sliding_window"],
+      "cognition_tags": ["logic", "modeling"]
+    },
+    {
+      "id": "tcp_vs_udp",
+      "subjectId": "programming",
+      "parentId": "net_transport",
+      "name": "UDP与TCP对比",
+      "plain_name": "可靠慢的TCP对上极速无保障的UDP",
+      "description": "左侧TCP要握手、按序确认、丢了重传；右侧UDP无连接、发了就不管、可能丢可能乱序但开销极小。动画用并排两条管道对比：TCP管道有确认回箭头和重传，UDP管道数据包直接喷出无回执。",
+      "difficulty": 4,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["UDP", "TCP", "无连接", "可靠传输", "对比"],
+      "prerequisites": ["tcp_handshake"],
+      "cognition_tags": ["system", "logic"]
+    }
+  ],
+  "edges": [
+    { "source": "tcp_handshake", "target": "tcp_wave", "type": "prerequisite" },
+    { "source": "tcp_handshake", "target": "tcp_sliding_window", "type": "prerequisite" },
+    { "source": "tcp_sliding_window", "target": "tcp_congestion_slowstart", "type": "prerequisite" },
+    { "source": "tcp_handshake", "target": "tcp_vs_udp", "type": "related" }
+  ]
+}

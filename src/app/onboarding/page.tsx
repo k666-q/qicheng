@@ -7,12 +7,15 @@ import { OptionButtons } from "@/components/onboarding/OptionButtons";
 import { saveMilestone } from "@/lib/milestones/store";
 import { trackEvent } from "@/lib/profile/events";
 import type { ConversationMessage, DraftPlan } from "@/lib/onboarding/types";
+import { CosmicBackground } from "@/components/universe/CosmicBackground";
+import { CyberOverlay } from "@/components/universe/CyberOverlay";
+import { upsertPlanFromMirror } from "@/lib/plan/plans-store";
 
 const META_SEPARATOR = "|||META|||";
 
 export default function OnboardingPage() {
   return (
-    <Suspense fallback={<div className="flex h-screen items-center justify-center bg-stone-50 text-stone-400">加载中...</div>}>
+    <Suspense fallback={<div className="cyber-cursor flex h-screen items-center justify-center bg-[#050510] font-mono text-cyan-300/50">加载中...</div>}>
       <OnboardingContent />
     </Suspense>
   );
@@ -208,15 +211,27 @@ function OnboardingContent() {
   }
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-stone-50 via-white to-stone-50/80">
+    <div className="flex h-screen bg-[#050510]">
+      <CosmicBackground />
+      <CyberOverlay />
       {/* Left: Chat */}
-      <div className="flex flex-1 flex-col">
-        <div className="border-b border-stone-100/80 px-6 py-4 backdrop-blur-sm bg-white/70">
+      <div className="relative z-10 flex flex-1 flex-col">
+        <div className="border-b border-cyan-400/15 px-6 py-4 backdrop-blur-xl bg-[#0a0a14]/60">
           <div className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-lg bg-stone-900 flex items-center justify-center text-white text-xs font-bold shadow-sm">启</div>
+            <button
+              onClick={() => router.push("/plan")}
+              title="返回计划档案馆"
+              className="flex h-7 w-7 shrink-0 items-center justify-center border border-cyan-400/40 bg-cyan-400/10 text-cyan-200 hover:bg-cyan-400/20 transition-all"
+            >
+              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <div className="w-7 h-7 border border-cyan-400/40 bg-cyan-400/10 flex items-center justify-center text-cyan-300 text-xs font-bold shadow-[0_0_12px_rgba(34,211,238,0.25)]">N</div>
             <div>
-              <h1 className="text-sm font-semibold text-stone-800">引导对话</h1>
-              <p className="text-[11px] text-stone-400">
+              <h1 className="cyber-glitch text-sm font-semibold text-white/90" data-text="引导对话">引导对话</h1>
+              <p className="mt-1 font-mono text-xs uppercase tracking-[0.3em] text-cyan-300/40">init_sequence // profile_setup</p>
+              <p className="text-[11px] text-white/35">
                 {isComplete ? "✓ 信息收集完成" : "聊聊你想做的事"}
               </p>
             </div>
@@ -233,13 +248,13 @@ function OnboardingContent() {
             <div className="space-y-2">
               {streamingText.split("|||SPLIT|||").map((part, i, arr) => (
                 <div key={i} className="flex justify-start">
-                  <div className="max-w-[80%] rounded-2xl px-5 py-3 text-[15px] leading-relaxed bg-white border border-stone-100 text-stone-700 shadow-sm whitespace-pre-wrap">
+                  <div className="cyber-panel max-w-[80%] px-5 py-3 text-[15px] leading-relaxed backdrop-blur-xl text-white/85 whitespace-pre-wrap">
                     {part.trim()}
                     {i === arr.length - 1 && (
                       <span className="inline-flex items-center ml-1.5 gap-0.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-stone-400 animate-bounce [animation-delay:0ms]" />
-                        <span className="w-1.5 h-1.5 rounded-full bg-stone-400 animate-bounce [animation-delay:150ms]" />
-                        <span className="w-1.5 h-1.5 rounded-full bg-stone-400 animate-bounce [animation-delay:300ms]" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/60 animate-bounce [animation-delay:0ms]" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/60 animate-bounce [animation-delay:150ms]" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/60 animate-bounce [animation-delay:300ms]" />
                       </span>
                     )}
                   </div>
@@ -250,12 +265,12 @@ function OnboardingContent() {
 
           {loading && !streamingText && (
             <div className="flex justify-start">
-              <div className="bg-white border border-stone-100 rounded-2xl px-5 py-3 text-[15px] text-stone-400 flex items-center gap-2 shadow-sm">
+              <div className="cyber-panel backdrop-blur-xl px-5 py-3 text-[15px] font-mono text-cyan-300/60 flex items-center gap-2">
                 <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                 </svg>
-                思考中...
+                <span className="cyber-cursor">思考中...</span>
               </div>
             </div>
           )}
@@ -267,22 +282,25 @@ function OnboardingContent() {
 
         {/* Floating input area - positioned higher, not at bottom edge */}
         <div className="px-8 pb-12">
-          <div className="rounded-2xl border border-stone-200/60 bg-white/95 backdrop-blur-xl shadow-xl shadow-stone-300/30 p-4 ring-1 ring-stone-100/50">
+          <div className="cyber-panel cyber-corner bg-[#0d0d18]/90 backdrop-blur-xl shadow-xl shadow-black/40 p-4">
           {isComplete && !showModifyOptions ? (
             <div className="space-y-3">
-              <p className="text-xs text-stone-400 text-center">
+              <p className="text-xs text-white/35 text-center">
                 这是初步草图，生成后会为你精确布局每一步
               </p>
               <div className="flex gap-3">
                 <button
                   onClick={() => setShowModifyOptions(true)}
-                  className="flex-1 rounded-xl border border-stone-200 px-4 py-3 text-sm font-medium text-stone-700 hover:bg-stone-50 transition-all"
+                  className="flex-1 border border-fuchsia-400/25 bg-fuchsia-500/[0.06] px-4 py-3 text-sm font-medium text-fuchsia-100/70 hover:border-fuchsia-400/50 hover:bg-fuchsia-500/15 transition-all"
                 >
                   我想调整一下
                 </button>
                 <button
-                  onClick={() => router.push("/plan")}
-                  className="flex-1 rounded-xl bg-stone-900 px-4 py-3 text-sm font-medium text-white hover:bg-stone-800 transition-all shadow-sm"
+                  onClick={() => {
+                    upsertPlanFromMirror(); // 归档当前计划，避免被新计划覆盖丢失
+                    router.push("/plan/detail?regenerate=1");
+                  }}
+                  className="flex-1 border border-cyan-400/40 bg-cyan-400/10 px-4 py-3 text-sm font-medium font-mono text-cyan-200 hover:bg-cyan-400/20 transition-all shadow-[0_0_16px_rgba(34,211,238,0.15)]"
                 >
                   直接生成计划
                 </button>
@@ -290,7 +308,7 @@ function OnboardingContent() {
             </div>
           ) : isComplete && showModifyOptions ? (
             <div className="space-y-3">
-              <p className="text-xs text-stone-500">想调整哪部分？</p>
+              <p className="text-xs text-white/45">想调整哪部分？</p>
               <div className="flex flex-wrap gap-2">
                 {getModifyOptions(draft).map((opt, i) => (
                   <button
@@ -300,15 +318,18 @@ function OnboardingContent() {
                       setShowModifyOptions(false);
                       sendToAI(opt, messages, draft);
                     }}
-                    className="rounded-xl border border-stone-200 bg-stone-50 px-3 py-1.5 text-xs text-stone-600 hover:bg-white hover:border-stone-300 hover:shadow-sm transition-all"
+                    className="border border-cyan-400/25 bg-cyan-400/[0.05] px-3 py-1.5 font-mono text-xs text-cyan-100/70 hover:bg-cyan-400/15 hover:border-cyan-400/60 transition-all"
                   >
                     {opt}
                   </button>
                 ))}
               </div>
               <button
-                onClick={() => router.push("/plan")}
-                className="w-full rounded-xl bg-stone-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-stone-800 transition-all shadow-sm"
+                onClick={() => {
+                  upsertPlanFromMirror();
+                  router.push("/plan/detail?regenerate=1");
+                }}
+                className="w-full border border-cyan-400/40 bg-cyan-400/10 px-4 py-2.5 text-sm font-medium font-mono text-cyan-200 hover:bg-cyan-400/20 transition-all shadow-[0_0_16px_rgba(34,211,238,0.15)]"
               >
                 不改了，生成计划
               </button>
@@ -325,12 +346,12 @@ function OnboardingContent() {
                 </div>
               )}
               {uploadedDoc && (
-                <div className="mb-2 flex items-center gap-2 text-xs text-stone-500 bg-stone-50 rounded-lg px-3 py-1.5">
+                <div className="mb-2 flex items-center gap-2 font-mono text-xs text-cyan-200/60 border border-cyan-400/20 bg-cyan-400/[0.05] px-3 py-1.5">
                   <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                   <span className="truncate">{uploadedDoc.filename} 已解析</span>
-                  <button onClick={() => setUploadedDoc(null)} className="ml-auto text-stone-400 hover:text-stone-600">✕</button>
+                  <button onClick={() => setUploadedDoc(null)} className="ml-auto text-cyan-300/40 hover:text-cyan-200">✕</button>
                 </div>
               )}
               <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} className="flex gap-2 items-center">
@@ -346,7 +367,7 @@ function OnboardingContent() {
                   onClick={() => fileInputRef.current?.click()}
                   disabled={loading || uploading || isComplete}
                   title="上传需求文档"
-                  className="rounded-xl border border-stone-200 bg-stone-50 p-2.5 text-stone-400 hover:text-stone-600 hover:border-stone-300 transition-all disabled:opacity-50"
+                  className="border border-cyan-400/20 bg-cyan-400/[0.03] p-2.5 text-cyan-300/40 hover:text-cyan-200 hover:border-cyan-400/50 transition-all disabled:opacity-50"
                 >
                   {uploading ? (
                     <svg className="w-4.5 h-4.5 animate-spin" viewBox="0 0 24 24" fill="none">
@@ -365,19 +386,19 @@ function OnboardingContent() {
                   onChange={(e) => setInput(e.target.value)}
                   placeholder={currentOptions ? "或者直接说..." : "说说你想做什么..."}
                   disabled={loading}
-                  className="flex-1 bg-transparent px-3 py-2.5 text-[15px] text-stone-800 placeholder:text-stone-400 focus:outline-none disabled:opacity-50"
+                  className="flex-1 border border-cyan-400/20 bg-cyan-400/[0.03] px-3 py-2.5 text-[15px] text-white/85 placeholder:text-white/25 focus:border-cyan-400/50 focus:shadow-[0_0_16px_rgba(34,211,238,0.1)] focus:outline-none disabled:opacity-50 transition-all"
                 />
                 <button
                   type="submit"
                   disabled={loading || !input.trim()}
-                  className="rounded-xl bg-stone-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-stone-800 transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm"
+                  className="border border-cyan-400/40 bg-cyan-400/10 px-5 py-2.5 text-sm font-medium font-mono text-cyan-200 hover:bg-cyan-400/20 transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-[0_0_16px_rgba(34,211,238,0.15)]"
                 >
                   发送
                 </button>
               </form>
               {/* 一键生成按钮 — 醒目的独立按钮 */}
               {messages.filter(m => m.role === "user").length >= 2 && !loading && (
-                <div className="mt-3 pt-3 border-t border-stone-100">
+                <div className="mt-3 pt-3 border-t border-cyan-400/10">
                   <button
                     onClick={() => {
                       setIsComplete(true);
@@ -385,11 +406,11 @@ function OnboardingContent() {
                       localStorage.setItem("qicheng_draft_backup", JSON.stringify(draft));
                       trackEvent("onboarding_early_generate", { rounds: messages.filter(m => m.role === "user").length });
                     }}
-                    className="group w-full flex items-center justify-center gap-2 rounded-xl border border-stone-200 bg-gradient-to-r from-stone-50 to-white px-4 py-2.5 text-sm text-stone-600 hover:border-stone-300 hover:shadow-sm hover:text-stone-800 transition-all"
+                    className="group w-full flex items-center justify-center gap-2 border border-cyan-400/25 bg-cyan-400/[0.05] px-4 py-2.5 font-mono text-sm text-cyan-100/70 hover:border-cyan-400/60 hover:bg-cyan-400/15 hover:text-cyan-50 transition-all"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_rgba(34,211,238,0.6)]" />
                     <span>直接生成计划</span>
-                    <svg className="w-3.5 h-3.5 text-stone-400 group-hover:text-stone-600 group-hover:translate-x-0.5 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <svg className="w-3.5 h-3.5 text-cyan-300/40 group-hover:text-cyan-200 group-hover:translate-x-0.5 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
                   </button>
@@ -402,23 +423,24 @@ function OnboardingContent() {
       </div>
 
       {/* Right: Live Draft Plan */}
-      <div className="w-[380px] overflow-y-auto border-l border-stone-100/60 bg-gradient-to-b from-white to-stone-50/50 px-6 py-6 max-lg:hidden">
+      <div className="relative z-10 w-[380px] overflow-y-auto border-l border-cyan-400/15 bg-[#0a0a14]/50 backdrop-blur-xl px-6 py-6 max-lg:hidden">
         <div className="flex items-center gap-2 mb-1">
-          <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          <h2 className="text-xs font-semibold text-stone-500 uppercase tracking-wider">
+          <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_rgba(34,211,238,0.6)]" />
+          <h2 className="cyber-neon font-mono text-xs font-semibold text-cyan-300/80 uppercase tracking-wider">
             实时草图
           </h2>
         </div>
-        <p className="text-[11px] text-stone-400 mb-5">
+        <p className="text-[11px] text-white/35 mb-4">
           你说的每句话都在变成计划
         </p>
+        <div className="cyber-dataline mb-5" />
 
         <div className="space-y-4">
           {draft.goal && (
             <DraftSection icon="🎯" title="目标">
-              <p className="text-sm text-stone-800">{draft.goal}</p>
+              <p className="text-sm text-white/85">{draft.goal}</p>
               {draft.domain && (
-                <span className="mt-1 inline-block rounded-full bg-stone-100 px-2.5 py-0.5 text-xs text-stone-600">
+                <span className="mt-1 inline-block border border-cyan-400/25 bg-cyan-400/[0.05] px-2.5 py-0.5 font-mono text-xs text-cyan-200/70">
                   {draft.domain === "programming_app" ? "编程 / App" :
                    draft.domain === "visual_design" ? "视觉设计" :
                    draft.domain === "data_analysis" ? "数据分析" :
@@ -430,14 +452,14 @@ function OnboardingContent() {
 
           {draft.starting_point && (
             <DraftSection icon="📍" title="起点">
-              <p className="text-sm text-stone-800">{draft.starting_point}</p>
+              <p className="text-sm text-white/85">{draft.starting_point}</p>
             </DraftSection>
           )}
 
           {(draft.time_budget || draft.rhythm) && (
             <DraftSection icon="⏰" title="节奏">
-              {draft.time_budget && <p className="text-sm text-stone-800">{draft.time_budget}</p>}
-              {draft.rhythm && <p className="text-xs text-stone-500 mt-1">{draft.rhythm}</p>}
+              {draft.time_budget && <p className="text-sm text-white/85">{draft.time_budget}</p>}
+              {draft.rhythm && <p className="text-xs text-white/45 mt-1">{draft.rhythm}</p>}
             </DraftSection>
           )}
 
@@ -445,12 +467,12 @@ function OnboardingContent() {
             <DraftSection icon="🗺️" title="阶段规划">
               <div className="space-y-2.5">
                 {draft.stages.map((stage, i) => (
-                  <div key={i} className="rounded-md border border-stone-100 bg-stone-50 p-3">
+                  <div key={i} className="cyber-panel p-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-stone-800">{stage.name}</span>
-                      <span className="text-xs text-stone-400">{stage.duration}</span>
+                      <span className="text-sm font-medium text-white/85">{stage.name}</span>
+                      <span className="text-xs text-white/35">{stage.duration}</span>
                     </div>
-                    <p className="mt-1 text-xs text-stone-600">{stage.outcome}</p>
+                    <p className="mt-1 text-xs text-white/55">{stage.outcome}</p>
                   </div>
                 ))}
               </div>
@@ -459,34 +481,34 @@ function OnboardingContent() {
 
           {draft.first_week_focus && (
             <DraftSection icon="🚀" title="第一周重点">
-              <p className="text-sm text-stone-800">{draft.first_week_focus}</p>
+              <p className="text-sm text-white/85">{draft.first_week_focus}</p>
             </DraftSection>
           )}
 
           {draft.risk && (
             <DraftSection icon="⚠️" title="风险预警">
-              <p className="text-sm text-stone-700">{draft.risk}</p>
+              <p className="text-sm text-white/75">{draft.risk}</p>
             </DraftSection>
           )}
 
           {draft.motivation && (
             <DraftSection icon="💡" title="核心动力">
-              <p className="text-sm text-stone-700">{draft.motivation}</p>
+              <p className="text-sm text-white/75">{draft.motivation}</p>
             </DraftSection>
           )}
         </div>
 
         {!draft.goal && !loading && (
-          <div className="mt-10 text-center text-stone-300">
+          <div className="mt-10 text-center text-white/25">
             <p className="text-3xl">📝</p>
             <p className="mt-2 text-sm">开始聊，草图会自动生长</p>
           </div>
         )}
 
         {isComplete && (
-          <div className="mt-6 rounded-lg border-2 border-stone-800 bg-stone-800 p-4 text-center">
-            <p className="text-sm font-medium text-white">草图已完成</p>
-            <p className="mt-1 text-xs text-stone-300">点击左侧「生成我的计划」进入下一步</p>
+          <div className="cyber-panel cyber-corner mt-6 p-4 text-center">
+            <p className="cyber-neon text-sm font-medium text-cyan-100">草图已完成</p>
+            <p className="mt-1 text-xs text-white/50">点击左侧「生成我的计划」进入下一步</p>
           </div>
         )}
       </div>
@@ -523,7 +545,7 @@ function getModifyOptions(draft: DraftPlan): string[] {
 function DraftSection({ icon, title, children }: { icon: string; title: string; children: React.ReactNode }) {
   return (
     <div className="animate-in fade-in slide-in-from-right-2 duration-500">
-      <div className="flex items-center gap-1.5 text-xs font-medium text-stone-500 mb-1.5">
+      <div className="flex items-center gap-1.5 text-xs font-medium text-white/45 mb-1.5">
         <span>{icon}</span>
         <span>{title}</span>
       </div>

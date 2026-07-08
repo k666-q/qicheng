@@ -1,0 +1,147 @@
+{
+  "subject": {
+    "id": "electrical",
+    "name": "电气与电子工程",
+    "color": "#eab308",
+    "description": "研究电与电磁现象及其工程应用的学科,从一颗电阻到整个电网都在它的版图中。",
+    "category": "自然科学与工程"
+  },
+  "nodes": [
+    {
+      "id": "ee_circuit_analysis",
+      "subjectId": "electrical",
+      "name": "电路分析基础",
+      "plain_name": "电流电压怎么算",
+      "description": "用欧姆定律和基尔霍夫定律分析电路中的电流、电压与功率分布。",
+      "difficulty": 4,
+      "keywords": ["电路", "欧姆定律", "基尔霍夫", "电流", "电压", "电阻"],
+      "cognition_tags": ["logic", "modeling"]
+    },
+    {
+      "id": "ee_analog_circuit",
+      "subjectId": "electrical",
+      "name": "模拟电路",
+      "plain_name": "处理连续信号的电路",
+      "description": "由晶体管、运放等构成的放大、滤波电路,处理声音、温度等连续变化的信号。",
+      "difficulty": 6,
+      "keywords": ["模拟电路", "三极管", "运算放大器", "放大", "滤波", "晶体管"],
+      "cognition_tags": ["modeling", "logic"]
+    },
+    {
+      "id": "ee_digital_circuit",
+      "subjectId": "electrical",
+      "name": "数字电路",
+      "plain_name": "用0和1工作的电路",
+      "description": "由逻辑门构成的电路,用二进制处理信息,是计算机硬件的基石。",
+      "difficulty": 5,
+      "keywords": ["数字电路", "逻辑门", "二进制", "触发器", "组合逻辑", "时序逻辑"],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "ee_signals_systems",
+      "subjectId": "electrical",
+      "name": "信号与系统",
+      "plain_name": "信号如何被处理和变换",
+      "description": "用傅里叶变换等数学工具分析信号的时域与频域特性,是通信与控制的理论根基。",
+      "difficulty": 7,
+      "keywords": ["信号与系统", "傅里叶变换", "频域", "时域", "卷积", "采样"],
+      "cognition_tags": ["abstract", "modeling"]
+    },
+    {
+      "id": "ee_electromagnetics",
+      "subjectId": "electrical",
+      "name": "电磁场",
+      "plain_name": "电和磁的无形之力",
+      "description": "麦克斯韦方程组描述电场磁场的产生与传播,是天线、电机的物理基础。",
+      "difficulty": 8,
+      "keywords": ["电磁场", "麦克斯韦方程", "电场", "磁场", "电磁波", "天线"],
+      "cognition_tags": ["abstract", "modeling"]
+    },
+    {
+      "id": "ee_motor_power_system",
+      "subjectId": "electrical",
+      "name": "电机与电力系统",
+      "plain_name": "电是怎么发出来送到家的",
+      "description": "发电机、电动机的原理与电网的发输配用,支撑现代社会的电力供应。",
+      "difficulty": 7,
+      "keywords": ["电机", "电力系统", "发电机", "电动机", "电网", "输配电"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "ee_power_electronics",
+      "subjectId": "electrical",
+      "name": "电力电子",
+      "plain_name": "高效地转换和控制电能",
+      "description": "用功率器件进行整流、逆变与变频,实现电能的高效转换与精准控制。",
+      "difficulty": 7,
+      "keywords": ["电力电子", "整流", "逆变", "变频", "功率器件", "开关电源"],
+      "cognition_tags": ["modeling", "logic"]
+    },
+    {
+      "id": "ee_embedded_system",
+      "subjectId": "electrical",
+      "name": "嵌入式系统",
+      "plain_name": "藏在设备里的小电脑",
+      "description": "以微控制器为核心、嵌入设备中的专用计算系统,让家电、汽车变得智能。",
+      "difficulty": 7,
+      "keywords": ["嵌入式系统", "单片机", "微控制器", "MCU", "固件", "实时系统"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "ee_microprocessor",
+      "subjectId": "electrical",
+      "name": "微处理器",
+      "plain_name": "芯片里的计算大脑",
+      "description": "由数字电路集成的处理器,负责取指、译码与运算,是嵌入式系统的核心。",
+      "difficulty": 7,
+      "keywords": ["微处理器", "CPU", "指令集", "寄存器", "处理器架构"],
+      "cognition_tags": ["abstract", "system"]
+    },
+    {
+      "id": "ee_sensors_measurement",
+      "subjectId": "electrical",
+      "name": "传感器与测量",
+      "plain_name": "让机器感知物理世界",
+      "description": "把温度、压力、光等物理量转换成电信号,是设备感知环境的眼睛和耳朵。",
+      "difficulty": 5,
+      "keywords": ["传感器", "测量", "信号转换", "采集", "精度", "标定"],
+      "cognition_tags": ["modeling", "logic"]
+    },
+    {
+      "id": "ee_communication",
+      "subjectId": "electrical",
+      "name": "通信原理",
+      "plain_name": "信息如何远距离传送",
+      "description": "通过调制、编码把信息载到电磁波上,实现无线与有线的远程通信。",
+      "difficulty": 7,
+      "keywords": ["通信原理", "调制", "编码", "信道", "无线通信", "信噪比"],
+      "cognition_tags": ["abstract", "modeling"]
+    },
+    {
+      "id": "ee_control_system",
+      "subjectId": "electrical",
+      "name": "控制系统",
+      "plain_name": "让系统自动稳定运行",
+      "description": "用反馈调节让电机、温度等自动达到并保持目标值,是自动化的理论核心。",
+      "difficulty": 7,
+      "keywords": ["控制系统", "反馈", "PID", "稳定性", "自动控制", "闭环"],
+      "cognition_tags": ["abstract", "modeling"]
+    }
+  ],
+  "edges": [
+    { "source": "ee_circuit_analysis", "target": "ee_analog_circuit", "type": "prerequisite", "reason": "模拟电路是含有源器件的复杂电路,必须先掌握基础电路分析方法。" },
+    { "source": "ee_circuit_analysis", "target": "ee_digital_circuit", "type": "prerequisite", "reason": "数字电路本质仍是电路,理解基本电路定律是分析逻辑电路的前提。" },
+    { "source": "ee_analog_circuit", "target": "ee_sensors_measurement", "type": "prerequisite", "reason": "传感器输出的微弱信号需要模拟电路放大滤波后才能使用。" },
+    { "source": "ee_digital_circuit", "target": "ee_microprocessor", "type": "prerequisite", "reason": "微处理器由大量数字逻辑电路集成而成,数字电路是其构造基础。" },
+    { "source": "ee_microprocessor", "target": "ee_embedded_system", "type": "prerequisite", "reason": "嵌入式系统以微处理器为核心,理解处理器是开发嵌入式系统的前提。" },
+    { "source": "ee_signals_systems", "target": "ee_communication", "type": "prerequisite", "reason": "通信中的调制与频谱分析直接建立在信号与系统的理论之上。" },
+    { "source": "ee_signals_systems", "target": "ee_control_system", "type": "prerequisite", "reason": "控制系统的频域分析与稳定性判据来自信号与系统的数学工具。" },
+    { "source": "ee_electromagnetics", "target": "ee_communication", "type": "prerequisite", "reason": "无线通信依靠电磁波传播,电磁场理论是天线与信道的物理基础。" },
+    { "source": "ee_electromagnetics", "target": "ee_motor_power_system", "type": "prerequisite", "reason": "电机的工作原理基于电磁感应,电磁场是理解电机与电力系统的根基。" },
+    { "source": "ee_motor_power_system", "target": "ee_power_electronics", "type": "related", "reason": "电力电子用于电机驱动和电网变换,与电力系统紧密配合。" },
+    { "source": "ee_analog_circuit", "target": "ee_power_electronics", "type": "prerequisite", "reason": "电力电子涉及功率器件的开关与驱动,需要模拟电路的基础。" },
+    { "source": "ee_sensors_measurement", "target": "ee_control_system", "type": "prerequisite", "reason": "控制系统依靠传感器测量反馈信号,才能进行闭环调节。" },
+    { "source": "ee_embedded_system", "target": "ee_control_system", "type": "related", "reason": "嵌入式系统常用来实现数字控制算法,是控制系统的常见载体。" },
+    { "source": "ee_embedded_system", "target": "ee_sensors_measurement", "type": "related", "reason": "嵌入式系统通过传感器采集数据,二者在智能设备中协同工作。" }
+  ]
+}

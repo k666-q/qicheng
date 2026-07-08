@@ -1,0 +1,110 @@
+/* ═══════════════════════════════════════════════════════
+   Nexiova Design Tokens — 赛博朋克深空 + 结构化布局
+   ═══════════════════════════════════════════════════════ */
+
+:root {
+  /* ── 背景色阶（近黑，微带蓝紫，呼应深空） ── */
+  --bg-0: #08080d;
+  --bg-1: #0e0e15;
+  --bg-2: #16161f;
+  --bg-3: #1e1e2a;
+
+  /* ── 文字色阶（禁止纯白，最亮到 #ededf2） ── */
+  --text-1: #ededf2;
+  --text-2: rgba(237, 237, 242, 0.62);
+  --text-3: rgba(237, 237, 242, 0.38);
+
+  /* ── 描边 ── */
+  --border-1: rgba(237, 237, 242, 0.07);
+  --border-2: rgba(237, 237, 242, 0.14);
+
+  /* ── 赛博朋克主色 ── */
+  --cyber-cyan: #22d3ee;
+  --cyber-cyan-dim: rgba(34, 211, 238, 0.15);
+  --cyber-cyan-glow: rgba(34, 211, 238, 0.25);
+  --cyber-fuchsia: #d946ef;
+  --cyber-fuchsia-dim: rgba(217, 70, 239, 0.12);
+
+  /* ── 主题色（紫，兼容旧引用） ── */
+  --qc-accent: #7c6cf0;
+  --qc-accent-hover: #8d7ef5;
+  --qc-accent-muted: rgba(124, 108, 240, 0.14);
+
+  /* ── 语义色 ── */
+  --qc-success: #4ade80;
+  --qc-warning: #fbbf24;
+  --qc-danger: #f87171;
+  --qc-info: #60a5fa;
+
+  /* ── 圆角 ── */
+  --radius-panel: 10px;
+  --radius-control: 6px;
+
+  /* ── 字号阶梯 ── */
+  --font-xs: 11px;
+  --font-sm: 13px;
+  --font-base: 14px;
+  --font-lg: 16px;
+  --font-xl: 20px;
+
+  /* ── 动效 ── */
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 320ms;
+  --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* ── 阴影 ── */
+  --shadow-float: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-modal: 0 16px 48px rgba(0, 0, 0, 0.6);
+
+  /* ── 侧边栏宽度 ── */
+  --siderail-width: 52px;
+  --siderail-width-expanded: 220px;
+}
+
+/* ── 全局基础 ── */
+
+body {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── 全站统一滚动条 ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(34, 211, 238, 0.12);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(34, 211, 238, 0.28);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(34, 211, 238, 0.12) transparent;
+}
+
+/* ── 统一 focus ring ── */
+.focus-ring {
+  outline: none;
+}
+.focus-ring:focus-visible {
+  box-shadow: 0 0 0 2px var(--bg-0), 0 0 0 4px var(--cyber-cyan);
+}
+
+/* ── prefers-reduced-motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

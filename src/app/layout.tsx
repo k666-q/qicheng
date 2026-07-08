@@ -1,19 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
+import { SideRail } from "@/components/ui/SideRail";
+import { DataMigration } from "@/components/ui/DataMigration";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const geistSans = GeistSans;
+const geistMono = GeistMono;
 
 export const metadata: Metadata = {
-  title: "启程 · 你的 AI 学习规划战略搭档",
+  title: "Nexiova · 你的 AI 学习规划战略搭档",
   description: "把模糊的想法变成清晰可执行的个人化学习计划",
 };
 
@@ -27,7 +23,11 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="h-full bg-[var(--bg-0)]">
+        <DataMigration />
+        <SideRail />
+        {children}
+      </body>
     </html>
   );
 }

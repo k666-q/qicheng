@@ -13,10 +13,10 @@ export function ChatBubble({ role, content }: ChatBubbleProps) {
   return (
     <div className={`flex ${isAI ? "justify-start" : "justify-end"} animate-slide-up`}>
       <div
-        className={`max-w-[78%] rounded-2xl px-5 py-3 text-[15px] leading-relaxed ${
+        className={`max-w-[78%] px-5 py-3 text-[15px] leading-relaxed ${
           isAI
-            ? "bg-white border border-stone-100/80 text-stone-700 shadow-sm"
-            : "bg-stone-900 text-white shadow-md shadow-stone-900/10"
+            ? "cyber-panel backdrop-blur-xl text-white/85"
+            : "border border-fuchsia-400/30 bg-fuchsia-500/10 backdrop-blur-xl text-white/90 shadow-[0_0_16px_rgba(232,121,249,0.08)]"
         }`}
       >
         {isAI ? (

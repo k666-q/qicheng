@@ -8,6 +8,7 @@ import {
 } from "recharts";
 import type { PredictedEmotionCurve, GeneratedPlan, PlanTask } from "@/lib/plan/types";
 import { getEventsByType } from "@/lib/profile/events";
+import { loadSessionItem } from "@/lib/plan/store";
 
 type TaskNode = {
   index: number;
@@ -98,7 +99,7 @@ export function MiniEmotionCurve() {
   }, []);
 
   const loadAndBuild = useCallback(() => {
-    const planStr = sessionStorage.getItem("qicheng_plan");
+    const planStr = loadSessionItem("qicheng_plan");
     if (!planStr) { setLoading(false); return true; }
 
     const plan = JSON.parse(planStr) as GeneratedPlan;
@@ -120,7 +121,7 @@ export function MiniEmotionCurve() {
   }, [buildTaskNodes]);
 
   const generateCurve = useCallback(async () => {
-    const planStr = sessionStorage.getItem("qicheng_plan");
+    const planStr = loadSessionItem("qicheng_plan");
     if (!planStr) { setLoading(false); return; }
 
     setGenerating(true);
@@ -145,7 +146,7 @@ export function MiniEmotionCurve() {
         buildTaskNodes(plan, null);
       }
     } catch {
-      const planStr2 = sessionStorage.getItem("qicheng_plan");
+      const planStr2 = loadSessionItem("qicheng_plan");
       if (planStr2) buildTaskNodes(JSON.parse(planStr2), null);
     }
     setGenerating(false);
@@ -159,9 +160,9 @@ export function MiniEmotionCurve() {
 
   if (loading || generating) {
     return (
-      <div className="rounded-2xl border border-stone-100 bg-white p-6 mb-6 shadow-sm">
-        <div className="flex items-center gap-2 text-xs text-stone-400">
-          <div className="w-3.5 h-3.5 animate-spin rounded-full border-2 border-stone-300 border-t-stone-600" />
+      <div className="rounded-2xl border border-white/[0.07] bg-white/[0.04] backdrop-blur-md p-6 mb-6">
+        <div className="flex items-center gap-2 text-xs text-white/40">
+          <div className="w-3.5 h-3.5 animate-spin rounded-full border-2 border-white/20 border-t-indigo-400" />
           {generating ? "正在生成曲线..." : "加载中..."}
         </div>
       </div>
@@ -176,10 +177,10 @@ export function MiniEmotionCurve() {
   const stageColors = ["#10b981", "#f59e0b", "#6366f1", "#ec4899", "#14b8a6"];
 
   return (
-    <div className="rounded-2xl border border-stone-100 bg-white p-6 mb-6 shadow-sm">
+    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.04] backdrop-blur-md p-6 mb-6 shadow-[0_0_20px_rgba(100,150,255,0.05)]">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-4 text-[11px] text-stone-500">
+        <div className="flex items-center gap-4 text-[11px] text-white/50">
           <span className="flex items-center gap-1.5">
             <span className="flex gap-0.5">
               {stageColors.slice(0, stageBreaks.length).map((c, i) => (
@@ -190,15 +191,15 @@ export function MiniEmotionCurve() {
           </span>
           {hasEmotion && (
             <span className="flex items-center gap-1.5">
-              <span className="w-4 h-0 border-t-2 border-dashed border-stone-400" />
+              <span className="w-4 h-0 border-t-2 border-dashed border-white/40" />
               情绪预测
             </span>
           )}
-          <span className="text-stone-300">|</span>
-          <span className="text-stone-400">{taskNodes.length} 个节点</span>
+          <span className="text-white/20">|</span>
+          <span className="text-white/35">{taskNodes.length} 个节点</span>
         </div>
         {currentPhaseName && (
-          <span className="text-[11px] text-stone-400 bg-stone-50 rounded-md px-2 py-0.5">
+          <span className="text-[11px] text-white/45 bg-white/[0.06] rounded-md px-2 py-0.5">
             {currentPhaseName}
           </span>
         )}
@@ -207,18 +208,18 @@ export function MiniEmotionCurve() {
       {/* Chart */}
       <ResponsiveContainer width="100%" height={200}>
         <ComposedChart data={taskNodes} margin={{ top: 5, right: 10, bottom: 5, left: -10 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#f5f5f4" />
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
           <XAxis
             dataKey="index"
-            tick={{ fontSize: 10, fill: "#a8a29e" }}
+            tick={{ fontSize: 10, fill: "rgba(255,255,255,0.35)" }}
             tickFormatter={(v) => `${v}`}
-            axisLine={{ stroke: "#e7e5e4" }}
+            axisLine={{ stroke: "rgba(255,255,255,0.1)" }}
             tickLine={false}
             interval={Math.max(0, Math.floor(taskNodes.length / 10) - 1)}
           />
           <YAxis
             domain={[0, 10]}
-            tick={{ fontSize: 11, fill: "#a8a29e" }}
+            tick={{ fontSize: 11, fill: "rgba(255,255,255,0.35)" }}
             tickFormatter={(v) => {
               const labels: Record<number, string> = { 2: "低", 5: "中", 8: "高" };
               return labels[v] || "";
@@ -232,13 +233,13 @@ export function MiniEmotionCurve() {
               if (!active || !payload?.length) return null;
               const data = payload[0]?.payload as TaskNode;
               return (
-                <div className="bg-white border border-stone-200 rounded-lg p-2.5 shadow-md text-[11px] max-w-[200px]">
-                  <p className="font-medium text-stone-700 truncate">#{data.index} {data.title}</p>
-                  <p className="text-stone-400 text-[10px]">{data.stage}</p>
+                <div className="bg-[#12121a]/95 border border-white/10 rounded-lg p-2.5 shadow-xl backdrop-blur-xl text-[11px] max-w-[200px]">
+                  <p className="font-medium text-white/80 truncate">#{data.index} {data.title}</p>
+                  <p className="text-white/35 text-[10px]">{data.stage}</p>
                   <div className="mt-1 space-y-0.5">
-                    <p className="text-amber-600">难度：{data.difficulty}/10</p>
+                    <p className="text-amber-300">难度：{data.difficulty}/10</p>
                     {data.emotion !== undefined && (
-                      <p className="text-stone-500">情绪：{data.emotion}/10</p>
+                      <p className="text-white/50">情绪：{data.emotion}/10</p>
                     )}
                   </div>
                 </div>
@@ -263,7 +264,7 @@ export function MiniEmotionCurve() {
           <Line
             type="monotone"
             dataKey="difficulty"
-            stroke="#d6d3d1"
+            stroke="rgba(255,255,255,0.2)"
             strokeWidth={1.5}
             dot={(props: Record<string, unknown>) => {
               const cx = props.cx as number | undefined;
@@ -279,7 +280,7 @@ export function MiniEmotionCurve() {
                   cy={cy}
                   r={3.5}
                   fill={color}
-                  stroke="white"
+                  stroke="#12121a"
                   strokeWidth={1.5}
                 />
               );
@@ -313,7 +314,7 @@ export function MiniEmotionCurve() {
           return (
             <div
               key={i}
-              className="flex items-center gap-1 rounded-md bg-stone-50 px-2 py-1 text-[10px] text-stone-500 whitespace-nowrap"
+              className="flex items-center gap-1 rounded-md bg-white/[0.06] px-2 py-1 text-[10px] text-white/50 whitespace-nowrap"
             >
               <span className="w-1.5 h-1.5 rounded-full" style={{ background: stageColors[i % stageColors.length] }} />
               {brk.name}（{count}）
@@ -325,7 +326,7 @@ export function MiniEmotionCurve() {
       {/* Click to expand */}
       <button
         onClick={() => router.push("/plan/curve")}
-        className="mt-3 w-full text-center text-[11px] text-stone-400 hover:text-stone-600 transition-colors"
+        className="mt-3 w-full text-center text-[11px] text-white/35 hover:text-white/60 transition-colors"
       >
         查看完整阶段详情与情绪打卡 →
       </button>

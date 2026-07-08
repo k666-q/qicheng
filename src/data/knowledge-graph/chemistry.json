@@ -1,0 +1,157 @@
+{
+  "subject": {
+    "id": "chemistry",
+    "name": "化学",
+    "color": "#f97316",
+    "description": "研究物质的组成、结构、性质与变化的科学，连接微观原子与宏观世界。",
+    "category": "自然科学与工程"
+  },
+  "nodes": [
+    {
+      "id": "chem_atomic_structure",
+      "subjectId": "chemistry",
+      "name": "原子结构",
+      "plain_name": "万物是由什么搭起来的",
+      "description": "原子核、电子云、能级排布——理解物质最小单元的内部构造。",
+      "difficulty": 4,
+      "keywords": ["原子", "原子核", "电子", "能级", "电子排布", "质子中子"],
+      "cognition_tags": ["abstract", "modeling"]
+    },
+    {
+      "id": "chem_periodic_law",
+      "subjectId": "chemistry",
+      "name": "元素周期律",
+      "plain_name": "元素排排坐的规律",
+      "description": "门捷列夫周期表背后的规律：元素性质随原子序数周期性变化。",
+      "difficulty": 4,
+      "keywords": ["元素周期表", "周期律", "原子序数", "门捷列夫", "族", "周期"],
+      "cognition_tags": ["logic", "system"]
+    },
+    {
+      "id": "chem_chemical_bond",
+      "subjectId": "chemistry",
+      "name": "化学键",
+      "plain_name": "原子之间怎么拉手",
+      "description": "离子键、共价键、金属键——原子结合成分子和材料的方式。",
+      "difficulty": 5,
+      "keywords": ["化学键", "共价键", "离子键", "金属键", "分子结构"],
+      "cognition_tags": ["abstract", "modeling"]
+    },
+    {
+      "id": "chem_reaction_equilibrium",
+      "subjectId": "chemistry",
+      "name": "化学反应与平衡",
+      "plain_name": "反应是怎么进行和停下的",
+      "description": "化学方程式、可逆反应与动态平衡——预测反应往哪个方向走。",
+      "difficulty": 5,
+      "keywords": ["化学反应", "化学平衡", "可逆反应", "方程式", "勒夏特列原理"],
+      "cognition_tags": ["logic", "modeling"]
+    },
+    {
+      "id": "chem_acid_base_redox",
+      "subjectId": "chemistry",
+      "name": "酸碱与氧化还原",
+      "plain_name": "酸碱中和与电子的得失",
+      "description": "酸碱反应、pH与氧化还原——从中和反应到电池都靠它。",
+      "difficulty": 5,
+      "keywords": ["酸碱", "pH", "氧化还原", "中和反应", "电子转移"],
+      "cognition_tags": ["logic", "modeling"]
+    },
+    {
+      "id": "chem_organic",
+      "subjectId": "chemistry",
+      "name": "有机化学",
+      "plain_name": "碳元素的大家族",
+      "description": "以碳为骨架的化合物世界——从塑料到药物再到生命分子。",
+      "difficulty": 6,
+      "keywords": ["有机化学", "碳", "有机物", "碳链", "官能团"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "chem_hydrocarbons",
+      "subjectId": "chemistry",
+      "name": "烃类",
+      "plain_name": "只有碳和氢的化合物",
+      "description": "烷烃、烯烃、芳香烃——石油化工和能源的基础原料。",
+      "difficulty": 6,
+      "keywords": ["烃", "烷烃", "烯烃", "芳香烃", "石油", "碳氢化合物"],
+      "cognition_tags": ["logic", "system"]
+    },
+    {
+      "id": "chem_functional_groups",
+      "subjectId": "chemistry",
+      "name": "官能团与反应",
+      "plain_name": "决定分子脾气的关键部件",
+      "description": "羟基、羧基、氨基等官能团决定有机物的性质与反应类型。",
+      "difficulty": 7,
+      "keywords": ["官能团", "羟基", "羧基", "氨基", "有机反应", "取代反应"],
+      "cognition_tags": ["logic", "modeling"]
+    },
+    {
+      "id": "chem_inorganic",
+      "subjectId": "chemistry",
+      "name": "无机化学",
+      "plain_name": "金属、矿物和盐的化学",
+      "description": "研究除碳氢化合物外的元素及其化合物，涵盖金属、酸碱盐与配合物。",
+      "difficulty": 5,
+      "keywords": ["无机化学", "金属", "盐", "配合物", "矿物"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "chem_analytical",
+      "subjectId": "chemistry",
+      "name": "分析化学",
+      "plain_name": "测出里面有什么、有多少",
+      "description": "定性与定量分析——用滴定、光谱、色谱等方法识别和测量物质。",
+      "difficulty": 6,
+      "keywords": ["分析化学", "定量分析", "滴定", "光谱", "色谱"],
+      "cognition_tags": ["logic", "modeling"]
+    },
+    {
+      "id": "chem_physical",
+      "subjectId": "chemistry",
+      "name": "物理化学",
+      "plain_name": "用物理规律解释化学",
+      "description": "把物理学的能量、热力学、动力学方法用来研究化学变化的本质。",
+      "difficulty": 7,
+      "keywords": ["物理化学", "热力学", "动力学", "能量", "理论化学"],
+      "cognition_tags": ["abstract", "modeling"]
+    },
+    {
+      "id": "chem_thermodynamics",
+      "subjectId": "chemistry",
+      "name": "化学热力学",
+      "plain_name": "反应到底能不能自发发生",
+      "description": "用焓、熵、吉布斯自由能判断反应方向和能量变化。",
+      "difficulty": 7,
+      "keywords": ["化学热力学", "焓", "熵", "吉布斯自由能", "反应方向"],
+      "cognition_tags": ["abstract", "modeling"]
+    },
+    {
+      "id": "chem_kinetics",
+      "subjectId": "chemistry",
+      "name": "反应动力学",
+      "plain_name": "反应快慢由什么决定",
+      "description": "研究反应速率、机理与催化——温度、浓度、催化剂如何影响快慢。",
+      "difficulty": 7,
+      "keywords": ["反应动力学", "反应速率", "催化剂", "活化能", "反应机理"],
+      "cognition_tags": ["modeling", "logic"]
+    }
+  ],
+  "edges": [
+    { "source": "chem_atomic_structure", "target": "chem_periodic_law", "type": "prerequisite", "reason": "周期律正是原子核外电子排布周期性变化的宏观体现，理解原子结构才能读懂周期表。" },
+    { "source": "chem_atomic_structure", "target": "chem_chemical_bond", "type": "prerequisite", "reason": "化学键的本质是原子最外层电子的转移或共享，离不开原子结构这一基础。" },
+    { "source": "chem_chemical_bond", "target": "chem_reaction_equilibrium", "type": "prerequisite", "reason": "化学反应就是旧键断裂、新键形成的过程，理解化学键是理解反应的前提。" },
+    { "source": "chem_reaction_equilibrium", "target": "chem_acid_base_redox", "type": "prerequisite", "reason": "酸碱中和与氧化还原都是具体的反应类型，建立在反应与平衡的基本框架之上。" },
+    { "source": "chem_chemical_bond", "target": "chem_organic", "type": "prerequisite", "reason": "有机化学研究碳原子的成键规律，共价键知识是有机化学的根基。" },
+    { "source": "chem_organic", "target": "chem_hydrocarbons", "type": "prerequisite", "reason": "烃类是最简单的有机物，是进入有机化学体系的第一类研究对象。" },
+    { "source": "chem_hydrocarbons", "target": "chem_functional_groups", "type": "prerequisite", "reason": "在烃骨架上引入官能团，才能衍生出醇、酸、胺等丰富的有机物种类。" },
+    { "source": "chem_periodic_law", "target": "chem_inorganic", "type": "prerequisite", "reason": "无机化学按元素周期表的规律研究各族元素及其化合物的性质。" },
+    { "source": "chem_acid_base_redox", "target": "chem_analytical", "type": "prerequisite", "reason": "滴定分析等定量方法直接基于酸碱中和与氧化还原反应的计量关系。" },
+    { "source": "chem_reaction_equilibrium", "target": "chem_physical", "type": "prerequisite", "reason": "物理化学用更深的理论解释反应与平衡背后的能量与速率规律。" },
+    { "source": "chem_physical", "target": "chem_thermodynamics", "type": "prerequisite", "reason": "化学热力学是物理化学的核心分支，研究反应的能量与自发性。" },
+    { "source": "chem_physical", "target": "chem_kinetics", "type": "prerequisite", "reason": "反应动力学是物理化学的另一核心分支，研究反应进行的速率与机理。" },
+    { "source": "chem_thermodynamics", "target": "chem_kinetics", "type": "related", "reason": "热力学回答反应能不能发生，动力学回答反应有多快，二者互补描述反应。" },
+    { "source": "chem_organic", "target": "chem_inorganic", "type": "related", "reason": "有机与无机是化学的两大传统分支，在金属有机化合物等领域相互交叉。" }
+  ]
+}

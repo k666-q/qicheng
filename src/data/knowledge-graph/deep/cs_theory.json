@@ -1,0 +1,82 @@
+{
+  "parentId": "cs_theory",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "theory_logic_sets",
+      "subjectId": "programming",
+      "parentId": "cs_theory",
+      "name": "逻辑与集合",
+      "plain_name": "推理与归类的语言",
+      "description": "命题逻辑、谓词、集合运算与关系——计算机科学一切形式化推理的基础词汇。",
+      "difficulty": 5,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["命题逻辑", "谓词", "集合", "关系", "离散数学"],
+      "prerequisites": [],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "theory_graph_combinatorics",
+      "subjectId": "programming",
+      "parentId": "cs_theory",
+      "name": "图论与组合",
+      "plain_name": "数清楚、连起来",
+      "description": "图的基本概念、排列组合、鸽笼原理——离散世界里计数与连接的数学。",
+      "difficulty": 6,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["图论", "组合", "排列", "鸽笼原理", "离散数学"],
+      "prerequisites": ["theory_logic_sets"],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "theory_automata",
+      "subjectId": "programming",
+      "parentId": "cs_theory",
+      "name": "自动机与形式语言",
+      "plain_name": "机器如何识别模式",
+      "description": "有限自动机、正则语言、上下文无关文法——编译器与正则表达式背后的理论。",
+      "difficulty": 8,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["有限自动机", "正则语言", "文法", "形式语言", "DFA"],
+      "prerequisites": ["theory_logic_sets"],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "theory_computability",
+      "subjectId": "programming",
+      "parentId": "cs_theory",
+      "name": "可计算性",
+      "plain_name": "什么问题机器算不出来",
+      "description": "图灵机、停机问题、不可判定性——存在一些问题，任何算法都永远无法解决。",
+      "difficulty": 9,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["图灵机", "停机问题", "可计算性", "不可判定", "丘奇图灵论题"],
+      "prerequisites": ["theory_automata"],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "theory_complexity",
+      "subjectId": "programming",
+      "parentId": "cs_theory",
+      "name": "计算复杂度",
+      "plain_name": "难题到底有多难",
+      "description": "P、NP、NP 完全与归约——为什么有些问题能快速验证答案却很难求解。",
+      "difficulty": 9,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["P", "NP", "NP完全", "归约", "复杂度类"],
+      "prerequisites": ["theory_computability"],
+      "cognition_tags": ["abstract", "logic"]
+    }
+  ],
+  "edges": [
+    { "source": "theory_logic_sets", "target": "theory_graph_combinatorics", "type": "prerequisite" },
+    { "source": "theory_logic_sets", "target": "theory_automata", "type": "prerequisite" },
+    { "source": "theory_automata", "target": "theory_computability", "type": "prerequisite" },
+    { "source": "theory_computability", "target": "theory_complexity", "type": "prerequisite" }
+  ]
+}

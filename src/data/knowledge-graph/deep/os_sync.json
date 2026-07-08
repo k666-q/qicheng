@@ -1,0 +1,82 @@
+{
+  "parentId": "os_sync",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "sync_critical_section",
+      "subjectId": "programming",
+      "parentId": "os_sync",
+      "name": "临界区与互斥",
+      "plain_name": "同一时间只能有一个进程进的房间",
+      "description": "临界区是访问共享资源的代码段，互斥要求同一时刻只有一个进程能进入。动画展示一扇只能容一人的门：进程进入时上锁，其他进程在门外等待，离开时解锁放下一个进入。",
+      "difficulty": 4,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["临界区", "互斥", "共享资源", "锁", "并发"],
+      "prerequisites": [],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "sync_semaphore_pv",
+      "subjectId": "programming",
+      "parentId": "os_sync",
+      "name": "信号量的P/V操作",
+      "plain_name": "用计数器管理资源的拿与还",
+      "description": "信号量是一个整数计数器，P操作（申请）把它减1，若小于0则进程阻塞等待；V操作（释放）把它加1，若有等待进程则唤醒一个。动画展示计数值随P/V增减、进程在阻塞队列里被加入和唤醒的过程。",
+      "difficulty": 6,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["信号量", "P操作", "V操作", "计数器", "阻塞队列"],
+      "prerequisites": ["sync_critical_section"],
+      "cognition_tags": ["abstract", "system"]
+    },
+    {
+      "id": "sync_producer_consumer",
+      "subjectId": "programming",
+      "parentId": "os_sync",
+      "name": "生产者消费者问题",
+      "plain_name": "一边往缓冲区放，一边从里面取",
+      "description": "生产者向有限缓冲区放数据、消费者取数据，用空位信号量和满位信号量协调：缓冲区满时生产者阻塞，空时消费者阻塞，互斥信号量保护缓冲区。动画展示生产者填格子、消费者取格子，两个计数器此消彼长的过程。",
+      "difficulty": 7,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["生产者消费者", "有限缓冲区", "信号量", "同步", "互斥"],
+      "prerequisites": ["sync_semaphore_pv"],
+      "cognition_tags": ["abstract", "modeling"]
+    },
+    {
+      "id": "sync_deadlock_conditions",
+      "subjectId": "programming",
+      "parentId": "os_sync",
+      "name": "死锁的四个必要条件",
+      "plain_name": "互相卡住谁也不让步的僵局",
+      "description": "死锁需同时满足互斥、占有并等待、不可剥夺、循环等待四个条件。动画展示两个进程各持有一个资源又申请对方持有的资源，形成一个首尾相接的环形等待图，谁也无法继续。",
+      "difficulty": 6,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["死锁", "四个必要条件", "循环等待", "占有并等待", "资源分配图"],
+      "prerequisites": ["sync_semaphore_pv"],
+      "cognition_tags": ["logic", "modeling"]
+    },
+    {
+      "id": "sync_bankers",
+      "subjectId": "programming",
+      "parentId": "os_sync",
+      "name": "银行家算法避免死锁",
+      "plain_name": "分配前先试算，确保系统仍安全",
+      "description": "进程申请资源时，银行家算法先假设分配，再检查是否存在一个能让所有进程依次跑完的安全序列；若存在才真正分配，否则让进程等待。动画展示可用资源、已分配、还需求的表格，逐步寻找安全序列的过程。",
+      "difficulty": 8,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["银行家算法", "安全序列", "避免死锁", "资源分配", "安全状态"],
+      "prerequisites": ["sync_deadlock_conditions"],
+      "cognition_tags": ["logic", "modeling"]
+    }
+  ],
+  "edges": [
+    { "source": "sync_critical_section", "target": "sync_semaphore_pv", "type": "prerequisite" },
+    { "source": "sync_semaphore_pv", "target": "sync_producer_consumer", "type": "prerequisite" },
+    { "source": "sync_semaphore_pv", "target": "sync_deadlock_conditions", "type": "prerequisite" },
+    { "source": "sync_deadlock_conditions", "target": "sync_bankers", "type": "prerequisite" }
+  ]
+}

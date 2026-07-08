@@ -1,0 +1,83 @@
+{
+  "parentId": "math_calculus",
+  "subjectId": "mathematics",
+  "nodes": [
+    {
+      "id": "math_calc_limits",
+      "subjectId": "mathematics",
+      "parentId": "math_calculus",
+      "name": "极限理论",
+      "plain_name": "理解无限逼近的数学语言",
+      "description": "极限是微积分的基石——用 ε-δ 语言精确描述\"趋近\"这一直觉概念。",
+      "difficulty": 5,
+      "depth": 1,
+      "hasChildren": true,
+      "keywords": ["极限", "epsilon-delta", "收敛", "趋近", "无穷小"],
+      "prerequisites": [],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "math_calc_derivatives",
+      "subjectId": "mathematics",
+      "parentId": "math_calculus",
+      "name": "导数与微分",
+      "plain_name": "用数学描述瞬时变化率",
+      "description": "导数将\"变化率\"从直觉转化为精确计算——从切线斜率到链式法则。",
+      "difficulty": 6,
+      "depth": 1,
+      "hasChildren": true,
+      "keywords": ["导数", "微分", "切线", "变化率", "链式法则"],
+      "prerequisites": ["math_calc_limits"],
+      "cognition_tags": ["abstract", "modeling"]
+    },
+    {
+      "id": "math_calc_integrals",
+      "subjectId": "mathematics",
+      "parentId": "math_calculus",
+      "name": "积分学",
+      "plain_name": "从微小量累积到整体",
+      "description": "不定积分与定积分——面积、体积、累积量的统一计算框架。",
+      "difficulty": 6,
+      "depth": 1,
+      "hasChildren": true,
+      "keywords": ["积分", "不定积分", "定积分", "面积", "原函数"],
+      "prerequisites": ["math_calc_derivatives"],
+      "cognition_tags": ["abstract", "modeling"]
+    },
+    {
+      "id": "math_calc_series",
+      "subjectId": "mathematics",
+      "parentId": "math_calculus",
+      "name": "级数与展开",
+      "plain_name": "用无穷求和逼近复杂函数",
+      "description": "泰勒级数、幂级数、收敛判别——用多项式逼近任意函数的强大工具。",
+      "difficulty": 7,
+      "depth": 1,
+      "hasChildren": true,
+      "keywords": ["级数", "泰勒展开", "幂级数", "收敛", "麦克劳林"],
+      "prerequisites": ["math_calc_integrals"],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "math_calc_applications",
+      "subjectId": "mathematics",
+      "parentId": "math_calculus",
+      "name": "微积分应用",
+      "plain_name": "用微积分解决实际问题",
+      "description": "极值问题、曲线描绘、物理应用、经济模型——理论走向实践。",
+      "difficulty": 6,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["极值", "最优化", "曲线", "物理应用", "面积体积"],
+      "prerequisites": ["math_calc_integrals"],
+      "cognition_tags": ["modeling", "application"]
+    }
+  ],
+  "edges": [
+    { "source": "math_calc_limits", "target": "math_calc_derivatives", "type": "prerequisite" },
+    { "source": "math_calc_derivatives", "target": "math_calc_integrals", "type": "prerequisite" },
+    { "source": "math_calc_integrals", "target": "math_calc_series", "type": "prerequisite" },
+    { "source": "math_calc_integrals", "target": "math_calc_applications", "type": "prerequisite" },
+    { "source": "math_calc_derivatives", "target": "math_calc_applications", "type": "related" }
+  ]
+}

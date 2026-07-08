@@ -1,0 +1,10 @@
+node_modules
+.next
+.git
+.vercel
+docs
+supabase
+*.md
+.env.local
+.env.local.example
+tsconfig.tsbuildinfo

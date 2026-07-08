@@ -1,0 +1,705 @@
+{
+  "subject": {
+    "id": "mathematics",
+    "name": "数学",
+    "color": "#f59e0b",
+    "description": "从数与运算到抽象结构，理解世界底层逻辑的语言。",
+    "category": "自然科学与工程"
+  },
+  "nodes": [
+    {
+      "id": "math_algebra",
+      "subjectId": "mathematics",
+      "name": "代数基础",
+      "plain_name": "用字母表示数的规律",
+      "description": "方程、不等式、函数、多项式——从具体数字走向抽象符号的第一步。",
+      "difficulty": 3,
+      "keywords": [
+        "代数",
+        "方程",
+        "不等式",
+        "函数",
+        "多项式",
+        "代数基础"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "logic"
+      ]
+    },
+    {
+      "id": "math_linear_algebra",
+      "subjectId": "mathematics",
+      "name": "线性代数",
+      "plain_name": "用矩阵解决多维问题",
+      "description": "矩阵、向量、线性变换、特征值——机器学习和图形学的核心数学。",
+      "difficulty": 6,
+      "keywords": [
+        "矩阵",
+        "向量",
+        "线性变换",
+        "特征值",
+        "线性代数",
+        "行列式"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "modeling"
+      ]
+    },
+    {
+      "id": "math_calculus",
+      "subjectId": "mathematics",
+      "name": "一元微积分",
+      "plain_name": "研究变化的数学",
+      "description": "极限、导数、积分、泰勒级数——描述单变量运动和变化的工具。",
+      "difficulty": 6,
+      "hasChildren": true,
+      "keywords": [
+        "微积分",
+        "极限",
+        "导数",
+        "积分",
+        "泰勒级数",
+        "一元微积分"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "logic"
+      ]
+    },
+    {
+      "id": "math_multivariable_calculus",
+      "subjectId": "mathematics",
+      "name": "多元微积分",
+      "plain_name": "高维世界的变化规律",
+      "description": "偏导数、多重积分、梯度、散度与旋度、格林公式与斯托克斯定理——把微积分推广到多维空间。",
+      "difficulty": 7,
+      "keywords": [
+        "多元微积分",
+        "偏导数",
+        "多重积分",
+        "梯度",
+        "散度",
+        "旋度",
+        "斯托克斯"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "modeling"
+      ]
+    },
+    {
+      "id": "math_ode",
+      "subjectId": "mathematics",
+      "name": "常微分方程",
+      "plain_name": "预测系统如何随时间演化",
+      "description": "一阶方程、线性方程组、稳定性理论——物理、生物、工程中动态系统建模的通用语言。",
+      "difficulty": 7,
+      "keywords": [
+        "常微分方程",
+        "微分方程",
+        "ODE",
+        "初值问题",
+        "稳定性",
+        "相图"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "logic"
+      ]
+    },
+    {
+      "id": "math_pde",
+      "subjectId": "mathematics",
+      "name": "偏微分方程",
+      "plain_name": "描述场与波的方程",
+      "description": "热传导方程、波动方程、拉普拉斯方程——描述空间中连续介质与场的演化规律。",
+      "difficulty": 9,
+      "keywords": [
+        "偏微分方程",
+        "PDE",
+        "热方程",
+        "波动方程",
+        "拉普拉斯",
+        "边值问题"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "abstract"
+      ]
+    },
+    {
+      "id": "math_real_analysis",
+      "subjectId": "mathematics",
+      "name": "实分析",
+      "plain_name": "微积分的严格化",
+      "description": "ε-δ 语言、实数完备性、级数收敛、一致连续、勒贝格测度——为微积分打下严密的逻辑地基。",
+      "difficulty": 8,
+      "keywords": [
+        "实分析",
+        "数学分析",
+        "极限严格化",
+        "收敛",
+        "测度",
+        "勒贝格",
+        "完备性"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "logic"
+      ]
+    },
+    {
+      "id": "math_complex_analysis",
+      "subjectId": "mathematics",
+      "name": "复分析",
+      "plain_name": "复数世界的微积分",
+      "description": "解析函数、柯西积分定理、留数定理、共形映射——复平面上优美而强大的分析工具。",
+      "difficulty": 8,
+      "keywords": [
+        "复分析",
+        "复变函数",
+        "解析函数",
+        "柯西",
+        "留数",
+        "共形映射"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "logic"
+      ]
+    },
+    {
+      "id": "math_functional_analysis",
+      "subjectId": "mathematics",
+      "name": "泛函分析",
+      "plain_name": "无穷维空间的线性代数",
+      "description": "巴拿赫空间、希尔伯特空间、有界线性算子、谱理论——量子力学与现代偏微分方程的数学框架。",
+      "difficulty": 10,
+      "keywords": [
+        "泛函分析",
+        "希尔伯特空间",
+        "巴拿赫空间",
+        "算子",
+        "谱理论",
+        "范数"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "system"
+      ]
+    },
+    {
+      "id": "math_abstract_algebra",
+      "subjectId": "mathematics",
+      "name": "抽象代数",
+      "plain_name": "运算规则本身的科学",
+      "description": "群、环、域、同态与商结构——研究运算结构的对称与分类，密码学与编码理论的基石。",
+      "difficulty": 8,
+      "keywords": [
+        "抽象代数",
+        "群论",
+        "环",
+        "域",
+        "同态",
+        "伽罗瓦"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "system"
+      ]
+    },
+    {
+      "id": "math_number_theory",
+      "subjectId": "mathematics",
+      "name": "数论",
+      "plain_name": "整数的深层秘密",
+      "description": "素数、同余、欧拉定理、二次互反律——纯粹数学明珠，现代密码学（RSA）的理论根基。",
+      "difficulty": 6,
+      "keywords": [
+        "数论",
+        "素数",
+        "同余",
+        "欧拉定理",
+        "RSA",
+        "模运算"
+      ],
+      "cognition_tags": [
+        "logic",
+        "abstract"
+      ]
+    },
+    {
+      "id": "math_probability",
+      "subjectId": "mathematics",
+      "name": "概率与统计",
+      "plain_name": "量化不确定性",
+      "description": "概率分布、假设检验、贝叶斯定理——在不确定中做科学决策。",
+      "difficulty": 5,
+      "keywords": [
+        "概率",
+        "统计",
+        "概率分布",
+        "假设检验",
+        "贝叶斯",
+        "正态分布"
+      ],
+      "cognition_tags": [
+        "logic",
+        "modeling"
+      ]
+    },
+    {
+      "id": "math_stochastic_processes",
+      "subjectId": "mathematics",
+      "name": "随机过程",
+      "plain_name": "随时间演化的随机性",
+      "description": "马尔可夫链、泊松过程、布朗运动、鞅——金融定价、排队论与随机模拟的核心理论。",
+      "difficulty": 8,
+      "keywords": [
+        "随机过程",
+        "马尔可夫",
+        "布朗运动",
+        "泊松过程",
+        "鞅",
+        "随机游走"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "abstract"
+      ]
+    },
+    {
+      "id": "math_discrete",
+      "subjectId": "mathematics",
+      "name": "离散数学",
+      "plain_name": "计算机背后的数学",
+      "description": "集合论、图论、组合计数、逻辑推理——计算机科学的数学基础。",
+      "difficulty": 5,
+      "keywords": [
+        "离散数学",
+        "图论",
+        "集合",
+        "组合",
+        "逻辑",
+        "布尔代数"
+      ],
+      "cognition_tags": [
+        "logic",
+        "system"
+      ]
+    },
+    {
+      "id": "math_geometry",
+      "subjectId": "mathematics",
+      "name": "几何与拓扑",
+      "plain_name": "空间形状的奥秘",
+      "description": "欧式几何、解析几何、拓扑学基础——理解空间和形状。",
+      "difficulty": 4,
+      "keywords": [
+        "几何",
+        "拓扑",
+        "向量几何",
+        "解析几何",
+        "空间"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "math_differential_geometry",
+      "subjectId": "mathematics",
+      "name": "微分几何",
+      "plain_name": "弯曲空间的微积分",
+      "description": "曲线曲面论、曲率、流形、测地线——广义相对论与现代几何的数学语言。",
+      "difficulty": 9,
+      "keywords": [
+        "微分几何",
+        "曲率",
+        "流形",
+        "测地线",
+        "曲面",
+        "黎曼"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "modeling"
+      ]
+    },
+    {
+      "id": "math_numerical_analysis",
+      "subjectId": "mathematics",
+      "name": "数值分析",
+      "plain_name": "让计算机算数学",
+      "description": "插值、数值积分、迭代法解方程组、误差分析——把连续数学转化为可靠的计算机算法。",
+      "difficulty": 7,
+      "keywords": [
+        "数值分析",
+        "插值",
+        "数值积分",
+        "迭代法",
+        "误差分析",
+        "牛顿法"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "logic"
+      ]
+    },
+    {
+      "id": "math_optimization",
+      "subjectId": "mathematics",
+      "name": "最优化理论",
+      "plain_name": "找到最好的那个答案",
+      "description": "线性规划、凸优化、梯度下降——机器学习训练的数学核心。",
+      "difficulty": 8,
+      "keywords": [
+        "优化",
+        "梯度下降",
+        "线性规划",
+        "凸优化",
+        "最优化"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "system"
+      ]
+    },
+    {
+      "id": "math_mathematical_statistics",
+      "subjectId": "mathematics",
+      "name": "数理统计",
+      "plain_name": "从样本反推真相",
+      "description": "抽样分布、参数估计、假设检验、方差分析——手里只有一把样本，如何科学地推断整体。",
+      "difficulty": 6,
+      "keywords": [
+        "数理统计",
+        "参数估计",
+        "假设检验",
+        "置信区间",
+        "抽样分布",
+        "最大似然",
+        "考研数学",
+        "概率统计"
+      ],
+      "cognition_tags": [
+        "logic",
+        "modeling"
+      ]
+    },
+    {
+      "id": "math_graph_theory",
+      "subjectId": "mathematics",
+      "name": "图论",
+      "plain_name": "点和线的学问",
+      "description": "连通性、最短路径、树、欧拉回路与哈密顿回路——地铁线路图和社交网络背后的同一套数学。",
+      "difficulty": 6,
+      "keywords": [
+        "图论",
+        "最短路径",
+        "连通性",
+        "欧拉回路",
+        "生成树",
+        "网络",
+        "离散数学"
+      ],
+      "cognition_tags": [
+        "logic",
+        "abstract"
+      ]
+    },
+    {
+      "id": "math_combinatorics",
+      "subjectId": "mathematics",
+      "name": "组合数学",
+      "plain_name": "高级的'数数'艺术",
+      "description": "排列组合、容斥原理、生成函数、鸽笼原理——不一个个列举也能精确数清所有可能。",
+      "difficulty": 6,
+      "keywords": [
+        "组合数学",
+        "排列组合",
+        "容斥原理",
+        "生成函数",
+        "鸽笼原理",
+        "计数",
+        "离散数学"
+      ],
+      "cognition_tags": [
+        "logic",
+        "abstract"
+      ]
+    },
+    {
+      "id": "math_numerical_linear_algebra",
+      "subjectId": "mathematics",
+      "name": "数值线性代数",
+      "plain_name": "教计算机解大矩阵",
+      "description": "LU/QR 分解、特征值算法、奇异值分解、条件数——百万维矩阵运算的精度与速度之道。",
+      "difficulty": 8,
+      "keywords": [
+        "数值线性代数",
+        "矩阵分解",
+        "QR分解",
+        "SVD",
+        "奇异值分解",
+        "条件数",
+        "数值计算"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "system"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "math_algebra",
+      "target": "math_linear_algebra",
+      "type": "prerequisite",
+      "reason": "线性代数是代数的多维推广：矩阵运算需要方程组求解能力，特征值依赖多项式根的理解。"
+    },
+    {
+      "source": "math_algebra",
+      "target": "math_calculus",
+      "type": "prerequisite",
+      "reason": "微积分的对象是函数：导数是函数变化率，积分是函数面积，没有函数概念无法理解微积分。"
+    },
+    {
+      "source": "math_algebra",
+      "target": "math_probability",
+      "type": "prerequisite",
+      "reason": "概率计算需要代数运算能力：组合公式、期望方差的推导都依赖代数基本功。"
+    },
+    {
+      "source": "math_algebra",
+      "target": "math_discrete",
+      "type": "prerequisite",
+      "reason": "离散数学的组合计数、递推关系、布尔代数都建立在代数运算和符号推理之上。"
+    },
+    {
+      "source": "math_algebra",
+      "target": "math_geometry",
+      "type": "prerequisite",
+      "reason": "解析几何用代数方法研究几何问题：直线方程、圆锥曲线本质都是代数表达。"
+    },
+    {
+      "source": "math_algebra",
+      "target": "math_number_theory",
+      "type": "prerequisite",
+      "reason": "数论研究整数性质：同余运算、欧拉定理的推导都以代数式变形和因式分解为基本功。"
+    },
+    {
+      "source": "math_algebra",
+      "target": "math_abstract_algebra",
+      "type": "prerequisite",
+      "reason": "抽象代数把初等代数中的运算规律（结合律、分配律）抽象成群环域公理，需先熟悉具体运算。"
+    },
+    {
+      "source": "math_calculus",
+      "target": "math_multivariable_calculus",
+      "type": "prerequisite",
+      "reason": "多元微积分是一元的直接推广：偏导数是固定其他变量的一元导数，重积分用累次一元积分计算。"
+    },
+    {
+      "source": "math_calculus",
+      "target": "math_ode",
+      "type": "prerequisite",
+      "reason": "微分方程的解法核心是积分技巧：分离变量、积分因子法都直接使用一元微积分工具。"
+    },
+    {
+      "source": "math_calculus",
+      "target": "math_real_analysis",
+      "type": "prerequisite",
+      "reason": "实分析是微积分的严格化重建：先会用极限和积分，再用 ε-δ 语言理解它们为什么成立。"
+    },
+    {
+      "source": "math_calculus",
+      "target": "math_numerical_analysis",
+      "type": "prerequisite",
+      "reason": "数值积分基于泰勒展开估计误差，牛顿迭代法本质是用导数做线性近似。"
+    },
+    {
+      "source": "math_calculus",
+      "target": "math_optimization",
+      "type": "prerequisite",
+      "reason": "最优化的核心是求极值：导数为零找驻点，二阶导判断凹凸性，这些全是微积分工具。"
+    },
+    {
+      "source": "math_linear_algebra",
+      "target": "math_ode",
+      "type": "related",
+      "reason": "线性微分方程组的通解由系数矩阵的特征值与特征向量完全决定，相图分类依赖特征值符号。"
+    },
+    {
+      "source": "math_linear_algebra",
+      "target": "math_numerical_analysis",
+      "type": "prerequisite",
+      "reason": "数值分析的核心问题之一是大规模线性方程组求解：LU分解、迭代法都是矩阵运算。"
+    },
+    {
+      "source": "math_linear_algebra",
+      "target": "math_functional_analysis",
+      "type": "prerequisite",
+      "reason": "泛函分析研究无穷维线性空间：内积、正交、特征值理论都是有限维线性代数的推广。"
+    },
+    {
+      "source": "math_linear_algebra",
+      "target": "math_optimization",
+      "type": "prerequisite",
+      "reason": "优化问题的约束和目标函数用矩阵表示，梯度是向量，Hessian矩阵判断极值类型。"
+    },
+    {
+      "source": "math_linear_algebra",
+      "target": "math_abstract_algebra",
+      "type": "related",
+      "reason": "向量空间本身就是一种代数结构（域上的模），线性变换群是群论的重要实例。"
+    },
+    {
+      "source": "math_multivariable_calculus",
+      "target": "math_pde",
+      "type": "prerequisite",
+      "reason": "偏微分方程的未知量是多元函数：热方程、波动方程都由偏导数构成，散度旋度是建模语言。"
+    },
+    {
+      "source": "math_ode",
+      "target": "math_pde",
+      "type": "prerequisite",
+      "reason": "分离变量法把偏微分方程化为常微分方程组求解，PDE 理论大量借用 ODE 的解结构。"
+    },
+    {
+      "source": "math_multivariable_calculus",
+      "target": "math_differential_geometry",
+      "type": "prerequisite",
+      "reason": "曲面的切平面、法向量、曲率计算全部依赖偏导数与多元链式法则。"
+    },
+    {
+      "source": "math_geometry",
+      "target": "math_differential_geometry",
+      "type": "prerequisite",
+      "reason": "微分几何用微积分研究几何对象，需要先具备欧式空间、曲线曲面的直观几何概念。"
+    },
+    {
+      "source": "math_multivariable_calculus",
+      "target": "math_optimization",
+      "type": "related",
+      "reason": "多变量优化中梯度指向最速上升方向，拉格朗日乘数法处理约束极值，均出自多元微积分。"
+    },
+    {
+      "source": "math_real_analysis",
+      "target": "math_complex_analysis",
+      "type": "prerequisite",
+      "reason": "复分析建立在实分析的极限、级数收敛理论之上，解析性是可微性在复平面上的强化。"
+    },
+    {
+      "source": "math_real_analysis",
+      "target": "math_functional_analysis",
+      "type": "prerequisite",
+      "reason": "泛函分析以勒贝格积分和完备性理论为基础，L²空间的构造直接依赖测度论。"
+    },
+    {
+      "source": "math_complex_analysis",
+      "target": "math_pde",
+      "type": "related",
+      "reason": "解析函数的实部虚部都满足拉普拉斯方程，共形映射是求解二维位势问题的经典方法。"
+    },
+    {
+      "source": "math_functional_analysis",
+      "target": "math_pde",
+      "type": "related",
+      "reason": "现代偏微分方程理论用索伯列夫空间和弱解框架研究存在唯一性，这正是泛函分析的应用。"
+    },
+    {
+      "source": "math_number_theory",
+      "target": "math_abstract_algebra",
+      "type": "related",
+      "reason": "同余类构成环，模 p 剩余类构成域，数论是抽象代数最早也最丰富的实例来源。"
+    },
+    {
+      "source": "math_discrete",
+      "target": "math_number_theory",
+      "type": "related",
+      "reason": "数论中的模运算、欧几里得算法既是离散数学的内容，也是算法与密码学的共同基础。"
+    },
+    {
+      "source": "math_probability",
+      "target": "math_stochastic_processes",
+      "type": "prerequisite",
+      "reason": "随机过程是随时间索引的随机变量族：马尔可夫链的转移依赖条件概率，鞅依赖条件期望。"
+    },
+    {
+      "source": "math_calculus",
+      "target": "math_stochastic_processes",
+      "type": "related",
+      "reason": "布朗运动的轨道分析、随机微分方程（伊藤积分）需要微积分与极限工具。"
+    },
+    {
+      "source": "math_probability",
+      "target": "math_optimization",
+      "type": "related",
+      "reason": "随机优化算法（模拟退火、遗传算法）、期望最大化（EM）都将概率与优化结合使用。"
+    },
+    {
+      "source": "math_numerical_analysis",
+      "target": "math_optimization",
+      "type": "related",
+      "reason": "数值优化是两者的交集：梯度下降的步长选择、收敛阶分析都是数值分析方法。"
+    },
+    {
+      "source": "math_geometry",
+      "target": "math_linear_algebra",
+      "type": "related",
+      "reason": "线性变换的几何含义是空间中的旋转、缩放和投影，特征向量指示变换的不变方向。"
+    },
+    {
+      "source": "math_probability",
+      "target": "math_mathematical_statistics",
+      "type": "prerequisite",
+      "reason": "数理统计建立在概率论之上：抽样分布是随机变量函数的分布，最大似然估计依赖概率密度。"
+    },
+    {
+      "source": "math_calculus",
+      "target": "math_mathematical_statistics",
+      "type": "related",
+      "reason": "连续分布的期望方差用积分计算，最大似然估计通过求导找极值，统计推断离不开微积分工具。"
+    },
+    {
+      "source": "math_discrete",
+      "target": "math_graph_theory",
+      "type": "prerequisite",
+      "reason": "图论是离散数学的核心分支：先掌握集合、关系等基础语言，再深入图的结构与算法性质。"
+    },
+    {
+      "source": "math_discrete",
+      "target": "math_combinatorics",
+      "type": "prerequisite",
+      "reason": "组合计数是离散数学的入门内容的深化：递推关系、容斥原理都以集合运算和归纳推理为基础。"
+    },
+    {
+      "source": "math_combinatorics",
+      "target": "math_probability",
+      "type": "related",
+      "reason": "古典概率的计算本质是计数：求'抽到同花顺的概率'就是组合数除以组合数。"
+    },
+    {
+      "source": "math_combinatorics",
+      "target": "math_graph_theory",
+      "type": "related",
+      "reason": "图的着色数、匹配数、生成树计数都是组合问题，拉姆齐理论横跨两个领域。"
+    },
+    {
+      "source": "math_linear_algebra",
+      "target": "math_numerical_linear_algebra",
+      "type": "prerequisite",
+      "reason": "数值线性代数把矩阵分解和特征值理论变成可靠算法：先懂理论上的解，再关心机器上怎么稳定地算。"
+    },
+    {
+      "source": "math_numerical_analysis",
+      "target": "math_numerical_linear_algebra",
+      "type": "prerequisite",
+      "reason": "浮点误差传播、迭代收敛性分析是数值分析的通用工具，矩阵计算的稳定性研究直接沿用这套框架。"
+    }
+  ]
+}

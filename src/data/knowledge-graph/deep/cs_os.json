@@ -1,0 +1,97 @@
+{
+  "parentId": "cs_os",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "os_overview",
+      "subjectId": "programming",
+      "parentId": "cs_os",
+      "name": "操作系统概览",
+      "plain_name": "大管家的职责",
+      "description": "内核态与用户态、系统调用、中断——操作系统如何在硬件与程序之间充当中间人。",
+      "difficulty": 5,
+      "depth": 1,
+      "hasChildren": true,
+      "keywords": ["内核态", "用户态", "系统调用", "中断", "操作系统"],
+      "prerequisites": [],
+      "cognition_tags": ["system", "abstract"]
+    },
+    {
+      "id": "os_process",
+      "subjectId": "programming",
+      "parentId": "cs_os",
+      "name": "进程与线程",
+      "plain_name": "程序如何分身同时干活",
+      "description": "进程与线程的区别、上下文切换、进程状态转换——多个任务如何在一颗 CPU 上轮流运行。",
+      "difficulty": 6,
+      "depth": 1,
+      "hasChildren": true,
+      "keywords": ["进程", "线程", "上下文切换", "PCB", "进程状态"],
+      "prerequisites": ["os_overview"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "os_scheduling",
+      "subjectId": "programming",
+      "parentId": "cs_os",
+      "name": "CPU 调度",
+      "plain_name": "谁先用 CPU",
+      "description": "先来先服务、短作业优先、时间片轮转、优先级调度——如何公平又高效地分配 CPU。",
+      "difficulty": 6,
+      "depth": 1,
+      "hasChildren": true,
+      "keywords": ["调度", "时间片", "轮转", "短作业优先", "优先级"],
+      "prerequisites": ["os_process"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "os_sync",
+      "subjectId": "programming",
+      "parentId": "cs_os",
+      "name": "并发与同步",
+      "plain_name": "多个任务别打架",
+      "description": "临界区、互斥锁、信号量、死锁四条件——多线程共享数据时如何不出乱子。",
+      "difficulty": 8,
+      "depth": 1,
+      "hasChildren": true,
+      "keywords": ["并发", "互斥", "信号量", "死锁", "临界区", "同步"],
+      "prerequisites": ["os_process"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "os_memory",
+      "subjectId": "programming",
+      "parentId": "cs_os",
+      "name": "内存管理",
+      "plain_name": "操作系统怎么分配内存",
+      "description": "虚拟内存、分页、地址转换、页面置换——让每个程序都以为独占一整块连续内存。",
+      "difficulty": 7,
+      "depth": 1,
+      "hasChildren": true,
+      "keywords": ["虚拟内存", "分页", "页表", "页面置换", "TLB", "内存管理"],
+      "prerequisites": ["os_overview"],
+      "cognition_tags": ["system", "abstract"]
+    },
+    {
+      "id": "os_filesystem",
+      "subjectId": "programming",
+      "parentId": "cs_os",
+      "name": "文件系统",
+      "plain_name": "文件在磁盘上怎么住",
+      "description": "目录树、inode、磁盘块分配——一个文件从保存到读取背后的完整旅程。",
+      "difficulty": 6,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["文件系统", "inode", "目录", "磁盘块", "文件分配"],
+      "prerequisites": ["os_overview"],
+      "cognition_tags": ["system"]
+    }
+  ],
+  "edges": [
+    { "source": "os_overview", "target": "os_process", "type": "prerequisite" },
+    { "source": "os_process", "target": "os_scheduling", "type": "prerequisite" },
+    { "source": "os_process", "target": "os_sync", "type": "prerequisite" },
+    { "source": "os_overview", "target": "os_memory", "type": "prerequisite" },
+    { "source": "os_overview", "target": "os_filesystem", "type": "prerequisite" }
+  ]
+}

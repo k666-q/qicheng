@@ -1,0 +1,53 @@
+{
+  "parentId": "os_overview",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "ov_user_kernel_switch",
+      "subjectId": "programming",
+      "parentId": "os_overview",
+      "name": "用户态与内核态切换",
+      "plain_name": "程序从普通模式切到特权模式",
+      "description": "CPU 平时运行在用户态，只能访问受限资源。当程序需要特权操作时，触发陷入指令，CPU 切换到内核态、保存当前寄存器，执行完内核代码后再恢复寄存器切回用户态。动画展示一个标记位从 user 翻转到 kernel 再翻回。",
+      "difficulty": 4,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["用户态", "内核态", "特权级", "模式切换", "陷入"],
+      "prerequisites": [],
+      "cognition_tags": ["system"]
+    },
+    {
+      "id": "ov_syscall",
+      "subjectId": "programming",
+      "parentId": "os_overview",
+      "name": "系统调用的过程",
+      "plain_name": "程序请求操作系统帮忙干活",
+      "description": "应用程序把系统调用号放入寄存器，执行 syscall 指令陷入内核，内核根据调用号在系统调用表里查到对应函数并执行（如读文件），完成后把返回值放回寄存器并返回用户程序。动画展示调用号→查表→执行→返回的箭头流程。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["系统调用", "syscall", "调用号", "系统调用表", "陷入内核"],
+      "prerequisites": ["ov_user_kernel_switch"],
+      "cognition_tags": ["system", "abstract"]
+    },
+    {
+      "id": "ov_interrupt",
+      "subjectId": "programming",
+      "parentId": "os_overview",
+      "name": "中断处理流程",
+      "plain_name": "硬件喊一声，CPU停下手头活去响应",
+      "description": "外部设备（如键盘）发出中断信号，CPU 在执行完当前指令后保存现场，根据中断号在中断向量表里找到中断处理程序并跳转执行，处理完恢复现场继续原来的任务。动画展示设备发信号→保存现场→查向量表→执行ISR→恢复的过程。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["中断", "中断向量表", "保存现场", "ISR", "异步"],
+      "prerequisites": ["ov_user_kernel_switch"],
+      "cognition_tags": ["system"]
+    }
+  ],
+  "edges": [
+    { "source": "ov_user_kernel_switch", "target": "ov_syscall", "type": "prerequisite" },
+    { "source": "ov_user_kernel_switch", "target": "ov_interrupt", "type": "prerequisite" },
+    { "source": "ov_syscall", "target": "ov_interrupt", "type": "related" }
+  ]
+}

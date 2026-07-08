@@ -1,0 +1,370 @@
+{
+  "subject": {
+    "id": "english",
+    "name": "英语",
+    "color": "#06b6d4",
+    "description": "全球通用语言的听说读写系统性学习路径。",
+    "category": "人文社科"
+  },
+  "nodes": [
+    {
+      "id": "eng_grammar",
+      "subjectId": "english",
+      "name": "语法体系",
+      "plain_name": "英语句子的骨架",
+      "description": "时态、语态、从句、非谓语——构建正确英语句子的规则体系。",
+      "difficulty": 4,
+      "keywords": [
+        "语法",
+        "时态",
+        "从句",
+        "非谓语",
+        "英语语法"
+      ],
+      "cognition_tags": [
+        "logic",
+        "expression"
+      ]
+    },
+    {
+      "id": "eng_vocabulary",
+      "subjectId": "english",
+      "name": "词汇与词根",
+      "plain_name": "积累表达的弹药",
+      "description": "词根词缀、搭配、同义替换——科学高效地扩展词汇量。",
+      "difficulty": 3,
+      "keywords": [
+        "词汇",
+        "词根",
+        "词缀",
+        "搭配",
+        "单词"
+      ],
+      "cognition_tags": [
+        "expression"
+      ]
+    },
+    {
+      "id": "eng_reading",
+      "subjectId": "english",
+      "name": "阅读理解",
+      "plain_name": "读懂长难文章",
+      "description": "精读策略、篇章结构、推理判断——从句子到篇章的理解能力。",
+      "difficulty": 5,
+      "keywords": [
+        "阅读",
+        "精读",
+        "泛读",
+        "推理",
+        "阅读理解"
+      ],
+      "cognition_tags": [
+        "expression",
+        "logic"
+      ]
+    },
+    {
+      "id": "eng_writing",
+      "subjectId": "english",
+      "name": "写作表达",
+      "plain_name": "用英语清晰表达想法",
+      "description": "段落组织、逻辑连接、学术写作——从句子到essay的输出能力。",
+      "difficulty": 6,
+      "keywords": [
+        "写作",
+        "英语写作",
+        "essay",
+        "学术写作",
+        "段落"
+      ],
+      "cognition_tags": [
+        "expression",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "eng_listening",
+      "subjectId": "english",
+      "name": "听力与口语",
+      "plain_name": "能听懂也能说出来",
+      "description": "语音识别、连读弱化、口语流利度——听说能力的同步提升。",
+      "difficulty": 5,
+      "keywords": [
+        "听力",
+        "口语",
+        "发音",
+        "连读",
+        "语音"
+      ],
+      "cognition_tags": [
+        "expression"
+      ]
+    },
+    {
+      "id": "eng_academic",
+      "subjectId": "english",
+      "name": "学术英语",
+      "plain_name": "读论文写论文",
+      "description": "学术论文阅读、文献综述、学术演讲——科研和留学必备技能。",
+      "difficulty": 7,
+      "keywords": [
+        "学术英语",
+        "论文",
+        "文献",
+        "学术演讲",
+        "academic"
+      ],
+      "cognition_tags": [
+        "expression",
+        "logic"
+      ]
+    },
+    {
+      "id": "eng_pronunciation",
+      "subjectId": "english",
+      "name": "语音与发音",
+      "plain_name": "把每个音发到位",
+      "description": "音标、重音、语调、连读规则——发音准了，听力和口语都会跟着开窍。",
+      "difficulty": 3,
+      "keywords": [
+        "发音",
+        "音标",
+        "语音",
+        "重音",
+        "语调",
+        "自然拼读",
+        "英语发音"
+      ],
+      "cognition_tags": [
+        "expression"
+      ]
+    },
+    {
+      "id": "eng_long_sentences",
+      "subjectId": "english",
+      "name": "长难句解析",
+      "plain_name": "把绕晕人的句子拆开看",
+      "description": "找主干、剥从句、识别插入语——三步把一行半的考研长难句拆成清晰的积木。",
+      "difficulty": 6,
+      "keywords": [
+        "长难句",
+        "句子分析",
+        "主干",
+        "从句",
+        "考研英语",
+        "语法分析",
+        "断句"
+      ],
+      "cognition_tags": [
+        "logic",
+        "abstract"
+      ]
+    },
+    {
+      "id": "eng_exam_prep",
+      "subjectId": "english",
+      "name": "考试英语",
+      "plain_name": "四六级和考研的通关攻略",
+      "description": "题型策略、时间分配、真题精研——把英语能力高效转化为卷面分数的应试方法论。",
+      "difficulty": 5,
+      "keywords": [
+        "四六级",
+        "CET4",
+        "CET6",
+        "考研英语",
+        "雅思",
+        "托福",
+        "真题",
+        "应试"
+      ],
+      "cognition_tags": [
+        "logic",
+        "expression"
+      ]
+    },
+    {
+      "id": "eng_translation",
+      "subjectId": "english",
+      "name": "翻译技巧",
+      "plain_name": "在两种语言间搭桥",
+      "description": "直译与意译、语序调整、文化转换——既忠实原文又说'人话'的翻译之道。",
+      "difficulty": 6,
+      "keywords": [
+        "翻译",
+        "英译汉",
+        "汉译英",
+        "直译",
+        "意译",
+        "考研翻译",
+        "口译"
+      ],
+      "cognition_tags": [
+        "expression",
+        "logic"
+      ]
+    },
+    {
+      "id": "eng_conversation",
+      "subjectId": "english",
+      "name": "日常口语会话",
+      "plain_name": "开口聊起来不卡壳",
+      "description": "高频场景表达、地道习语、应答策略——从点咖啡到闲聊，把英语用进生活。",
+      "difficulty": 4,
+      "keywords": [
+        "口语",
+        "会话",
+        "日常英语",
+        "习语",
+        "口语表达",
+        "对话",
+        "spoken English"
+      ],
+      "cognition_tags": [
+        "expression"
+      ]
+    },
+    {
+      "id": "eng_business",
+      "subjectId": "english",
+      "name": "职场与商务英语",
+      "plain_name": "用英语谈工作",
+      "description": "邮件写作、会议表达、简历面试——职场场景下专业得体的英语沟通技能。",
+      "difficulty": 6,
+      "keywords": [
+        "商务英语",
+        "职场英语",
+        "英文邮件",
+        "面试英语",
+        "BEC",
+        "商务沟通",
+        "简历"
+      ],
+      "cognition_tags": [
+        "expression",
+        "system"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "eng_grammar",
+      "target": "eng_reading",
+      "type": "prerequisite",
+      "reason": "阅读理解的基础是正确解析句子结构：长难句分析需要识别从句类型、非谓语功能和倒装结构。"
+    },
+    {
+      "source": "eng_grammar",
+      "target": "eng_writing",
+      "type": "prerequisite",
+      "reason": "写作需要输出语法正确的句子：时态一致性、主谓一致、复杂句构造都依赖扎实的语法功底。"
+    },
+    {
+      "source": "eng_vocabulary",
+      "target": "eng_reading",
+      "type": "prerequisite",
+      "reason": "词汇量直接决定阅读理解能力：研究表明覆盖98%文本词汇才能流畅理解，词根知识帮助推测生词含义。"
+    },
+    {
+      "source": "eng_vocabulary",
+      "target": "eng_listening",
+      "type": "prerequisite",
+      "reason": "听力的前提是认识单词的发音形式：不认识的词听到也无法理解，词汇的语音表征是听力的基础。"
+    },
+    {
+      "source": "eng_reading",
+      "target": "eng_academic",
+      "type": "prerequisite",
+      "reason": "学术英语以大量论文阅读为核心：理解论文的IMRaD结构、学术论证逻辑需要扎实的阅读功底。"
+    },
+    {
+      "source": "eng_writing",
+      "target": "eng_academic",
+      "type": "prerequisite",
+      "reason": "学术写作是写作能力的高阶应用：文献综述、学术论证、正式语体都建立在基础写作能力之上。"
+    },
+    {
+      "source": "eng_listening",
+      "target": "eng_academic",
+      "type": "related",
+      "reason": "学术场景需要听懂讲座和研讨会：学术听力词汇专业、语速快、逻辑密集，需要听力基础支撑。"
+    },
+    {
+      "source": "eng_pronunciation",
+      "target": "eng_listening",
+      "type": "prerequisite",
+      "reason": "听力辨音的前提是自己能发对音：搞懂连读弱化规则后，原来'听不见'的音节会突然清晰起来。"
+    },
+    {
+      "source": "eng_pronunciation",
+      "target": "eng_vocabulary",
+      "type": "related",
+      "reason": "按音标和自然拼读记单词远比死记字母高效：发音和拼写的对应规律让单词'看得出读音、听得出拼法'。"
+    },
+    {
+      "source": "eng_pronunciation",
+      "target": "eng_conversation",
+      "type": "prerequisite",
+      "reason": "口语的可懂度取决于发音：重音错位和语调平直比语法错误更容易让对方听不懂。"
+    },
+    {
+      "source": "eng_listening",
+      "target": "eng_conversation",
+      "type": "prerequisite",
+      "reason": "会话是听与说的实时配合：听不懂对方就无法接话，日常交流的一半功夫在耳朵上。"
+    },
+    {
+      "source": "eng_grammar",
+      "target": "eng_long_sentences",
+      "type": "prerequisite",
+      "reason": "拆解长难句的工具全部来自语法：识别定语从句、分词结构、倒装都需要扎实的语法知识。"
+    },
+    {
+      "source": "eng_long_sentences",
+      "target": "eng_reading",
+      "type": "prerequisite",
+      "reason": "考研和学术文章的理解瓶颈通常在长难句：句子层面读不通，篇章理解就无从谈起。"
+    },
+    {
+      "source": "eng_reading",
+      "target": "eng_exam_prep",
+      "type": "prerequisite",
+      "reason": "阅读理解在四六级和考研中分值最重：应试技巧只有建立在真实阅读能力之上才有效。"
+    },
+    {
+      "source": "eng_long_sentences",
+      "target": "eng_exam_prep",
+      "type": "related",
+      "reason": "考研英语的翻译题和阅读干扰项都围绕长难句设计，拆句能力直接决定多个题型的得分。"
+    },
+    {
+      "source": "eng_vocabulary",
+      "target": "eng_exam_prep",
+      "type": "prerequisite",
+      "reason": "每类考试都有核心词表：四六级约4500-6000词，考研5500词，词汇量是过线的硬门槛。"
+    },
+    {
+      "source": "eng_reading",
+      "target": "eng_translation",
+      "type": "prerequisite",
+      "reason": "翻译的第一步是准确理解原文：误读句子结构和词义，译文再流畅也是错的。"
+    },
+    {
+      "source": "eng_writing",
+      "target": "eng_translation",
+      "type": "related",
+      "reason": "汉译英本质是受约束的英语写作：译文的地道程度取决于英文表达能力。"
+    },
+    {
+      "source": "eng_conversation",
+      "target": "eng_business",
+      "type": "prerequisite",
+      "reason": "商务沟通建立在日常会话之上：先能自如交流，再学习职场场景的正式表达和礼仪规范。"
+    },
+    {
+      "source": "eng_writing",
+      "target": "eng_business",
+      "type": "related",
+      "reason": "商务邮件是职场最高频的英语写作场景：结构清晰、语气得体的要求比一般写作更严格。"
+    }
+  ]
+}

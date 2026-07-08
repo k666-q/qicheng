@@ -4,6 +4,10 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getStageCards } from "@/lib/cards/store";
 import type { StageCard } from "@/lib/cards/types";
+import { loadSessionItem } from "@/lib/plan/store";
+import { CosmicBackground } from "@/components/universe/CosmicBackground";
+import { CyberOverlay } from "@/components/universe/CyberOverlay";
+import { EmptyState } from "@/components/ui/EmptyState";
 
 export default function CardsPage() {
   const router = useRouter();
@@ -14,7 +18,7 @@ export default function CardsPage() {
   useEffect(() => {
     setCards(getStageCards());
     try {
-      const planStr = sessionStorage.getItem("qicheng_plan");
+      const planStr = loadSessionItem("qicheng_plan");
       if (planStr) {
         const plan = JSON.parse(planStr);
         setTotalStages(plan.stages?.length || 0);
@@ -31,7 +35,7 @@ export default function CardsPage() {
   }
 
   async function copyShareText(card: StageCard) {
-    const text = `${card.summary}\n\n📊 ${card.stats.days} 天 · ${card.stats.tasks_completed} 个任务完成\n💬 "${card.user_quote}"\n\n—— 启程`;
+    const text = `${card.summary}\n\n📊 ${card.stats.days} 天 · ${card.stats.tasks_completed} 个任务完成\n💬 "${card.user_quote}"\n\n—— Nexiova`;
     try {
       await navigator.clipboard.writeText(text);
       alert("已复制到剪贴板");
@@ -42,19 +46,23 @@ export default function CardsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-50 py-8 px-4">
-      <div className="max-w-2xl mx-auto">
+    <div className="min-h-screen bg-[#050510] py-8 px-4 pb-6 md:pl-[var(--siderail-width)] transition-[padding] duration-200">
+      <CosmicBackground />
+      <CyberOverlay />
+      <div className="relative z-10 max-w-2xl mx-auto">
         <button
-          onClick={() => router.push("/plan")}
-          className="text-sm text-stone-400 hover:text-stone-600 mb-6 flex items-center gap-1"
+          onClick={() => router.push("/plan/detail")}
+          className="border border-white/10 px-3 py-1.5 font-mono text-sm text-white/40 hover:bg-white/[0.06] hover:text-white/70 mb-6 flex items-center gap-1 transition-colors"
         >
           ← 回到计划
         </button>
 
-        <h1 className="text-xl font-semibold text-stone-800 mb-2">旅程卡片</h1>
-        <p className="text-sm text-stone-500 mb-8">
+        <h1 className="cyber-glitch text-xl font-semibold text-white/90" data-text="旅程卡片">旅程卡片</h1>
+        <p className="mt-1 font-mono text-xs uppercase tracking-[0.3em] text-cyan-300/40">journey_cards // artifact_vault</p>
+        <p className="text-sm text-white/45 mt-2 mb-6">
           每完成一个阶段，这里会多一张属于你的记忆。
         </p>
+        <div className="cyber-dataline h-px w-full mb-8" />
 
         {/* Timeline */}
         <div className="space-y-6">
@@ -68,33 +76,40 @@ export default function CardsPage() {
         </div>
 
         {cards.length === 0 && totalStages === 0 && (
-          <div className="text-center py-16">
-            <p className="text-stone-400 text-sm">还没有卡片。完成计划中的第一个阶段后，你的第一张卡片就会出现在这里。</p>
-          </div>
+          <EmptyState
+            icon="🃏"
+            title="还没有卡片"
+            description="每完成一个学习阶段，这里就会出现一张记录你成就的卡片。先去创建你的学习计划吧。"
+            actionLabel="创建学习计划"
+            actionHref="/universe?welcome=1"
+            secondaryLabel="查看星图"
+            secondaryHref="/universe"
+          />
         )}
       </div>
 
       {/* Share modal */}
       {shareTarget && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4" onClick={closeShare}>
-          <div className="bg-white rounded-xl max-w-sm w-full p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
-            <h3 className="text-sm font-semibold text-stone-800 mb-4">分享你的成就</h3>
-            <div className="rounded-lg bg-stone-50 border border-stone-200 p-4 mb-4">
-              <p className="text-sm text-stone-800 font-medium">{shareTarget.summary}</p>
-              <p className="text-xs text-stone-500 mt-2">📊 {shareTarget.stats.days} 天 · {shareTarget.stats.tasks_completed} 个任务</p>
-              <p className="text-xs text-stone-500 mt-1 italic">"{shareTarget.user_quote}"</p>
-              <p className="text-[10px] text-stone-300 mt-3">—— 启程</p>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={closeShare}>
+          <div className="cyber-panel cyber-corner max-w-sm w-full p-6 shadow-2xl shadow-black/50" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-sm font-semibold text-white/90 mb-3">分享你的成就</h3>
+            <div className="cyber-dataline h-px w-full mb-4" />
+            <div className="cyber-panel p-4 mb-4">
+              <p className="text-sm text-white/85 font-medium">{shareTarget.summary}</p>
+              <p className="text-xs text-white/45 mt-2">📊 <span className="cyber-neon text-cyan-300">{shareTarget.stats.days}</span> 天 · <span className="cyber-neon text-fuchsia-300">{shareTarget.stats.tasks_completed}</span> 个任务</p>
+              <p className="text-xs text-white/45 mt-1 italic">"{shareTarget.user_quote}"</p>
+              <p className="font-mono text-[10px] text-cyan-300/30 mt-3">—— Nexiova</p>
             </div>
             <div className="flex gap-2">
               <button
                 onClick={() => copyShareText(shareTarget)}
-                className="flex-1 rounded-lg bg-stone-800 px-4 py-2.5 text-xs text-white hover:bg-stone-700 transition-colors"
+                className="flex-1 border border-cyan-400/40 bg-cyan-400/10 px-4 py-2.5 font-mono text-sm tracking-widest text-cyan-200 hover:bg-cyan-400/20 transition-colors"
               >
                 复制文字
               </button>
               <button
                 onClick={closeShare}
-                className="rounded-lg border border-stone-200 px-4 py-2.5 text-xs text-stone-500 hover:border-stone-300 transition-colors"
+                className="border border-white/10 px-4 py-2.5 font-mono text-sm text-white/40 hover:bg-white/[0.06] transition-colors"
               >
                 取消
               </button>
@@ -121,7 +136,7 @@ function MiniEmotionCurve({ data }: { data: number[] }) {
       <polyline
         points={points}
         fill="none"
-        stroke="#78716c"
+        stroke="rgba(34,211,238,0.6)"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -132,41 +147,43 @@ function MiniEmotionCurve({ data }: { data: number[] }) {
 
 function CardItem({ card, onShare }: { card: StageCard; onShare: () => void }) {
   return (
-    <div className="rounded-xl border border-stone-200 bg-white p-6 relative overflow-hidden">
+    <div className="cyber-panel cyber-corner p-6 relative overflow-hidden">
       {/* Stage badge */}
       <div className="flex items-center justify-between mb-3">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-stone-800 px-3 py-1 text-xs text-white">
+        <span className="inline-flex items-center gap-1.5 border border-cyan-400/50 bg-cyan-400/15 px-3 py-1 font-mono text-xs tracking-wider text-cyan-200">
           ⛰️ 阶段 {card.stage_index + 1}
         </span>
-        <span className="text-xs text-stone-400">{card.date_range}</span>
+        <span className="font-mono text-xs text-cyan-300/40">{card.date_range}</span>
       </div>
 
       {/* Stage name */}
-      <h3 className="text-base font-semibold text-stone-800 mb-1">{card.stage_name}</h3>
+      <h3 className="text-base font-semibold text-white/90 mb-1">{card.stage_name}</h3>
 
       {/* Summary */}
-      <p className="text-sm text-stone-600 mb-4">{card.summary}</p>
+      <p className="text-sm text-white/60 mb-4">{card.summary}</p>
 
       {/* User quote */}
-      <div className="rounded-lg bg-stone-50 border-l-2 border-stone-300 px-4 py-2 mb-4">
-        <p className="text-xs text-stone-500 italic">"{card.user_quote}"</p>
-        <p className="text-[10px] text-stone-400 mt-1">—— 你当时说的</p>
+      <div className="bg-white/[0.04] border-l-2 border-fuchsia-400/40 px-4 py-2 mb-4">
+        <p className="text-xs text-white/50 italic">"{card.user_quote}"</p>
+        <p className="text-[10px] text-white/30 mt-1">—— 你当时说的</p>
       </div>
 
       {/* Stats + emotion curve */}
       <div className="flex items-center justify-between mb-4">
-        <div className="flex gap-4 text-xs text-stone-500">
-          <span>{card.stats.days} 天</span>
-          <span>{card.stats.tasks_completed} 个任务</span>
+        <div className="flex gap-4 text-xs text-white/45">
+          <span><span className="cyber-neon text-cyan-300">{card.stats.days}</span> 天</span>
+          <span><span className="cyber-neon text-fuchsia-300">{card.stats.tasks_completed}</span> 个任务</span>
         </div>
         <MiniEmotionCurve data={card.emotion_data} />
       </div>
+
+      <div className="cyber-dataline h-px w-full mb-4" />
 
       {/* Actions */}
       <div className="flex gap-2">
         <button
           onClick={onShare}
-          className="rounded-lg border border-stone-200 px-4 py-2 text-xs text-stone-600 hover:border-stone-300 hover:text-stone-800 transition-colors"
+          className="border border-cyan-400/40 bg-cyan-400/10 px-4 py-2 font-mono text-sm tracking-widest text-cyan-200 hover:bg-cyan-400/20 transition-colors"
         >
           分享这张卡片
         </button>
@@ -175,7 +192,7 @@ function CardItem({ card, onShare }: { card: StageCard; onShare: () => void }) {
             href={card.result_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-lg border border-stone-200 px-4 py-2 text-xs text-stone-600 hover:border-stone-300 transition-colors"
+            className="border border-white/10 px-4 py-2 font-mono text-sm text-white/40 hover:bg-white/[0.06] hover:text-white/70 transition-colors"
           >
             查看成果 →
           </a>
@@ -187,11 +204,11 @@ function CardItem({ card, onShare }: { card: StageCard; onShare: () => void }) {
 
 function LockedCard({ index }: { index: number }) {
   return (
-    <div className="rounded-xl border border-dashed border-stone-200 bg-stone-50/50 p-6 text-center">
-      <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-stone-100 text-stone-400 text-sm mb-2">
+    <div className="border border-dashed border-cyan-400/20 bg-white/[0.02] p-6 text-center">
+      <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/[0.06] text-white/35 text-sm mb-2">
         🔒
       </span>
-      <p className="text-xs text-stone-400">阶段 {index + 1} · 待解锁</p>
+      <p className="font-mono text-xs tracking-wider text-cyan-300/40">阶段 {index + 1} · 待解锁</p>
     </div>
   );
 }

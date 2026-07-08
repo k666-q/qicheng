@@ -1,0 +1,342 @@
+{
+  "subject": {
+    "id": "sports",
+    "name": "体育与运动科学",
+    "color": "#16a34a",
+    "description": "用科学方法训练身体，跑得更快、练得更壮、活得更久。",
+    "category": "艺术与生活"
+  },
+  "nodes": [
+    {
+      "id": "sport_anatomy",
+      "subjectId": "sports",
+      "name": "运动解剖与生理",
+      "plain_name": "认识你身体这台机器",
+      "description": "肌肉骨骼如何发力、心肺如何供能——一切科学训练的说明书。",
+      "difficulty": 5,
+      "keywords": [
+        "运动解剖",
+        "运动生理",
+        "肌肉",
+        "心肺功能",
+        "能量系统",
+        "骨骼"
+      ],
+      "cognition_tags": [
+        "system",
+        "logic"
+      ]
+    },
+    {
+      "id": "sport_strength",
+      "subjectId": "sports",
+      "name": "力量训练",
+      "plain_name": "把肌肉练起来",
+      "description": "深蹲硬拉卧推、渐进超负荷——撸铁不只为好看，更是健康的地基。",
+      "difficulty": 4,
+      "keywords": [
+        "力量训练",
+        "撸铁",
+        "深蹲",
+        "硬拉",
+        "渐进超负荷",
+        "增肌",
+        "健身房"
+      ],
+      "cognition_tags": [
+        "system",
+        "logic"
+      ]
+    },
+    {
+      "id": "sport_endurance",
+      "subjectId": "sports",
+      "name": "有氧与耐力",
+      "plain_name": "让心肺更能扛",
+      "description": "心率区间、最大摄氧量与有氧基础——耐力是所有运动的油箱容量。",
+      "difficulty": 4,
+      "keywords": [
+        "有氧运动",
+        "耐力",
+        "心率区间",
+        "最大摄氧量",
+        "VO2max",
+        "燃脂"
+      ],
+      "cognition_tags": [
+        "system",
+        "logic"
+      ]
+    },
+    {
+      "id": "sport_nutrition",
+      "subjectId": "sports",
+      "name": "运动营养",
+      "plain_name": "吃对了训练才不白练",
+      "description": "蛋白质、碳水时机与热量缺口——身材是练出来的，更是吃出来的。",
+      "difficulty": 4,
+      "keywords": [
+        "运动营养",
+        "蛋白质",
+        "碳水",
+        "热量缺口",
+        "补剂",
+        "增肌餐",
+        "减脂餐"
+      ],
+      "cognition_tags": [
+        "system",
+        "logic"
+      ]
+    },
+    {
+      "id": "sport_flexibility",
+      "subjectId": "sports",
+      "name": "柔韧与恢复",
+      "plain_name": "练得狠更要恢复得好",
+      "description": "拉伸、泡沫轴、睡眠与主动恢复——肌肉在休息时生长，不是在训练时。",
+      "difficulty": 3,
+      "keywords": [
+        "拉伸",
+        "柔韧性",
+        "恢复",
+        "泡沫轴",
+        "睡眠",
+        "筋膜放松",
+        "放松"
+      ],
+      "cognition_tags": [
+        "system"
+      ]
+    },
+    {
+      "id": "sport_injury",
+      "subjectId": "sports",
+      "name": "运动损伤防护",
+      "plain_name": "别让受伤毁了热爱",
+      "description": "热身、动作模式纠正与常见伤病处理——预防永远比治疗便宜。",
+      "difficulty": 5,
+      "keywords": [
+        "运动损伤",
+        "防护",
+        "热身",
+        "扭伤",
+        "膝盖疼",
+        "康复",
+        "RICE原则"
+      ],
+      "cognition_tags": [
+        "system",
+        "logic"
+      ]
+    },
+    {
+      "id": "sport_running",
+      "subjectId": "sports",
+      "name": "跑步科学",
+      "plain_name": "把跑步跑明白",
+      "description": "跑姿、步频、配速策略与马拉松备赛——门槛最低也最容易跑伤的运动。",
+      "difficulty": 4,
+      "keywords": [
+        "跑步",
+        "跑姿",
+        "步频",
+        "配速",
+        "马拉松",
+        "晨跑",
+        "跑量"
+      ],
+      "cognition_tags": [
+        "system",
+        "logic"
+      ]
+    },
+    {
+      "id": "sport_ball",
+      "subjectId": "sports",
+      "name": "球类运动",
+      "plain_name": "在对抗里玩出花样",
+      "description": "篮球、足球、羽毛球的技战术入门——球场是体能、技巧与脑子的综合考场。",
+      "difficulty": 5,
+      "keywords": [
+        "球类",
+        "篮球",
+        "足球",
+        "羽毛球",
+        "战术",
+        "球感",
+        "团队配合"
+      ],
+      "cognition_tags": [
+        "system",
+        "expression"
+      ]
+    },
+    {
+      "id": "sport_program",
+      "subjectId": "sports",
+      "name": "训练计划设计",
+      "plain_name": "给自己当教练",
+      "description": "周期化、训练量与强度搭配——把零散的锻炼组织成有目标的进步曲线。",
+      "difficulty": 7,
+      "keywords": [
+        "训练计划",
+        "周期化",
+        "训练量",
+        "强度",
+        "分化训练",
+        "超量恢复"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "system",
+        "logic"
+      ]
+    },
+    {
+      "id": "sport_psychology",
+      "subjectId": "sports",
+      "name": "运动心理",
+      "plain_name": "比赛拼到最后是心态",
+      "description": "目标设定、心流与压力管理——身体到极限时，是心理在决定输赢。",
+      "difficulty": 6,
+      "keywords": [
+        "运动心理",
+        "心流",
+        "压力管理",
+        "目标设定",
+        "专注",
+        "意志力"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "expression"
+      ]
+    },
+    {
+      "id": "sport_weight",
+      "subjectId": "sports",
+      "name": "体重管理与减脂",
+      "plain_name": "科学瘦下来不反弹",
+      "description": "能量平衡、基础代谢与体成分——减的是脂肪不是体重，更不是健康。",
+      "difficulty": 4,
+      "keywords": [
+        "减脂",
+        "减肥",
+        "体重管理",
+        "基础代谢",
+        "体脂率",
+        "能量平衡",
+        "反弹"
+      ],
+      "cognition_tags": [
+        "system",
+        "logic"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "sport_anatomy",
+      "target": "sport_strength",
+      "type": "prerequisite",
+      "reason": "知道目标肌群在哪、怎么发力，深蹲硬拉的动作要领才不是死记硬背。"
+    },
+    {
+      "source": "sport_anatomy",
+      "target": "sport_endurance",
+      "type": "prerequisite",
+      "reason": "心率区间训练建立在心肺生理之上：不懂有氧供能系统就看不懂运动手表的数据。"
+    },
+    {
+      "source": "sport_anatomy",
+      "target": "sport_injury",
+      "type": "prerequisite",
+      "reason": "判断'这疼正不正常'需要解剖知识：知道韧带肌腱的位置才能识别损伤信号。"
+    },
+    {
+      "source": "sport_anatomy",
+      "target": "sport_nutrition",
+      "type": "prerequisite",
+      "reason": "营养策略服务于生理过程：理解蛋白质合成与糖原储备，吃才能吃到点子上。"
+    },
+    {
+      "source": "sport_strength",
+      "target": "sport_program",
+      "type": "prerequisite",
+      "reason": "训练计划的核心变量（组数、重量、频率）来自力量训练的基本原则。"
+    },
+    {
+      "source": "sport_endurance",
+      "target": "sport_program",
+      "type": "prerequisite",
+      "reason": "周期化安排要平衡有氧与无氧负荷，耐力训练的强度分区是排课的标尺。"
+    },
+    {
+      "source": "sport_endurance",
+      "target": "sport_running",
+      "type": "prerequisite",
+      "reason": "跑步是最典型的耐力项目：配速与心率策略直接套用有氧训练理论。"
+    },
+    {
+      "source": "sport_strength",
+      "target": "sport_running",
+      "type": "related",
+      "reason": "核心与下肢力量是跑姿稳定的保障，力量薄弱的跑者跑量一上去就容易伤。"
+    },
+    {
+      "source": "sport_injury",
+      "target": "sport_running",
+      "type": "related",
+      "reason": "跑步伤病（膝痛、足底筋膜炎）高发，防护知识决定你能健康跑多少年。"
+    },
+    {
+      "source": "sport_flexibility",
+      "target": "sport_injury",
+      "type": "related",
+      "reason": "柔韧不足与恢复不充分是损伤的两大温床，拉伸和睡眠本身就是防护手段。"
+    },
+    {
+      "source": "sport_flexibility",
+      "target": "sport_program",
+      "type": "related",
+      "reason": "计划里必须排进恢复日：超量恢复原理决定了'休息也是训练的一部分'。"
+    },
+    {
+      "source": "sport_nutrition",
+      "target": "sport_weight",
+      "type": "prerequisite",
+      "reason": "减脂的本质是可持续的热量缺口：不懂营养搭配的节食必然以反弹收场。"
+    },
+    {
+      "source": "sport_endurance",
+      "target": "sport_weight",
+      "type": "related",
+      "reason": "有氧运动是制造热量缺口的常用手段，燃脂心率区间是减脂训练的常识。"
+    },
+    {
+      "source": "sport_strength",
+      "target": "sport_ball",
+      "type": "related",
+      "reason": "对抗、弹跳和变向都吃力量储备：球场上的身体素质大半来自力量房。"
+    },
+    {
+      "source": "sport_psychology",
+      "target": "sport_ball",
+      "type": "related",
+      "reason": "关键球的心态、团队沟通与逆风局抗压，球类竞技是运动心理的天然实验场。"
+    },
+    {
+      "source": "sport_psychology",
+      "target": "sport_program",
+      "type": "related",
+      "reason": "目标设定理论帮你把'想变强'拆成可坚持的阶段目标，计划才不会三天打鱼。"
+    },
+    {
+      "source": "sport_program",
+      "target": "sport_weight",
+      "type": "related",
+      "reason": "成功的减脂需要训练与饮食的长期计划：力量保肌肉、有氧耗热量、周期防平台。"
+    }
+  ]
+}

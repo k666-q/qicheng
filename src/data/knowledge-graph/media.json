@@ -1,0 +1,219 @@
+{
+  "subject": {
+    "id": "media",
+    "name": "传播与媒体",
+    "color": "#06b6d4",
+    "description": "研究信息如何流动、舆论如何形成的学问——看懂你刷到的每一条内容背后的机制。",
+    "category": "人文社科"
+  },
+  "nodes": [
+    {
+      "id": "media_intro",
+      "subjectId": "media",
+      "name": "传播学导论",
+      "plain_name": "信息怎么从我到你",
+      "description": "谁、说什么、通过什么渠道、对谁、产生什么效果——拉斯韦尔五W模型打开传播研究的大门。",
+      "difficulty": 3,
+      "keywords": ["传播学", "传播模型", "5W模型", "传播过程", "符号", "编码解码"],
+      "cognition_tags": ["system", "abstract"]
+    },
+    {
+      "id": "media_mass_theory",
+      "subjectId": "media",
+      "name": "大众传播理论",
+      "plain_name": "媒体怎么影响社会",
+      "description": "议程设置、沉默的螺旋、培养理论——媒体不能决定你怎么想，却能决定你想什么。",
+      "difficulty": 6,
+      "keywords": ["大众传播", "议程设置", "沉默的螺旋", "培养理论", "媒介效果", "把关人"],
+      "cognition_tags": ["abstract", "system"]
+    },
+    {
+      "id": "media_research",
+      "subjectId": "media",
+      "name": "传播研究方法",
+      "plain_name": "怎么测量传播效果",
+      "description": "内容分析、问卷调查、控制实验——'这条广告有没有用'不能靠感觉，要靠数据说话。",
+      "difficulty": 6,
+      "keywords": ["研究方法", "内容分析", "受众调查", "实验法", "数据分析"],
+      "cognition_tags": ["logic", "modeling"]
+    },
+    {
+      "id": "media_news",
+      "subjectId": "media",
+      "name": "新闻采写",
+      "plain_name": "新闻是怎么生产的",
+      "description": "找选题、做采访、核事实、写导语——一条新闻从线索到发布的全流程手艺。",
+      "difficulty": 5,
+      "keywords": ["新闻采写", "采访", "导语", "倒金字塔", "事实核查", "新闻价值"],
+      "cognition_tags": ["expression", "logic"]
+    },
+    {
+      "id": "media_new_media",
+      "subjectId": "media",
+      "name": "新媒体与社交媒体",
+      "plain_name": "人人都有麦克风的时代",
+      "description": "算法推荐、网红经济、病毒式传播——传播权力从机构转移到个人和平台，游戏规则彻底改写。",
+      "difficulty": 5,
+      "keywords": ["新媒体", "社交媒体", "算法推荐", "自媒体", "病毒传播", "平台"],
+      "cognition_tags": ["system", "expression"]
+    },
+    {
+      "id": "media_audiovisual",
+      "subjectId": "media",
+      "name": "视听传播",
+      "plain_name": "镜头和声音的语言",
+      "description": "景别、剪辑、配乐如何操纵情绪？从纪录片到短视频，视听语言是这个时代的'第二母语'。",
+      "difficulty": 5,
+      "keywords": ["视听语言", "影像叙事", "剪辑", "短视频", "纪录片", "镜头"],
+      "cognition_tags": ["aesthetic", "expression"]
+    },
+    {
+      "id": "media_advertising",
+      "subjectId": "media",
+      "name": "广告学",
+      "plain_name": "让人心甘情愿掏钱的艺术",
+      "description": "定位、创意、投放——广告如何在三秒内抓住注意力，又如何潜移默化地塑造你的偏好。",
+      "difficulty": 5,
+      "keywords": ["广告", "品牌", "定位", "创意", "消费者心理", "投放"],
+      "cognition_tags": ["expression", "aesthetic", "modeling"]
+    },
+    {
+      "id": "media_pr",
+      "subjectId": "media",
+      "name": "公共关系",
+      "plain_name": "组织怎么经营形象",
+      "description": "危机公关怎么救火、品牌声誉怎么积累——公关是组织与公众之间的长期关系管理。",
+      "difficulty": 5,
+      "keywords": ["公共关系", "危机公关", "声誉管理", "企业传播", "公众沟通"],
+      "cognition_tags": ["expression", "system"]
+    },
+    {
+      "id": "media_public_opinion",
+      "subjectId": "media",
+      "name": "舆论研究",
+      "plain_name": "风向是怎么形成的",
+      "description": "一件小事如何发酵成全网热点？舆论的生成、扩散与反转，背后有可以分析的规律。",
+      "difficulty": 6,
+      "keywords": ["舆论", "热点事件", "舆情", "意见领袖", "舆论反转", "公共讨论"],
+      "cognition_tags": ["system", "abstract"]
+    },
+    {
+      "id": "media_audience",
+      "subjectId": "media",
+      "name": "受众研究",
+      "plain_name": "屏幕前的人在想什么",
+      "description": "受众不是被动的靶子：使用与满足、选择性接触——人们主动挑选、解读甚至误读媒介内容。",
+      "difficulty": 6,
+      "keywords": ["受众研究", "使用与满足", "选择性接触", "解读", "粉丝文化", "用户画像"],
+      "cognition_tags": ["abstract", "system"]
+    },
+    {
+      "id": "media_ethics",
+      "subjectId": "media",
+      "name": "媒介伦理与法规",
+      "plain_name": "传播的底线在哪里",
+      "description": "隐私与知情权怎么平衡？流量与真相冲突时听谁的？传播越自由，越需要伦理与法律的缰绳。",
+      "difficulty": 6,
+      "keywords": ["媒介伦理", "新闻伦理", "隐私权", "名誉权", "虚假信息", "媒介法规"],
+      "cognition_tags": ["abstract", "logic"]
+    }
+  ],
+  "edges": [
+    {
+      "source": "media_intro",
+      "target": "media_mass_theory",
+      "type": "prerequisite",
+      "reason": "议程设置等效果理论建立在导论的传播过程模型之上：先懂传播链条，再研究链条上的效果。"
+    },
+    {
+      "source": "media_intro",
+      "target": "media_research",
+      "type": "prerequisite",
+      "reason": "先明确传播学研究什么问题，再学习用内容分析、调查、实验来回答。"
+    },
+    {
+      "source": "media_mass_theory",
+      "target": "media_public_opinion",
+      "type": "prerequisite",
+      "reason": "舆论研究直接建立在议程设置、沉默的螺旋等大众传播理论之上。"
+    },
+    {
+      "source": "media_research",
+      "target": "media_audience",
+      "type": "prerequisite",
+      "reason": "受众研究是方法密集型领域：收视率统计、用户调查都依赖规范的研究方法。"
+    },
+    {
+      "source": "media_public_opinion",
+      "target": "media_audience",
+      "type": "related",
+      "reason": "舆论由受众的态度汇聚而成：理解个体如何解读信息，才能解释群体风向的形成。"
+    },
+    {
+      "source": "media_intro",
+      "target": "media_news",
+      "type": "prerequisite",
+      "reason": "新闻价值判断与把关人意识来自传播学基础：懂传播规律才能做好新闻生产。"
+    },
+    {
+      "source": "media_intro",
+      "target": "media_audiovisual",
+      "type": "prerequisite",
+      "reason": "视听传播是符号编码理论的具体应用：镜头语言就是一套视觉符号系统。"
+    },
+    {
+      "source": "media_intro",
+      "target": "media_new_media",
+      "type": "prerequisite",
+      "reason": "分析新媒体的颠覆性，要以传统传播模型为参照系：渠道与把关人都变了。"
+    },
+    {
+      "source": "media_new_media",
+      "target": "media_audiovisual",
+      "type": "related",
+      "reason": "短视频是新媒体与视听语言的交汇点：算法分发与镜头叙事共同决定爆款。"
+    },
+    {
+      "source": "media_news",
+      "target": "media_audiovisual",
+      "type": "related",
+      "reason": "电视新闻与视频报道要求采写能力与视听语言的结合。"
+    },
+    {
+      "source": "media_mass_theory",
+      "target": "media_advertising",
+      "type": "prerequisite",
+      "reason": "广告是说服传播的应用：态度改变、媒介效果理论是投放策略的理论基础。"
+    },
+    {
+      "source": "media_advertising",
+      "target": "media_pr",
+      "type": "related",
+      "reason": "广告与公关同属营销传播：一个买版面讲故事，一个赢得免费报道，常协同作战。"
+    },
+    {
+      "source": "media_public_opinion",
+      "target": "media_pr",
+      "type": "related",
+      "reason": "危机公关本质是舆论管理：监测舆情、回应关切都依赖舆论研究的规律。"
+    },
+    {
+      "source": "media_new_media",
+      "target": "media_public_opinion",
+      "type": "related",
+      "reason": "社交媒体重塑了舆论生态：热搜、转发与算法让舆论形成更快也更易反转。"
+    },
+    {
+      "source": "media_news",
+      "target": "media_ethics",
+      "type": "prerequisite",
+      "reason": "新闻实践中的隐私、核实、利益冲突问题是媒介伦理最经典的案例来源。"
+    },
+    {
+      "source": "media_new_media",
+      "target": "media_ethics",
+      "type": "related",
+      "reason": "算法偏见、虚假信息、流量造假——新媒体把媒介伦理推向更复杂的新战场。"
+    }
+  ]
+}

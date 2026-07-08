@@ -1,0 +1,97 @@
+{
+  "parentId": "dsa_sorting",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "sort_bubble",
+      "subjectId": "programming",
+      "parentId": "dsa_sorting",
+      "name": "冒泡排序",
+      "plain_name": "相邻两两比较，大的往后冒",
+      "description": "反复遍历数组，每次比较相邻两个元素，若左边比右边大就交换，最大的元素像气泡一样逐轮浮到末尾。时间复杂度 O(n²)。",
+      "difficulty": 3,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["冒泡排序", "相邻交换", "O(n²)", "稳定排序"],
+      "prerequisites": [],
+      "cognition_tags": ["logic"]
+    },
+    {
+      "id": "sort_selection",
+      "subjectId": "programming",
+      "parentId": "dsa_sorting",
+      "name": "选择排序",
+      "plain_name": "每轮挑出最小的放到前面",
+      "description": "每一轮从未排序部分扫描出最小元素，放到已排序部分的末尾。一个指针标记已排序边界，另一个扫描寻找最小值。时间复杂度 O(n²)。",
+      "difficulty": 3,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["选择排序", "最小值", "O(n²)"],
+      "prerequisites": [],
+      "cognition_tags": ["logic"]
+    },
+    {
+      "id": "sort_insertion",
+      "subjectId": "programming",
+      "parentId": "dsa_sorting",
+      "name": "插入排序",
+      "plain_name": "像理扑克牌一样逐个插入",
+      "description": "把数组分成已排序和未排序两部分，每次取未排序的第一个元素，从右往左在已排序部分找到合适位置插入，就像理扑克牌。时间复杂度 O(n²)，近乎有序时很快。",
+      "difficulty": 3,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["插入排序", "理扑克牌", "已排序区间", "O(n²)"],
+      "prerequisites": [],
+      "cognition_tags": ["logic"]
+    },
+    {
+      "id": "sort_quick_partition",
+      "subjectId": "programming",
+      "parentId": "dsa_sorting",
+      "name": "快速排序的分区",
+      "plain_name": "选基准，小的左、大的右",
+      "description": "快速排序的核心是分区：选一个基准值 pivot，用双指针扫描，把比 pivot 小的元素换到左边、大的换到右边，最后 pivot 落到正确位置，再对左右两半递归。平均 O(n log n)。",
+      "difficulty": 6,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["快速排序", "分区", "pivot", "双指针", "递归", "O(nlogn)"],
+      "prerequisites": [],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "sort_merge",
+      "subjectId": "programming",
+      "parentId": "dsa_sorting",
+      "name": "归并排序的合并",
+      "plain_name": "拆到最小，再两两有序合并",
+      "description": "归并排序先把数组不断对半拆分到单元素，再两两合并：用两个指针分别指向两个有序子数组的头部，每次取较小者放入结果，直到合并成完整有序数组。稳定且严格 O(n log n)。",
+      "difficulty": 6,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["归并排序", "分治", "合并", "双指针", "稳定排序", "O(nlogn)"],
+      "prerequisites": [],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "sort_heap",
+      "subjectId": "programming",
+      "parentId": "dsa_sorting",
+      "name": "堆排序",
+      "plain_name": "用大顶堆反复取最大",
+      "description": "先把数组构建成大顶堆（父节点不小于子节点），然后反复把堆顶最大元素与末尾交换并缩小堆、重新下沉调整。原地排序，O(n log n)。",
+      "difficulty": 7,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["堆排序", "大顶堆", "下沉", "建堆", "O(nlogn)"],
+      "prerequisites": [],
+      "cognition_tags": ["logic", "abstract"]
+    }
+  ],
+  "edges": [
+    { "source": "sort_bubble", "target": "sort_selection", "type": "related" },
+    { "source": "sort_selection", "target": "sort_insertion", "type": "related" },
+    { "source": "sort_insertion", "target": "sort_quick_partition", "type": "prerequisite" },
+    { "source": "sort_quick_partition", "target": "sort_merge", "type": "related" },
+    { "source": "sort_merge", "target": "sort_heap", "type": "related" }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "parentId": "cs_net",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "net_layering",
+      "subjectId": "programming",
+      "parentId": "cs_net",
+      "name": "分层模型",
+      "plain_name": "把复杂通信切成几层",
+      "description": "OSI 七层与 TCP/IP 四层——每层只管自己的事，封装与解封装让通信分工清晰。",
+      "difficulty": 4,
+      "depth": 1,
+      "hasChildren": true,
+      "keywords": ["OSI", "TCP/IP", "分层", "封装", "协议栈"],
+      "prerequisites": [],
+      "cognition_tags": ["system", "abstract"]
+    },
+    {
+      "id": "net_physical_link",
+      "subjectId": "programming",
+      "parentId": "cs_net",
+      "name": "物理层与数据链路层",
+      "plain_name": "比特如何在线缆上传输",
+      "description": "信号编码、帧、MAC 地址、CSMA/CD 与差错检测——相邻设备间可靠传输一帧数据。",
+      "difficulty": 6,
+      "depth": 1,
+      "hasChildren": true,
+      "keywords": ["数据链路层", "MAC", "以太网", "CRC", "CSMA/CD", "交换机"],
+      "prerequisites": ["net_layering"],
+      "cognition_tags": ["system"]
+    },
+    {
+      "id": "net_network_layer",
+      "subjectId": "programming",
+      "parentId": "cs_net",
+      "name": "网络层与 IP",
+      "plain_name": "数据包如何跨网找到路",
+      "description": "IP 地址、子网划分、路由转发与 ARP——让数据包跨越多个网络找到目的主机。",
+      "difficulty": 7,
+      "depth": 1,
+      "hasChildren": true,
+      "keywords": ["IP", "子网", "路由", "ARP", "网络层", "转发"],
+      "prerequisites": ["net_physical_link"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "net_transport",
+      "subjectId": "programming",
+      "parentId": "cs_net",
+      "name": "传输层 TCP/UDP",
+      "plain_name": "端到端的可靠传输",
+      "description": "TCP 三次握手、可靠传输、流量与拥塞控制，以及 UDP 的轻量取舍。",
+      "difficulty": 7,
+      "depth": 1,
+      "hasChildren": true,
+      "keywords": ["TCP", "UDP", "三次握手", "滑动窗口", "拥塞控制", "传输层"],
+      "prerequisites": ["net_network_layer"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "net_application",
+      "subjectId": "programming",
+      "parentId": "cs_net",
+      "name": "应用层与 HTTP",
+      "plain_name": "浏览器背后发生了什么",
+      "description": "DNS 解析、HTTP 请求响应、HTTPS 与缓存——从输入网址到页面呈现的完整链路。",
+      "difficulty": 5,
+      "depth": 1,
+      "hasChildren": true,
+      "keywords": ["HTTP", "HTTPS", "DNS", "应用层", "缓存", "Web"],
+      "prerequisites": ["net_transport"],
+      "cognition_tags": ["system"]
+    },
+    {
+      "id": "net_security_basics",
+      "subjectId": "programming",
+      "parentId": "cs_net",
+      "name": "网络安全基础",
+      "plain_name": "通信中的攻与防",
+      "description": "常见网络攻击（中间人、SYN 洪泛）与 TLS 加密握手如何保护传输。",
+      "difficulty": 7,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["TLS", "中间人攻击", "SYN洪泛", "网络安全", "加密"],
+      "prerequisites": ["net_transport"],
+      "cognition_tags": ["system", "logic"]
+    }
+  ],
+  "edges": [
+    { "source": "net_layering", "target": "net_physical_link", "type": "prerequisite" },
+    { "source": "net_physical_link", "target": "net_network_layer", "type": "prerequisite" },
+    { "source": "net_network_layer", "target": "net_transport", "type": "prerequisite" },
+    { "source": "net_transport", "target": "net_application", "type": "prerequisite" },
+    { "source": "net_transport", "target": "net_security_basics", "type": "prerequisite" }
+  ]
+}

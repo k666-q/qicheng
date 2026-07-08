@@ -1,0 +1,135 @@
+{
+  "subject": {
+    "id": "biology",
+    "name": "生物学",
+    "color": "#22c55e",
+    "description": "研究生命现象与生物活动规律的科学，从一个细胞到整个生态系统都是它的舞台。",
+    "category": "自然科学与工程"
+  },
+  "nodes": [
+    {
+      "id": "bio_cell_structure",
+      "subjectId": "biology",
+      "name": "细胞结构与功能",
+      "plain_name": "生命最小的工厂车间",
+      "description": "细胞膜、细胞核、线粒体等各司其职，共同维持一个细胞的生命活动。",
+      "difficulty": 3,
+      "keywords": ["细胞", "细胞膜", "细胞核", "线粒体", "细胞器", "细胞结构"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "bio_cell_division",
+      "subjectId": "biology",
+      "name": "细胞分裂",
+      "plain_name": "一个细胞变两个的过程",
+      "description": "有丝分裂与减数分裂，让生物体长大、修复并把遗传物质传给下一代。",
+      "difficulty": 5,
+      "keywords": ["细胞分裂", "有丝分裂", "减数分裂", "染色体", "细胞周期"],
+      "cognition_tags": ["logic", "system"]
+    },
+    {
+      "id": "bio_mendelian_genetics",
+      "subjectId": "biology",
+      "name": "孟德尔遗传",
+      "plain_name": "龙生龙凤生凤的规律",
+      "description": "豌豆实验揭示的分离定律与自由组合定律，解释性状如何代代相传。",
+      "difficulty": 5,
+      "keywords": ["遗传", "孟德尔", "显性隐性", "分离定律", "基因型", "豌豆实验"],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "bio_dna_molecular_genetics",
+      "subjectId": "biology",
+      "name": "DNA与分子遗传",
+      "plain_name": "写在双螺旋里的生命密码",
+      "description": "DNA双螺旋如何储存信息，并通过转录翻译变成蛋白质指挥生命活动。",
+      "difficulty": 7,
+      "keywords": ["DNA", "双螺旋", "基因", "转录", "翻译", "碱基"],
+      "cognition_tags": ["abstract", "modeling"]
+    },
+    {
+      "id": "bio_genetic_engineering",
+      "subjectId": "biology",
+      "name": "基因工程",
+      "plain_name": "给生命改写代码的技术",
+      "description": "用剪切拼接的方式改造DNA，制造胰岛素、抗虫作物或修复缺陷基因。",
+      "difficulty": 8,
+      "keywords": ["基因工程", "转基因", "基因编辑", "CRISPR", "重组DNA"],
+      "cognition_tags": ["modeling", "system"]
+    },
+    {
+      "id": "bio_evolution",
+      "subjectId": "biology",
+      "name": "进化论",
+      "plain_name": "物种为何千变万化",
+      "description": "自然选择与适者生存，解释地球上千姿百态的生命如何一步步演化而来。",
+      "difficulty": 5,
+      "keywords": ["进化", "自然选择", "达尔文", "适者生存", "物种起源", "演化"],
+      "cognition_tags": ["logic", "system"]
+    },
+    {
+      "id": "bio_ecosystem",
+      "subjectId": "biology",
+      "name": "生态系统",
+      "plain_name": "生物与环境的大家庭",
+      "description": "生产者、消费者、分解者通过食物链与能量流动构成相互依存的整体。",
+      "difficulty": 4,
+      "keywords": ["生态系统", "食物链", "能量流动", "物质循环", "生物群落"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "bio_plant_physiology",
+      "subjectId": "biology",
+      "name": "植物生理",
+      "plain_name": "植物如何吃饭喝水长大",
+      "description": "光合作用、呼吸作用与水分运输——植物把阳光变成能量的奥秘。",
+      "difficulty": 5,
+      "keywords": ["植物生理", "光合作用", "呼吸作用", "蒸腾", "叶绿素"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "bio_animal_physiology",
+      "subjectId": "biology",
+      "name": "动物生理",
+      "plain_name": "身体器官如何协同工作",
+      "description": "消化、循环、呼吸等系统如何配合，维持动物体内环境的稳定。",
+      "difficulty": 5,
+      "keywords": ["动物生理", "消化系统", "循环系统", "内环境", "稳态"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "bio_neurobiology",
+      "subjectId": "biology",
+      "name": "神经生物学",
+      "plain_name": "大脑和神经怎么传信号",
+      "description": "神经元通过电信号与化学递质传递信息，构成感觉、运动与思维的基础。",
+      "difficulty": 7,
+      "keywords": ["神经生物学", "神经元", "突触", "神经递质", "大脑", "反射"],
+      "cognition_tags": ["abstract", "system"]
+    },
+    {
+      "id": "bio_microbiology",
+      "subjectId": "biology",
+      "name": "微生物学",
+      "plain_name": "看不见的微小生命世界",
+      "description": "细菌、病毒、真菌等微生物的结构与活动，关乎发酵、疾病与生态平衡。",
+      "difficulty": 6,
+      "keywords": ["微生物", "细菌", "病毒", "真菌", "发酵", "微生物学"],
+      "cognition_tags": ["system", "logic"]
+    }
+  ],
+  "edges": [
+    { "source": "bio_cell_structure", "target": "bio_cell_division", "type": "prerequisite", "reason": "细胞分裂是细胞结构的动态延续，先认识细胞各部件才能理解分裂时它们如何变化。" },
+    { "source": "bio_cell_division", "target": "bio_mendelian_genetics", "type": "prerequisite", "reason": "减数分裂中染色体的分离与组合，正是孟德尔遗传规律的细胞学基础。" },
+    { "source": "bio_mendelian_genetics", "target": "bio_dna_molecular_genetics", "type": "prerequisite", "reason": "孟德尔发现了遗传现象，分子遗传则从DNA层面揭示其本质机制。" },
+    { "source": "bio_dna_molecular_genetics", "target": "bio_genetic_engineering", "type": "prerequisite", "reason": "基因工程是对DNA的人工操作，必须先掌握DNA结构与表达规律。" },
+    { "source": "bio_dna_molecular_genetics", "target": "bio_evolution", "type": "prerequisite", "reason": "基因突变与重组提供了进化的原材料，分子遗传为进化论提供微观证据。" },
+    { "source": "bio_cell_structure", "target": "bio_plant_physiology", "type": "prerequisite", "reason": "光合作用发生在叶绿体中，理解细胞器是学习植物生理的前提。" },
+    { "source": "bio_cell_structure", "target": "bio_animal_physiology", "type": "prerequisite", "reason": "动物各器官由细胞构成，细胞结构是理解器官生理功能的基础。" },
+    { "source": "bio_animal_physiology", "target": "bio_neurobiology", "type": "prerequisite", "reason": "神经生物学聚焦动物生理中的神经系统，是其更深入的专门分支。" },
+    { "source": "bio_evolution", "target": "bio_ecosystem", "type": "related", "reason": "物种通过进化适应环境，生态系统则是物种间相互作用的舞台,二者紧密关联。" },
+    { "source": "bio_cell_structure", "target": "bio_microbiology", "type": "prerequisite", "reason": "微生物多为单细胞，掌握细胞基本结构有助于理解微生物的形态与功能。" },
+    { "source": "bio_microbiology", "target": "bio_ecosystem", "type": "related", "reason": "微生物作为分解者在生态系统物质循环中扮演关键角色。" },
+    { "source": "bio_plant_physiology", "target": "bio_ecosystem", "type": "related", "reason": "植物作为生产者通过光合作用为整个生态系统提供能量来源。" }
+  ]
+}

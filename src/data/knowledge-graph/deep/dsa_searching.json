@@ -1,0 +1,68 @@
+{
+  "parentId": "dsa_searching",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "search_binary",
+      "subjectId": "programming",
+      "parentId": "dsa_searching",
+      "name": "二分查找的折半过程",
+      "plain_name": "每次砍掉一半的查找范围",
+      "description": "在有序数组上用 left、right 两个边界圈定查找区间，取中点 mid 与目标比较：相等则命中，目标较小就把 right 移到 mid 左边、较大就把 left 移到 mid 右边。动画每轮高亮中点并把区间砍半，体现 O(log n)。",
+      "difficulty": 4,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["二分查找", "有序数组", "折半", "中点", "O(logn)"],
+      "prerequisites": [],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "search_hash_locate",
+      "subjectId": "programming",
+      "parentId": "dsa_searching",
+      "name": "哈希表的散列定位",
+      "plain_name": "用公式算出该存哪个桶",
+      "description": "哈希表通过哈希函数把键映射到桶下标，如 index = hash(key) % 桶数。动画演示插入键时先经哈希函数计算出一个整数、再取模得到桶号，箭头直接跳到对应桶放入，体现 O(1) 平均定位。",
+      "difficulty": 4,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["哈希表", "哈希函数", "取模", "桶", "O(1)"],
+      "prerequisites": ["search_binary"],
+      "cognition_tags": ["abstract", "system"]
+    },
+    {
+      "id": "search_hash_chaining",
+      "subjectId": "programming",
+      "parentId": "dsa_searching",
+      "name": "哈希冲突的链地址法",
+      "plain_name": "撞桶了就在桶里挂链表",
+      "description": "当两个键算出同一桶号发生冲突时，链地址法在该桶后挂一条链表，把冲突元素依次串接。动画演示两个键映射到同一桶，第二个元素被追加到链表尾部；查找时先定位桶再沿链表逐个比较。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["哈希冲突", "链地址法", "拉链法", "链表", "桶"],
+      "prerequisites": ["search_hash_locate"],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "search_hash_open_addressing",
+      "subjectId": "programming",
+      "parentId": "dsa_searching",
+      "name": "哈希冲突的开放寻址",
+      "plain_name": "撞桶了就往后找空位",
+      "description": "开放寻址不另挂链表，冲突时按探测序列(如线性探测 index+1)在表内向后寻找下一个空桶放入。动画演示元素撞上已占用的桶后，沿数组逐格探测直到找到空位坐下；查找时同样沿探测路径比较。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["哈希冲突", "开放寻址", "线性探测", "探测序列", "空桶"],
+      "prerequisites": ["search_hash_locate"],
+      "cognition_tags": ["logic", "abstract"]
+    }
+  ],
+  "edges": [
+    { "source": "search_binary", "target": "search_hash_locate", "type": "related" },
+    { "source": "search_hash_locate", "target": "search_hash_chaining", "type": "prerequisite" },
+    { "source": "search_hash_locate", "target": "search_hash_open_addressing", "type": "prerequisite" },
+    { "source": "search_hash_chaining", "target": "search_hash_open_addressing", "type": "related" }
+  ]
+}

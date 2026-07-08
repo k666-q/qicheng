@@ -1,0 +1,82 @@
+{
+  "parentId": "dsa_tree",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "tree_traversal",
+      "subjectId": "programming",
+      "parentId": "dsa_tree",
+      "name": "二叉树的三种遍历",
+      "plain_name": "前中后序的访问次序差别",
+      "description": "对同一棵二叉树演示三种深度优先遍历：前序(根→左→右)、中序(左→根→右)、后序(左→右→根)。动画用栈模拟递归，逐个高亮当前访问节点并按各自次序输出节点值，对比三条不同的输出序列。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["二叉树", "前序遍历", "中序遍历", "后序遍历", "递归", "栈"],
+      "prerequisites": [],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "tree_bst_search_insert",
+      "subjectId": "programming",
+      "parentId": "dsa_tree",
+      "name": "二叉搜索树的查找与插入",
+      "plain_name": "比根小走左，比根大走右",
+      "description": "二叉搜索树满足左小右大。查找时从根开始，目标比当前节点小就走左子树、大就走右子树，逐层下降直到命中。插入则沿同样路径走到空位挂上新节点。动画高亮一路比较的节点和最终落点。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["二叉搜索树", "BST", "查找", "插入", "左小右大"],
+      "prerequisites": ["tree_traversal"],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "tree_avl_rotation",
+      "subjectId": "programming",
+      "parentId": "dsa_tree",
+      "name": "AVL树的旋转平衡",
+      "plain_name": "树歪了就转一下扶正",
+      "description": "AVL树插入后若某节点左右子树高度差超过1就失衡。动画演示 LL 型失衡做单次右旋：把失衡节点向右下转、其左孩子上提成为新根，并重接子树。展示旋转前后高度差恢复到不超过1。",
+      "difficulty": 7,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["AVL树", "平衡因子", "右旋", "左旋", "自平衡"],
+      "prerequisites": ["tree_bst_search_insert"],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "tree_heap_siftup",
+      "subjectId": "programming",
+      "parentId": "dsa_tree",
+      "name": "堆的上浮",
+      "plain_name": "新元素和父亲比，太大就往上爬",
+      "description": "向大顶堆末尾插入新元素后执行上浮：把它与父节点(下标 (i-1)/2)比较，若比父节点大就交换，重复直到不再比父节点大或到达堆顶。动画沿一条自底向上的路径逐步交换并高亮当前节点。",
+      "difficulty": 6,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["堆", "上浮", "大顶堆", "插入", "父节点比较"],
+      "prerequisites": ["tree_traversal"],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "tree_heap_siftdown",
+      "subjectId": "programming",
+      "parentId": "dsa_tree",
+      "name": "堆的下沉",
+      "plain_name": "堆顶和较大孩子比，太小就往下沉",
+      "description": "删除大顶堆堆顶后把末尾元素移到顶部并执行下沉：把它与两个孩子中较大者比较，若比孩子小就交换下移，重复直到不再比孩子小或到达叶子。动画沿一条自顶向下的路径逐步交换并高亮当前节点。",
+      "difficulty": 6,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["堆", "下沉", "大顶堆", "删除堆顶", "孩子比较"],
+      "prerequisites": ["tree_heap_siftup"],
+      "cognition_tags": ["logic", "abstract"]
+    }
+  ],
+  "edges": [
+    { "source": "tree_traversal", "target": "tree_bst_search_insert", "type": "prerequisite" },
+    { "source": "tree_bst_search_insert", "target": "tree_avl_rotation", "type": "prerequisite" },
+    { "source": "tree_traversal", "target": "tree_heap_siftup", "type": "prerequisite" },
+    { "source": "tree_heap_siftup", "target": "tree_heap_siftdown", "type": "prerequisite" }
+  ]
+}

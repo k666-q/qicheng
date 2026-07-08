@@ -1,5 +1,8 @@
 # dependencies
 /node_modules
+
+# usage data
+/data
 /.pnp
 .pnp.*
 .yarn/*
@@ -38,3 +41,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.vercel

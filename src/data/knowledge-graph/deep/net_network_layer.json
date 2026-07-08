@@ -1,0 +1,83 @@
+{
+  "parentId": "net_network_layer",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "ip_address_mask",
+      "subjectId": "programming",
+      "parentId": "net_network_layer",
+      "name": "IP地址与子网掩码",
+      "plain_name": "地址分网络号和主机号两半",
+      "description": "把32位IP地址和子网掩码上下对齐，掩码中连续的1对应网络号、0对应主机号。动画演示IP与掩码逐位做按位与运算，得到网络地址，直观看出地址被切成网络部分和主机部分。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["IP地址", "子网掩码", "网络号", "主机号", "按位与"],
+      "prerequisites": [],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "ip_subnetting",
+      "subjectId": "programming",
+      "parentId": "net_network_layer",
+      "name": "子网划分",
+      "plain_name": "借主机位把大网切成小网",
+      "description": "从主机位中借出几位作为子网号，把一个大网络切成多个小子网。动画显示一条地址段被向右移动的掩码分界线切成2、4、8个等长子块，并标出每个子网的地址范围和可用主机数。",
+      "difficulty": 7,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["子网划分", "借位", "子网号", "掩码", "地址范围"],
+      "prerequisites": ["ip_address_mask"],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "ip_longest_prefix",
+      "subjectId": "programming",
+      "parentId": "net_network_layer",
+      "name": "路由表最长前缀匹配",
+      "plain_name": "选匹配位数最多的那条路由",
+      "description": "路由器收到目的IP后，逐条与路由表中的网络前缀比对，可能多条都匹配，则选择匹配比特位最长（最具体）的那条来转发。动画高亮多条候选项，比较各自掩码长度后选中最长的并指向其出口。",
+      "difficulty": 7,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["路由表", "最长前缀匹配", "前缀", "掩码长度", "转发"],
+      "prerequisites": ["ip_address_mask"],
+      "cognition_tags": ["logic", "system"]
+    },
+    {
+      "id": "ip_arp",
+      "subjectId": "programming",
+      "parentId": "net_network_layer",
+      "name": "ARP地址解析过程",
+      "plain_name": "知道IP问出对应的MAC地址",
+      "description": "主机要发数据却只知道对方IP不知MAC，于是广播一条ARP请求“谁是这个IP”，目标主机单播回ARP应答告知自己的MAC，发送方缓存映射。动画显示广播气泡扩散、目标回单播箭头、ARP表新增一行。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["ARP", "地址解析", "广播请求", "单播应答", "ARP缓存"],
+      "prerequisites": ["ip_address_mask"],
+      "cognition_tags": ["logic", "system"]
+    },
+    {
+      "id": "ip_forwarding",
+      "subjectId": "programming",
+      "parentId": "net_network_layer",
+      "name": "IP分组的转发",
+      "plain_name": "路由器一跳一跳接力送包",
+      "description": "IP包到达路由器后，路由器查路由表决定下一跳，把TTL减1、重算校验和，再封装成新的链路帧从对应接口发出。动画显示包在多个路由器节点间逐跳前进、TTL数字每跳递减直到抵达目的网络。",
+      "difficulty": 6,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["IP转发", "下一跳", "TTL", "路由器", "逐跳"],
+      "prerequisites": ["ip_longest_prefix", "ip_arp"],
+      "cognition_tags": ["system", "logic"]
+    }
+  ],
+  "edges": [
+    { "source": "ip_address_mask", "target": "ip_subnetting", "type": "prerequisite" },
+    { "source": "ip_address_mask", "target": "ip_longest_prefix", "type": "prerequisite" },
+    { "source": "ip_address_mask", "target": "ip_arp", "type": "prerequisite" },
+    { "source": "ip_longest_prefix", "target": "ip_forwarding", "type": "prerequisite" },
+    { "source": "ip_arp", "target": "ip_forwarding", "type": "related" }
+  ]
+}

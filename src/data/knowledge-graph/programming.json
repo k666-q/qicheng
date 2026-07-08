@@ -1,0 +1,217 @@
+{
+  "subject": {
+    "id": "programming",
+    "name": "计算机科学",
+    "color": "#6366f1",
+    "description": "从晶体管到智能系统——理解计算如何运作，并构建可运行的软件。",
+    "category": "自然科学与工程"
+  },
+  "nodes": [
+    {
+      "id": "cs_intro",
+      "subjectId": "programming",
+      "name": "编程语言基础",
+      "plain_name": "学会和计算机对话",
+      "description": "变量、类型、控制流、函数与递归——任何编程语言都绕不开的地基，也是后续一切的入口。",
+      "difficulty": 2,
+      "depth": 0,
+      "hasChildren": true,
+      "keywords": ["变量", "数据类型", "循环", "条件语句", "函数", "递归", "语法基础", "编程入门"],
+      "cognition_tags": ["logic"]
+    },
+    {
+      "id": "cs_dsa",
+      "subjectId": "programming",
+      "name": "数据结构与算法",
+      "plain_name": "数据怎么摆、问题怎么解",
+      "description": "线性表、树、图、排序、查找、动态规划——决定程序快慢与优雅程度的核心功底。",
+      "difficulty": 6,
+      "depth": 0,
+      "hasChildren": true,
+      "keywords": ["数据结构", "算法", "数组", "链表", "树", "图", "排序", "查找", "动态规划", "复杂度"],
+      "cognition_tags": ["logic", "abstract"]
+    },
+    {
+      "id": "cs_org",
+      "subjectId": "programming",
+      "name": "计算机组成原理",
+      "plain_name": "拆开电脑看它怎么算数",
+      "description": "从数据表示到指令执行、CPU、存储层次与总线——程序最终如何在硬件上跑起来。",
+      "difficulty": 6,
+      "depth": 0,
+      "hasChildren": true,
+      "keywords": ["计算机组成原理", "计组", "408", "冯诺依曼", "CPU", "存储层次", "指令系统"],
+      "cognition_tags": ["system", "abstract"]
+    },
+    {
+      "id": "cs_os",
+      "subjectId": "programming",
+      "name": "操作系统",
+      "plain_name": "电脑的大管家",
+      "description": "进程线程、调度、内存管理、文件系统——管理硬件、为所有程序划定运行舞台的底层软件。",
+      "difficulty": 7,
+      "depth": 0,
+      "hasChildren": true,
+      "keywords": ["操作系统", "OS", "408", "进程", "线程", "内存管理", "文件系统", "并发"],
+      "cognition_tags": ["system", "abstract"]
+    },
+    {
+      "id": "cs_net",
+      "subjectId": "programming",
+      "name": "计算机网络",
+      "plain_name": "电脑之间怎么聊天",
+      "description": "分层模型、TCP/IP、路由、HTTP——一条消息如何跨越半个地球准确送达。",
+      "difficulty": 6,
+      "depth": 0,
+      "hasChildren": true,
+      "keywords": ["计算机网络", "计网", "408", "TCP/IP", "OSI", "路由", "HTTP", "协议"],
+      "cognition_tags": ["system", "abstract"]
+    },
+    {
+      "id": "cs_db",
+      "subjectId": "programming",
+      "name": "数据库系统",
+      "plain_name": "把数据稳妥地存起来",
+      "description": "关系模型、SQL、索引、事务——既要查得快，又要保证转账绝不出错。",
+      "difficulty": 6,
+      "depth": 0,
+      "hasChildren": true,
+      "keywords": ["数据库", "SQL", "关系模型", "索引", "事务", "ACID", "B+树", "NoSQL"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "cs_theory",
+      "subjectId": "programming",
+      "name": "计算机理论基础",
+      "plain_name": "计算的边界与规律",
+      "description": "离散数学、自动机、可计算性与计算复杂度——什么能算、什么不能算、要算多久。",
+      "difficulty": 8,
+      "depth": 0,
+      "hasChildren": true,
+      "keywords": ["离散数学", "自动机", "图灵机", "计算理论", "复杂度", "NP", "形式语言"],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "cs_web",
+      "subjectId": "programming",
+      "name": "Web 与应用开发",
+      "plain_name": "做出能用的软件作品",
+      "description": "前端三件套、现代框架、后端 API 与全栈架构——把想法变成用户能打开的产品。",
+      "difficulty": 5,
+      "depth": 0,
+      "hasChildren": true,
+      "keywords": ["Web", "前端", "后端", "HTML", "CSS", "JavaScript", "React", "API", "全栈"],
+      "cognition_tags": ["system", "aesthetic"]
+    },
+    {
+      "id": "cs_se",
+      "subjectId": "programming",
+      "name": "软件工程",
+      "plain_name": "团队如何造大软件",
+      "description": "面向对象、设计模式、版本控制、测试与 CI/CD——让代码可维护、可协作、可交付。",
+      "difficulty": 6,
+      "depth": 0,
+      "hasChildren": true,
+      "keywords": ["软件工程", "面向对象", "设计模式", "Git", "测试", "CI/CD", "重构", "工程化"],
+      "cognition_tags": ["system", "expression"]
+    },
+    {
+      "id": "cs_security",
+      "subjectId": "programming",
+      "name": "信息安全",
+      "plain_name": "别让坏人偷走数据",
+      "description": "加密算法、认证、常见攻击与防御——理解数据在网上如何被保护或被窃取。",
+      "difficulty": 7,
+      "depth": 0,
+      "hasChildren": true,
+      "keywords": ["信息安全", "加密", "对称加密", "公钥", "数字签名", "XSS", "SQL注入", "认证"],
+      "cognition_tags": ["system", "logic"]
+    }
+  ],
+  "edges": [
+    {
+      "source": "cs_intro",
+      "target": "cs_dsa",
+      "type": "prerequisite",
+      "reason": "数据结构与算法的实现依赖变量、循环、递归等编程基本功，没有语法基础无法理解链表指针或递归遍历。"
+    },
+    {
+      "source": "cs_intro",
+      "target": "cs_org",
+      "type": "prerequisite",
+      "reason": "理解程序如何被机器执行需要先会写程序：变量对应内存单元、函数调用对应栈帧，有代码概念才好对照硬件。"
+    },
+    {
+      "source": "cs_intro",
+      "target": "cs_web",
+      "type": "prerequisite",
+      "reason": "Web 开发的 JavaScript 本身就是编程语言，DOM 操作、事件处理都依赖变量、函数、条件等基础概念。"
+    },
+    {
+      "source": "cs_dsa",
+      "target": "cs_theory",
+      "type": "prerequisite",
+      "reason": "计算理论研究算法的能力边界与复杂度分类，需要先掌握具体算法与时间复杂度才能理解 P/NP 等抽象概念。"
+    },
+    {
+      "source": "cs_dsa",
+      "target": "cs_db",
+      "type": "prerequisite",
+      "reason": "数据库索引底层是 B+ 树，查询优化依赖排序、查找与复杂度分析，先懂数据结构才懂数据库为何快。"
+    },
+    {
+      "source": "cs_org",
+      "target": "cs_os",
+      "type": "prerequisite",
+      "reason": "操作系统直接管理硬件：中断机制、特权级、内存映射都建立在计算机组成原理之上。"
+    },
+    {
+      "source": "cs_org",
+      "target": "cs_net",
+      "type": "related",
+      "reason": "网络数据收发依赖中断与 DMA 等组成原理机制，理解硬件层有助于理解协议栈如何高效传输。"
+    },
+    {
+      "source": "cs_os",
+      "target": "cs_net",
+      "type": "prerequisite",
+      "reason": "网络编程通过套接字进入内核，TCP 连接、缓冲区管理、IO 多路复用都依赖操作系统的进程与 IO 模型。"
+    },
+    {
+      "source": "cs_intro",
+      "target": "cs_se",
+      "type": "prerequisite",
+      "reason": "软件工程是对编程的组织升级：设计模式、重构、测试都建立在能熟练写代码的基础上。"
+    },
+    {
+      "source": "cs_dsa",
+      "target": "cs_se",
+      "type": "related",
+      "reason": "工程实践中的性能优化、合理选型都要求扎实的数据结构与算法基础。"
+    },
+    {
+      "source": "cs_web",
+      "target": "cs_se",
+      "type": "related",
+      "reason": "真实的 Web 项目正是软件工程方法的练兵场：版本控制、测试、持续集成都围绕可交付应用展开。"
+    },
+    {
+      "source": "cs_net",
+      "target": "cs_security",
+      "type": "prerequisite",
+      "reason": "网络攻防围绕协议展开：SYN 洪泛利用三次握手，中间人攻击劫持传输通道，懂协议才懂攻防。"
+    },
+    {
+      "source": "cs_web",
+      "target": "cs_security",
+      "type": "related",
+      "reason": "Web 是安全的主战场：HTTPS 加密流量，XSS 与 SQL 注入都发生在浏览器与服务器之间。"
+    },
+    {
+      "source": "cs_theory",
+      "target": "cs_security",
+      "type": "related",
+      "reason": "现代密码学建立在数论与计算复杂度之上：RSA 的安全性依赖大整数分解的计算困难性。"
+    }
+  ]
+}

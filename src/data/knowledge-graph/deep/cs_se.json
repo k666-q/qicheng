@@ -1,0 +1,82 @@
+{
+  "parentId": "cs_se",
+  "subjectId": "programming",
+  "nodes": [
+    {
+      "id": "se_oop",
+      "subjectId": "programming",
+      "parentId": "cs_se",
+      "name": "面向对象",
+      "plain_name": "把代码组织成物件",
+      "description": "类、对象、继承、封装、多态——用对象建模现实，让大型代码更好维护。",
+      "difficulty": 4,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["面向对象", "类", "继承", "封装", "多态", "OOP"],
+      "prerequisites": [],
+      "cognition_tags": ["abstract", "system"]
+    },
+    {
+      "id": "se_design_patterns",
+      "subjectId": "programming",
+      "parentId": "cs_se",
+      "name": "设计模式",
+      "plain_name": "前人踩坑总结的套路",
+      "description": "单例、工厂、观察者、策略——针对常见设计问题的可复用解决方案。",
+      "difficulty": 7,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["设计模式", "单例", "工厂", "观察者", "策略模式"],
+      "prerequisites": ["se_oop"],
+      "cognition_tags": ["abstract", "system"]
+    },
+    {
+      "id": "se_version_control",
+      "subjectId": "programming",
+      "parentId": "cs_se",
+      "name": "版本控制 Git",
+      "plain_name": "代码的后悔药",
+      "description": "提交、分支、合并、冲突解决——Git 如何用快照记录历史，让团队并行开发不打架。",
+      "difficulty": 3,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["Git", "版本控制", "分支", "合并", "冲突"],
+      "prerequisites": [],
+      "cognition_tags": ["system"]
+    },
+    {
+      "id": "se_testing",
+      "subjectId": "programming",
+      "parentId": "cs_se",
+      "name": "测试与质量",
+      "plain_name": "怎么知道代码没坏",
+      "description": "单元测试、集成测试、测试驱动开发——用自动化测试为代码质量上保险。",
+      "difficulty": 5,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["测试", "单元测试", "TDD", "集成测试", "覆盖率"],
+      "prerequisites": ["se_oop"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "se_cicd",
+      "subjectId": "programming",
+      "parentId": "cs_se",
+      "name": "工程化与 CI/CD",
+      "plain_name": "把作品自动送上线",
+      "description": "构建工具、持续集成、持续部署与容器化——从能跑到能稳定交付的自动化流水线。",
+      "difficulty": 7,
+      "depth": 1,
+      "hasChildren": false,
+      "keywords": ["CI/CD", "构建", "持续集成", "部署", "Docker", "容器"],
+      "prerequisites": ["se_version_control", "se_testing"],
+      "cognition_tags": ["system", "expression"]
+    }
+  ],
+  "edges": [
+    { "source": "se_oop", "target": "se_design_patterns", "type": "prerequisite" },
+    { "source": "se_oop", "target": "se_testing", "type": "prerequisite" },
+    { "source": "se_version_control", "target": "se_cicd", "type": "prerequisite" },
+    { "source": "se_testing", "target": "se_cicd", "type": "prerequisite" }
+  ]
+}

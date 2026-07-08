@@ -1,0 +1,136 @@
+{
+  "subject": {
+    "id": "environment",
+    "name": "环境科学",
+    "color": "#84cc16",
+    "description": "研究人类与环境相互作用及污染防治的交叉科学,探索人与自然和谐共处之道。",
+    "category": "自然科学与工程"
+  },
+  "nodes": [
+    {
+      "id": "env_ecology_basics",
+      "subjectId": "environment",
+      "name": "生态学基础",
+      "plain_name": "生物与环境如何共处",
+      "description": "研究生物之间及其与环境的关系,理解食物网、能量流动与生态平衡。",
+      "difficulty": 4,
+      "keywords": ["生态学", "生态平衡", "食物网", "种群", "群落", "生态位"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "env_biodiversity",
+      "subjectId": "environment",
+      "name": "生物多样性保护",
+      "plain_name": "守护地球生命的丰富多彩",
+      "description": "保护物种、基因与生态系统的多样性,防止物种灭绝维持自然的韧性。",
+      "difficulty": 5,
+      "keywords": ["生物多样性", "物种保护", "栖息地", "濒危物种", "自然保护区"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "env_climate_change",
+      "subjectId": "environment",
+      "name": "气候变化",
+      "plain_name": "地球为什么越来越热",
+      "description": "温室气体导致全球变暖,带来海平面上升、极端天气等深远影响。",
+      "difficulty": 6,
+      "keywords": ["气候变化", "全球变暖", "温室气体", "碳排放", "海平面上升"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "env_air_pollution",
+      "subjectId": "environment",
+      "name": "大气污染",
+      "plain_name": "空气里的有害物质",
+      "description": "PM2.5、二氧化硫等污染物的来源与危害,以及雾霾酸雨等环境问题。",
+      "difficulty": 5,
+      "keywords": ["大气污染", "PM2.5", "雾霾", "酸雨", "废气", "空气质量"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "env_water_pollution",
+      "subjectId": "environment",
+      "name": "水污染与治理",
+      "plain_name": "脏水从哪来怎么变干净",
+      "description": "工业废水、生活污水的污染机理与净化技术,守护宝贵的水资源。",
+      "difficulty": 5,
+      "keywords": ["水污染", "污水处理", "富营养化", "废水", "水质", "净化"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "env_solid_waste",
+      "subjectId": "environment",
+      "name": "固废与循环经济",
+      "plain_name": "垃圾如何变废为宝",
+      "description": "通过分类、回收与再利用减少固体废物,推动资源循环的可持续模式。",
+      "difficulty": 5,
+      "keywords": ["固废", "垃圾分类", "循环经济", "回收", "废物利用", "资源化"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "env_energy_sustainability",
+      "subjectId": "environment",
+      "name": "能源与可持续",
+      "plain_name": "用更干净的能源发展",
+      "description": "发展太阳能、风能等清洁能源,在满足需求的同时减少环境负担。",
+      "difficulty": 6,
+      "keywords": ["可持续发展", "清洁能源", "太阳能", "风能", "节能", "碳中和"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "env_monitoring",
+      "subjectId": "environment",
+      "name": "环境监测",
+      "plain_name": "给环境做体检",
+      "description": "用传感器与采样分析持续测量空气、水、土壤的质量,为治理提供数据。",
+      "difficulty": 6,
+      "keywords": ["环境监测", "采样", "传感器", "数据", "环境质量", "检测"],
+      "cognition_tags": ["modeling", "logic"]
+    },
+    {
+      "id": "env_policy",
+      "subjectId": "environment",
+      "name": "环境政策",
+      "plain_name": "用规则保护环境",
+      "description": "通过法律法规、排放标准与经济手段引导社会减少污染、保护生态。",
+      "difficulty": 6,
+      "keywords": ["环境政策", "环保法规", "排放标准", "碳交易", "环境治理"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "env_soil_pollution",
+      "subjectId": "environment",
+      "name": "土壤污染与修复",
+      "plain_name": "被污染的土地如何治愈",
+      "description": "重金属、农药等污染土壤的成因与修复技术,关乎粮食安全与人体健康。",
+      "difficulty": 6,
+      "keywords": ["土壤污染", "重金属", "土壤修复", "农药", "污染治理"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "env_impact_assessment",
+      "subjectId": "environment",
+      "name": "环境影响评价",
+      "plain_name": "工程动工前先算环境账",
+      "description": "在项目建设前评估其对环境的潜在影响,提出预防和减缓措施。",
+      "difficulty": 6,
+      "keywords": ["环境影响评价", "环评", "评估", "预防", "可行性"],
+      "cognition_tags": ["logic", "modeling"]
+    }
+  ],
+  "edges": [
+    { "source": "env_ecology_basics", "target": "env_biodiversity", "type": "prerequisite", "reason": "生物多样性保护建立在对生态系统与物种关系的理解之上。" },
+    { "source": "env_ecology_basics", "target": "env_climate_change", "type": "prerequisite", "reason": "气候变化对生态系统的冲击,需要以生态学基础来理解其连锁反应。" },
+    { "source": "env_ecology_basics", "target": "env_air_pollution", "type": "prerequisite", "reason": "评估大气污染的生态危害,需要生态学关于物质循环的基础认识。" },
+    { "source": "env_ecology_basics", "target": "env_water_pollution", "type": "prerequisite", "reason": "水体富营养化等问题的理解依赖于生态学的基本原理。" },
+    { "source": "env_climate_change", "target": "env_energy_sustainability", "type": "prerequisite", "reason": "应对气候变化的核心路径是发展清洁能源,可持续能源因此而生。" },
+    { "source": "env_air_pollution", "target": "env_monitoring", "type": "prerequisite", "reason": "治理大气污染先要靠环境监测掌握污染物的种类与浓度数据。" },
+    { "source": "env_water_pollution", "target": "env_monitoring", "type": "related", "reason": "水质治理同样依赖环境监测提供的水体数据,二者紧密配合。" },
+    { "source": "env_solid_waste", "target": "env_soil_pollution", "type": "related", "reason": "固废处置不当会渗滤污染土壤,固废管理与土壤保护相互关联。" },
+    { "source": "env_monitoring", "target": "env_policy", "type": "prerequisite", "reason": "环境政策的制定与执行依赖监测数据来设定标准和评估成效。" },
+    { "source": "env_air_pollution", "target": "env_policy", "type": "related", "reason": "排放标准等政策直接针对大气污染,污染治理与政策手段相辅相成。" },
+    { "source": "env_monitoring", "target": "env_impact_assessment", "type": "prerequisite", "reason": "环境影响评价需要监测获得的本底数据来预测项目影响。" },
+    { "source": "env_policy", "target": "env_impact_assessment", "type": "related", "reason": "环境影响评价是环境政策要求的制度性程序,二者制度上紧密衔接。" },
+    { "source": "env_solid_waste", "target": "env_energy_sustainability", "type": "related", "reason": "循环经济与可持续发展理念一致,废物资源化也是可持续的重要途径。" }
+  ]
+}

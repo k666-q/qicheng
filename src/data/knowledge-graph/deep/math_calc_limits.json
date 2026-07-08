@@ -1,0 +1,83 @@
+{
+  "parentId": "math_calc_limits",
+  "subjectId": "mathematics",
+  "nodes": [
+    {
+      "id": "math_limits_intuition",
+      "subjectId": "mathematics",
+      "parentId": "math_calc_limits",
+      "name": "极限的直觉",
+      "plain_name": "从动画和图形感受趋近",
+      "description": "通过数列和函数图像，建立\"越来越接近某个值\"的直觉理解。",
+      "difficulty": 3,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["数列极限", "函数极限", "趋近", "直觉"],
+      "prerequisites": [],
+      "cognition_tags": ["intuition", "visual"]
+    },
+    {
+      "id": "math_limits_epsilon_delta",
+      "subjectId": "mathematics",
+      "parentId": "math_calc_limits",
+      "name": "ε-δ 定义",
+      "plain_name": "极限的严格数学表述",
+      "description": "对任意 ε>0，存在 δ>0... 将直觉转化为可证明的精确数学语言。",
+      "difficulty": 7,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["epsilon", "delta", "严格定义", "证明", "量词"],
+      "prerequisites": ["math_limits_intuition"],
+      "cognition_tags": ["abstract", "logic", "proof"]
+    },
+    {
+      "id": "math_limits_computation",
+      "subjectId": "mathematics",
+      "parentId": "math_calc_limits",
+      "name": "极限的计算技巧",
+      "plain_name": "求极限的各种方法",
+      "description": "代入法、因式分解、有理化、洛必达法则、等价无穷小替换。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["洛必达", "等价无穷小", "因式分解", "求极限"],
+      "prerequisites": ["math_limits_epsilon_delta"],
+      "cognition_tags": ["procedural", "technique"]
+    },
+    {
+      "id": "math_limits_squeeze",
+      "subjectId": "mathematics",
+      "parentId": "math_calc_limits",
+      "name": "夹逼定理",
+      "plain_name": "用两边夹住确定极限",
+      "description": "当直接计算困难时，找到上下界函数把目标函数\"夹\"出极限值。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["夹逼", "squeeze theorem", "上界", "下界", "三明治定理"],
+      "prerequisites": ["math_limits_epsilon_delta"],
+      "cognition_tags": ["logic", "technique"]
+    },
+    {
+      "id": "math_limits_continuity",
+      "subjectId": "mathematics",
+      "parentId": "math_calc_limits",
+      "name": "连续性",
+      "plain_name": "函数图像不断裂的数学含义",
+      "description": "连续函数的定义、间断点分类、介值定理——从极限到连续的自然过渡。",
+      "difficulty": 5,
+      "depth": 2,
+      "hasChildren": false,
+      "keywords": ["连续", "间断点", "介值定理", "一致连续"],
+      "prerequisites": ["math_limits_computation"],
+      "cognition_tags": ["abstract", "logic"]
+    }
+  ],
+  "edges": [
+    { "source": "math_limits_intuition", "target": "math_limits_epsilon_delta", "type": "prerequisite" },
+    { "source": "math_limits_epsilon_delta", "target": "math_limits_computation", "type": "prerequisite" },
+    { "source": "math_limits_epsilon_delta", "target": "math_limits_squeeze", "type": "prerequisite" },
+    { "source": "math_limits_computation", "target": "math_limits_continuity", "type": "prerequisite" },
+    { "source": "math_limits_squeeze", "target": "math_limits_continuity", "type": "related" }
+  ]
+}

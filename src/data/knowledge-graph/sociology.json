@@ -1,0 +1,213 @@
+{
+  "subject": {
+    "id": "sociology",
+    "name": "社会学",
+    "color": "#fb7185",
+    "description": "用科学的眼光审视习以为常的社会——你的'个人选择'里藏着多少社会的手。",
+    "category": "人文社科"
+  },
+  "nodes": [
+    {
+      "id": "soc_intro",
+      "subjectId": "sociology",
+      "name": "社会学导论",
+      "plain_name": "社会学的想象力",
+      "description": "失业是个人问题还是社会问题？学会把个人烦恼放进社会结构里看——这就是'社会学的想象力'。",
+      "difficulty": 3,
+      "keywords": ["社会学", "社会学想象力", "社会结构", "社会化", "米尔斯"],
+      "cognition_tags": ["abstract", "system"]
+    },
+    {
+      "id": "soc_classical",
+      "subjectId": "sociology",
+      "name": "经典社会学理论",
+      "plain_name": "三大宗师的思想地图",
+      "description": "现代社会从哪来、往哪去？马克思、韦伯、涂尔干三位奠基人给出了三套至今仍在使用的答案。",
+      "difficulty": 6,
+      "keywords": ["社会学理论", "经典理论", "三大家", "现代性", "社会学史"],
+      "cognition_tags": ["abstract", "system"]
+    },
+    {
+      "id": "soc_marx",
+      "subjectId": "sociology",
+      "name": "马克思的社会理论",
+      "plain_name": "阶级与冲突的视角",
+      "description": "谁拥有生产资料，谁就拥有权力——用阶级、剥削、异化的概念透视资本主义社会的运行。",
+      "difficulty": 6,
+      "keywords": ["马克思", "阶级", "资本主义", "异化", "冲突论", "历史唯物主义"],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "soc_weber",
+      "subjectId": "sociology",
+      "name": "韦伯的社会理论",
+      "plain_name": "理性化的铁笼",
+      "description": "新教伦理如何催生资本主义？科层制为何像铁笼？韦伯关注观念的力量与现代理性化的代价。",
+      "difficulty": 7,
+      "keywords": ["韦伯", "理性化", "科层制", "新教伦理", "理解社会学", "权威类型"],
+      "cognition_tags": ["abstract", "system"]
+    },
+    {
+      "id": "soc_durkheim",
+      "subjectId": "sociology",
+      "name": "涂尔干的社会理论",
+      "plain_name": "社会如何粘在一起",
+      "description": "连自杀率都有社会规律——涂尔干用'社会事实'证明：社会不是个人的简单相加，它自有其力量。",
+      "difficulty": 6,
+      "keywords": ["涂尔干", "社会事实", "自杀论", "社会团结", "失范", "功能主义"],
+      "cognition_tags": ["abstract", "logic"]
+    },
+    {
+      "id": "soc_methods",
+      "subjectId": "sociology",
+      "name": "社会研究方法",
+      "plain_name": "怎么科学地研究社会",
+      "description": "问卷怎么设计、访谈怎么追问、数据怎么解读——把对社会的好奇变成靠谱的研究。",
+      "difficulty": 6,
+      "keywords": ["研究方法", "问卷调查", "深度访谈", "田野调查", "抽样", "定量定性"],
+      "cognition_tags": ["logic", "modeling"]
+    },
+    {
+      "id": "soc_stratification",
+      "subjectId": "sociology",
+      "name": "社会分层与流动",
+      "plain_name": "社会的梯子怎么爬",
+      "description": "寒门还能出贵子吗？阶层怎么划分、教育能否改变命运——分层研究直面社会最敏感的问题。",
+      "difficulty": 6,
+      "keywords": ["社会分层", "社会流动", "阶层", "不平等", "教育与流动", "代际传递"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "soc_family",
+      "subjectId": "sociology",
+      "name": "家庭与婚姻",
+      "plain_name": "最小的社会单元",
+      "description": "为什么结婚越来越晚、生娃越来越少？把家庭当作社会制度来分析，个人选择背后是时代变迁。",
+      "difficulty": 4,
+      "keywords": ["家庭社会学", "婚姻", "生育", "性别分工", "代际关系", "少子化"],
+      "cognition_tags": ["system", "expression"]
+    },
+    {
+      "id": "soc_urban",
+      "subjectId": "sociology",
+      "name": "城市社会学",
+      "plain_name": "城市如何塑造我们",
+      "description": "为什么大城市让人又爱又孤独？城中村、学区房、通勤圈——城市空间就是社会关系的地图。",
+      "difficulty": 5,
+      "keywords": ["城市社会学", "城市化", "社区", "城中村", "空间", "移民"],
+      "cognition_tags": ["system", "aesthetic"]
+    },
+    {
+      "id": "soc_organization",
+      "subjectId": "sociology",
+      "name": "组织社会学",
+      "plain_name": "公司和单位的潜规则",
+      "description": "为什么大组织总有官僚病？KPI为何扭曲行为？用社会学拆解你身处的公司、学校与单位。",
+      "difficulty": 6,
+      "keywords": ["组织社会学", "科层制", "组织文化", "制度", "非正式关系"],
+      "cognition_tags": ["system", "logic"]
+    },
+    {
+      "id": "soc_network",
+      "subjectId": "sociology",
+      "name": "网络社会与新媒体",
+      "plain_name": "线上社会的新玩法",
+      "description": "算法推荐、信息茧房、社交媒体上的自我表演——互联网不只是工具，它正在重写社会规则。",
+      "difficulty": 5,
+      "keywords": ["网络社会", "新媒体", "信息茧房", "社交媒体", "数字鸿沟", "算法"],
+      "cognition_tags": ["system", "expression"]
+    }
+  ],
+  "edges": [
+    {
+      "source": "soc_intro",
+      "target": "soc_classical",
+      "type": "prerequisite",
+      "reason": "先有'社会学想象力'的问题意识，再读三大家才知道他们的理论在回应什么。"
+    },
+    {
+      "source": "soc_classical",
+      "target": "soc_marx",
+      "type": "prerequisite",
+      "reason": "马克思是经典理论三大支柱之一，需放在'回应现代性'的整体框架中理解。"
+    },
+    {
+      "source": "soc_classical",
+      "target": "soc_weber",
+      "type": "prerequisite",
+      "reason": "韦伯的理性化理论是经典理论的核心一脉，与马克思、涂尔干互为参照。"
+    },
+    {
+      "source": "soc_classical",
+      "target": "soc_durkheim",
+      "type": "prerequisite",
+      "reason": "涂尔干确立了社会学的科学地位，是经典理论框架中不可绕过的一极。"
+    },
+    {
+      "source": "soc_intro",
+      "target": "soc_methods",
+      "type": "prerequisite",
+      "reason": "先理解社会学的问题，再学习用问卷、访谈、田野等方法回答这些问题。"
+    },
+    {
+      "source": "soc_methods",
+      "target": "soc_stratification",
+      "type": "prerequisite",
+      "reason": "分层研究是方法密集型领域：流动表、回归分析是讨论'寒门贵子'的硬工具。"
+    },
+    {
+      "source": "soc_marx",
+      "target": "soc_stratification",
+      "type": "prerequisite",
+      "reason": "阶级分析是分层研究的理论源头：马克思与韦伯的阶级/地位之争塑造了整个领域。"
+    },
+    {
+      "source": "soc_intro",
+      "target": "soc_family",
+      "type": "prerequisite",
+      "reason": "家庭研究需要'把私人生活放进社会结构'的导论视角：婚育选择折射时代变迁。"
+    },
+    {
+      "source": "soc_intro",
+      "target": "soc_urban",
+      "type": "prerequisite",
+      "reason": "城市社会学延续导论中'空间即社会'的思路，芝加哥学派正是早期社会学的主阵地。"
+    },
+    {
+      "source": "soc_weber",
+      "target": "soc_organization",
+      "type": "prerequisite",
+      "reason": "组织社会学直接发源于韦伯的科层制理论：'铁笼'是分析现代组织的起点。"
+    },
+    {
+      "source": "soc_intro",
+      "target": "soc_network",
+      "type": "prerequisite",
+      "reason": "分析网络社会需要社会化、互动、社区等导论概念在数字空间的重新应用。"
+    },
+    {
+      "source": "soc_durkheim",
+      "target": "soc_family",
+      "type": "related",
+      "reason": "涂尔干的社会整合理论直接用于家庭研究：婚姻状态影响自杀率是《自杀论》的经典发现。"
+    },
+    {
+      "source": "soc_stratification",
+      "target": "soc_family",
+      "type": "related",
+      "reason": "门当户对的婚配、教育的代际传递——家庭正是阶层再生产的关键机制。"
+    },
+    {
+      "source": "soc_urban",
+      "target": "soc_network",
+      "type": "related",
+      "reason": "线上社区与线下邻里互相渗透：外卖、网约车正在重塑城市空间与社会关系。"
+    },
+    {
+      "source": "soc_methods",
+      "target": "soc_network",
+      "type": "related",
+      "reason": "大数据与网络爬虫为社会研究提供新方法，网络社会研究反过来挑战传统抽样逻辑。"
+    }
+  ]
+}

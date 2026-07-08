@@ -1,0 +1,461 @@
+{
+  "subject": {
+    "id": "economics",
+    "name": "经济学",
+    "color": "#22c55e",
+    "description": "理解资源配置、市场规律和社会选择的科学。",
+    "category": "商科与应用"
+  },
+  "nodes": [
+    {
+      "id": "econ_micro",
+      "subjectId": "economics",
+      "name": "微观经济学",
+      "plain_name": "个人和企业的选择逻辑",
+      "description": "供给需求、弹性、边际分析、市场结构——理解价格和竞争的底层机制。",
+      "difficulty": 4,
+      "keywords": [
+        "微观经济",
+        "供给需求",
+        "弹性",
+        "边际",
+        "市场结构"
+      ],
+      "cognition_tags": [
+        "logic",
+        "modeling"
+      ]
+    },
+    {
+      "id": "econ_macro",
+      "subjectId": "economics",
+      "name": "宏观经济学",
+      "plain_name": "国家经济怎么运转",
+      "description": "GDP、通货膨胀、失业率、财政货币政策——理解国民经济的全貌。",
+      "difficulty": 5,
+      "keywords": [
+        "宏观经济",
+        "GDP",
+        "通胀",
+        "失业",
+        "货币政策",
+        "财政政策"
+      ],
+      "cognition_tags": [
+        "system",
+        "modeling"
+      ]
+    },
+    {
+      "id": "econ_finance",
+      "subjectId": "economics",
+      "name": "金融学基础",
+      "plain_name": "钱生钱的科学",
+      "description": "利率、风险收益、投资组合、资产定价——理解金融市场的运行逻辑。",
+      "difficulty": 6,
+      "keywords": [
+        "金融",
+        "利率",
+        "投资",
+        "风险",
+        "资产定价",
+        "证券"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "logic"
+      ]
+    },
+    {
+      "id": "econ_game_theory",
+      "subjectId": "economics",
+      "name": "博弈论",
+      "plain_name": "当决策遇上别人的决策",
+      "description": "纳什均衡、囚徒困境、信号博弈——分析策略互动的数学框架。",
+      "difficulty": 7,
+      "keywords": [
+        "博弈论",
+        "纳什均衡",
+        "策略",
+        "囚徒困境",
+        "博弈"
+      ],
+      "cognition_tags": [
+        "logic",
+        "abstract"
+      ]
+    },
+    {
+      "id": "econ_behavioral",
+      "subjectId": "economics",
+      "name": "行为经济学",
+      "plain_name": "人为什么做不理性的决定",
+      "description": "认知偏差、前景理论、锚定效应——心理学与经济学的交叉地带。",
+      "difficulty": 5,
+      "keywords": [
+        "行为经济",
+        "认知偏差",
+        "前景理论",
+        "锚定",
+        "非理性"
+      ],
+      "cognition_tags": [
+        "logic",
+        "system"
+      ]
+    },
+    {
+      "id": "econ_econometrics",
+      "subjectId": "economics",
+      "name": "计量经济学",
+      "plain_name": "用数据验证经济理论",
+      "description": "回归分析、因果推断、面板数据——用统计方法检验经济假说。",
+      "difficulty": 7,
+      "keywords": [
+        "计量经济",
+        "回归分析",
+        "因果推断",
+        "面板数据",
+        "经济计量"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "logic"
+      ]
+    },
+    {
+      "id": "econ_supply_demand",
+      "subjectId": "economics",
+      "name": "供需与价格机制",
+      "plain_name": "为什么白菜涨价了",
+      "description": "供给曲线、需求曲线、均衡价格、价格弹性——两条线的交点决定了市场上几乎所有价格。",
+      "difficulty": 3,
+      "keywords": [
+        "供给",
+        "需求",
+        "均衡价格",
+        "价格弹性",
+        "供需曲线",
+        "微观经济",
+        "市场机制"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "logic"
+      ]
+    },
+    {
+      "id": "econ_consumer",
+      "subjectId": "economics",
+      "name": "消费者行为理论",
+      "plain_name": "你为什么买这个不买那个",
+      "description": "效用、无差异曲线、预算约束——用数学刻画'钱有限、想要的很多'时人们如何选择。",
+      "difficulty": 5,
+      "keywords": [
+        "消费者行为",
+        "效用",
+        "无差异曲线",
+        "预算约束",
+        "边际效用",
+        "微观经济"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "abstract"
+      ]
+    },
+    {
+      "id": "econ_firm_theory",
+      "subjectId": "economics",
+      "name": "厂商理论",
+      "plain_name": "企业怎么决定生产多少",
+      "description": "生产函数、成本曲线、利润最大化——边际成本等于边际收益时，企业找到了最优产量。",
+      "difficulty": 5,
+      "keywords": [
+        "厂商理论",
+        "生产函数",
+        "成本曲线",
+        "利润最大化",
+        "边际成本",
+        "规模经济",
+        "微观经济"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "logic"
+      ]
+    },
+    {
+      "id": "econ_market_structure",
+      "subjectId": "economics",
+      "name": "市场结构",
+      "plain_name": "垄断和竞争的光谱",
+      "description": "完全竞争、垄断、寡头、垄断竞争——市场上有几个玩家，决定了价格怎么定、谁说了算。",
+      "difficulty": 6,
+      "keywords": [
+        "市场结构",
+        "完全竞争",
+        "垄断",
+        "寡头",
+        "垄断竞争",
+        "定价",
+        "微观经济"
+      ],
+      "cognition_tags": [
+        "system",
+        "logic"
+      ]
+    },
+    {
+      "id": "econ_gdp_growth",
+      "subjectId": "economics",
+      "name": "GDP 与经济增长",
+      "plain_name": "国家的'成绩单'怎么算",
+      "description": "GDP 核算、增长模型、全要素生产率——衡量一个国家变富的速度和背后的引擎。",
+      "difficulty": 5,
+      "keywords": [
+        "GDP",
+        "经济增长",
+        "国民收入核算",
+        "索洛模型",
+        "生产率",
+        "宏观经济"
+      ],
+      "cognition_tags": [
+        "system",
+        "modeling"
+      ]
+    },
+    {
+      "id": "econ_money_banking",
+      "subjectId": "economics",
+      "name": "货币与银行",
+      "plain_name": "钱是怎么被'创造'出来的",
+      "description": "货币职能、央行、存款准备金、货币乘数——商业银行放贷的过程就在凭空创造货币。",
+      "difficulty": 6,
+      "keywords": [
+        "货币",
+        "银行",
+        "央行",
+        "货币政策",
+        "存款准备金",
+        "货币乘数",
+        "利率",
+        "宏观经济"
+      ],
+      "cognition_tags": [
+        "system",
+        "abstract"
+      ]
+    },
+    {
+      "id": "econ_fiscal_policy",
+      "subjectId": "economics",
+      "name": "财政政策",
+      "plain_name": "政府花钱和收税的艺术",
+      "description": "政府支出、税收、乘数效应、财政赤字——经济低迷时政府如何'踩油门'托住总需求。",
+      "difficulty": 5,
+      "keywords": [
+        "财政政策",
+        "政府支出",
+        "税收",
+        "乘数效应",
+        "财政赤字",
+        "宏观调控",
+        "宏观经济"
+      ],
+      "cognition_tags": [
+        "system",
+        "logic"
+      ]
+    },
+    {
+      "id": "econ_inflation_unemployment",
+      "subjectId": "economics",
+      "name": "通胀与失业",
+      "plain_name": "物价飞涨和找不到工作",
+      "description": "通胀成因、菲利普斯曲线、失业类型——宏观经济最让普通人有体感的两大难题及其权衡。",
+      "difficulty": 6,
+      "keywords": [
+        "通货膨胀",
+        "失业",
+        "菲利普斯曲线",
+        "CPI",
+        "通胀",
+        "失业率",
+        "宏观经济"
+      ],
+      "cognition_tags": [
+        "system",
+        "modeling"
+      ]
+    },
+    {
+      "id": "econ_international_trade",
+      "subjectId": "economics",
+      "name": "国际贸易",
+      "plain_name": "国家之间为什么要做生意",
+      "description": "比较优势、关税、汇率、贸易顺逆差——即使样样不如人，参与贸易依然能让双方都受益。",
+      "difficulty": 6,
+      "keywords": [
+        "国际贸易",
+        "比较优势",
+        "关税",
+        "汇率",
+        "贸易顺差",
+        "全球化",
+        "国际经济"
+      ],
+      "cognition_tags": [
+        "system",
+        "logic"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "econ_micro",
+      "target": "econ_macro",
+      "type": "prerequisite",
+      "reason": "宏观经济是微观行为的加总：GDP由无数企业产出汇总，通胀由个体定价行为累积产生。"
+    },
+    {
+      "source": "econ_micro",
+      "target": "econ_finance",
+      "type": "prerequisite",
+      "reason": "金融学建立在微观经济学的效用最大化和理性决策框架之上：资产定价来自边际分析。"
+    },
+    {
+      "source": "econ_micro",
+      "target": "econ_game_theory",
+      "type": "prerequisite",
+      "reason": "博弈论研究多个理性人的策略互动，其'效用最大化'假设直接来自微观经济学的理性人模型。"
+    },
+    {
+      "source": "econ_micro",
+      "target": "econ_behavioral",
+      "type": "related",
+      "reason": "行为经济学是对微观经济学'完全理性'假设的修正：研究现实中人们如何系统性偏离理性。"
+    },
+    {
+      "source": "econ_macro",
+      "target": "econ_finance",
+      "type": "related",
+      "reason": "利率由央行货币政策决定，汇率由国际收支影响，宏观环境直接决定金融市场走向。"
+    },
+    {
+      "source": "econ_macro",
+      "target": "econ_econometrics",
+      "type": "prerequisite",
+      "reason": "宏观经济理论需要实证检验：GDP增长模型、菲利普斯曲线等都用计量经济方法验证。"
+    },
+    {
+      "source": "econ_game_theory",
+      "target": "econ_behavioral",
+      "type": "related",
+      "reason": "行为博弈论研究真实人类如何偏离纳什均衡预测，实验经济学大量发现人不按博弈论'应该'的方式行动。"
+    },
+    {
+      "source": "econ_micro",
+      "target": "econ_supply_demand",
+      "type": "prerequisite",
+      "reason": "供需分析是微观经济学的第一个核心模型：先建立稀缺与选择的整体框架，再深入两条曲线的移动逻辑。"
+    },
+    {
+      "source": "econ_micro",
+      "target": "econ_consumer",
+      "type": "prerequisite",
+      "reason": "消费者理论是微观经济学的需求侧深化：效用最大化是理性人假设的数学化表达。"
+    },
+    {
+      "source": "econ_micro",
+      "target": "econ_firm_theory",
+      "type": "prerequisite",
+      "reason": "厂商理论是微观经济学的供给侧深化：边际分析方法直接应用于企业的产量与成本决策。"
+    },
+    {
+      "source": "econ_consumer",
+      "target": "econ_supply_demand",
+      "type": "related",
+      "reason": "需求曲线是消费者效用最大化的结果加总：价格变动引起的替代效应和收入效应决定曲线斜率。"
+    },
+    {
+      "source": "econ_firm_theory",
+      "target": "econ_supply_demand",
+      "type": "related",
+      "reason": "供给曲线本质是厂商的边际成本曲线：企业按'价格等于边际成本'决定供给量。"
+    },
+    {
+      "source": "econ_firm_theory",
+      "target": "econ_market_structure",
+      "type": "prerequisite",
+      "reason": "分析垄断和寡头定价需要厂商的成本与收益工具：垄断者按边际收益等于边际成本定产量。"
+    },
+    {
+      "source": "econ_game_theory",
+      "target": "econ_market_structure",
+      "type": "related",
+      "reason": "寡头市场是博弈论的主战场：古诺竞争、价格战、串谋都用纳什均衡分析。"
+    },
+    {
+      "source": "econ_macro",
+      "target": "econ_gdp_growth",
+      "type": "prerequisite",
+      "reason": "GDP 核算与增长理论是宏观经济学的核心模块：先有总量经济的概念框架，再深入核算方法和增长模型。"
+    },
+    {
+      "source": "econ_macro",
+      "target": "econ_money_banking",
+      "type": "prerequisite",
+      "reason": "理解货币创造和央行操作需要宏观框架：货币供给影响利率，进而传导到投资与总需求。"
+    },
+    {
+      "source": "econ_macro",
+      "target": "econ_fiscal_policy",
+      "type": "prerequisite",
+      "reason": "财政政策是宏观调控的两大工具之一：乘数效应的分析建立在总需求模型之上。"
+    },
+    {
+      "source": "econ_macro",
+      "target": "econ_inflation_unemployment",
+      "type": "prerequisite",
+      "reason": "通胀与失业是宏观经济学的两大核心指标：菲利普斯曲线刻画的正是宏观政策面临的权衡。"
+    },
+    {
+      "source": "econ_money_banking",
+      "target": "econ_inflation_unemployment",
+      "type": "related",
+      "reason": "货币超发是通胀的重要成因，央行加息抑制通胀的代价往往是失业率上升。"
+    },
+    {
+      "source": "econ_fiscal_policy",
+      "target": "econ_inflation_unemployment",
+      "type": "related",
+      "reason": "扩张性财政刺激就业但可能推高通胀，政策制定者要在两者之间走钢丝。"
+    },
+    {
+      "source": "econ_money_banking",
+      "target": "econ_finance",
+      "type": "related",
+      "reason": "央行的基准利率是所有金融资产定价的锚：货币政策转向直接引发股市债市的重新定价。"
+    },
+    {
+      "source": "econ_micro",
+      "target": "econ_international_trade",
+      "type": "prerequisite",
+      "reason": "比较优势理论是机会成本概念的国际应用：贸易得益分析直接使用供需与福利分析工具。"
+    },
+    {
+      "source": "econ_macro",
+      "target": "econ_international_trade",
+      "type": "related",
+      "reason": "净出口是 GDP 的组成部分，汇率与国际收支是开放经济宏观模型的核心变量。"
+    },
+    {
+      "source": "econ_gdp_growth",
+      "target": "econ_econometrics",
+      "type": "related",
+      "reason": "增长核算与跨国增长回归是计量经济学的经典应用场景：用数据检验什么因素真正推动增长。"
+    }
+  ]
+}

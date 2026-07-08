@@ -1,0 +1,217 @@
+{
+  "subject": {
+    "id": "literature",
+    "name": "文学与写作",
+    "color": "#d946ef",
+    "description": "读懂故事与诗的门道，也学会自己动笔——从鉴赏到创作的完整旅程。",
+    "category": "人文社科"
+  },
+  "nodes": [
+    {
+      "id": "lit_theory",
+      "subjectId": "literature",
+      "name": "文学理论基础",
+      "plain_name": "文学到底是什么",
+      "description": "文学为何动人？作者、文本、读者谁说了算？掌握几副基本的'理论眼镜'，看作品立刻不一样。",
+      "difficulty": 5,
+      "keywords": ["文学理论", "文本细读", "作者论", "读者反应", "文学批评"],
+      "cognition_tags": ["abstract", "aesthetic"]
+    },
+    {
+      "id": "lit_classical_poetry",
+      "subjectId": "literature",
+      "name": "中国古典诗词",
+      "plain_name": "唐诗宋词的世界",
+      "description": "从《诗经》的'关关雎鸠'到苏轼的'大江东去'——格律、意象、典故，读懂中国人最精致的情感表达。",
+      "difficulty": 5,
+      "keywords": ["古典诗词", "唐诗", "宋词", "格律", "意象", "诗经", "李白", "苏轼"],
+      "cognition_tags": ["aesthetic", "expression"]
+    },
+    {
+      "id": "lit_classical_prose",
+      "subjectId": "literature",
+      "name": "中国古文",
+      "plain_name": "文言文里的千年智慧",
+      "description": "《史记》的传奇笔法、唐宋八大家的雄文——学会读文言，就拿到了直通古人书房的钥匙。",
+      "difficulty": 6,
+      "keywords": ["古文", "文言文", "史记", "唐宋八大家", "古文观止", "散文"],
+      "cognition_tags": ["expression", "aesthetic"]
+    },
+    {
+      "id": "lit_modern_cn",
+      "subjectId": "literature",
+      "name": "中国现当代文学",
+      "plain_name": "白话文学一百年",
+      "description": "从鲁迅的呐喊到莫言的魔幻乡土——白话文学如何记录一个民族的剧变与心事。",
+      "difficulty": 4,
+      "keywords": ["现代文学", "当代文学", "鲁迅", "白话文", "新文化运动", "莫言"],
+      "cognition_tags": ["expression", "aesthetic"]
+    },
+    {
+      "id": "lit_foreign",
+      "subjectId": "literature",
+      "name": "外国文学经典",
+      "plain_name": "世界文学的高峰巡礼",
+      "description": "荷马的英雄、莎翁的悲剧、托尔斯泰的俄罗斯、马尔克斯的百年孤独——人类故事的最高成就巡礼。",
+      "difficulty": 5,
+      "keywords": ["外国文学", "世界名著", "莎士比亚", "托尔斯泰", "魔幻现实主义", "经典阅读"],
+      "cognition_tags": ["aesthetic", "expression"]
+    },
+    {
+      "id": "lit_narratology",
+      "subjectId": "literature",
+      "name": "叙事学基础",
+      "plain_name": "故事的解剖学",
+      "description": "同一件事为什么换个讲法就完全不同？把故事拆成情节、视角、时间、声音，看懂叙事的机关。",
+      "difficulty": 6,
+      "keywords": ["叙事学", "叙事结构", "故事与话语", "叙事时间", "叙述者"],
+      "cognition_tags": ["system", "abstract"]
+    },
+    {
+      "id": "lit_plot",
+      "subjectId": "literature",
+      "name": "情节与结构",
+      "plain_name": "故事怎么搭骨架",
+      "description": "三幕结构、英雄之旅、契诃夫之枪——为什么有的故事让人欲罢不能？秘密都在结构里。",
+      "difficulty": 4,
+      "keywords": ["情节", "三幕结构", "冲突", "悬念", "伏笔", "故事结构"],
+      "cognition_tags": ["system", "modeling"]
+    },
+    {
+      "id": "lit_pov",
+      "subjectId": "literature",
+      "name": "叙事视角",
+      "plain_name": "故事由谁的眼睛看",
+      "description": "第一人称的贴身感、全知视角的上帝感、不可靠叙述者的反转感——视角一换，故事重生。",
+      "difficulty": 5,
+      "keywords": ["叙事视角", "第一人称", "全知视角", "不可靠叙述者", "限知视角"],
+      "cognition_tags": ["abstract", "expression"]
+    },
+    {
+      "id": "lit_poetry_appreciation",
+      "subjectId": "literature",
+      "name": "诗歌鉴赏",
+      "plain_name": "怎么读出诗的好",
+      "description": "意象怎么叠、节奏怎么响、留白怎么品——一套从'看不懂'到'读出味道'的鉴赏方法。",
+      "difficulty": 5,
+      "keywords": ["诗歌鉴赏", "意象", "节奏", "隐喻", "现代诗", "细读"],
+      "cognition_tags": ["aesthetic", "abstract"]
+    },
+    {
+      "id": "lit_writing_basics",
+      "subjectId": "literature",
+      "name": "写作基础",
+      "plain_name": "把话写清楚写漂亮",
+      "description": "结构怎么搭、句子怎么改、修辞怎么用——写作不靠灵感靠手艺，这里是手艺的起点。",
+      "difficulty": 3,
+      "keywords": ["写作", "文章结构", "修辞", "遣词造句", "改稿", "表达"],
+      "cognition_tags": ["expression", "system"]
+    },
+    {
+      "id": "lit_fiction",
+      "subjectId": "literature",
+      "name": "小说创作",
+      "plain_name": "亲手写一个好故事",
+      "description": "人物立起来、场景活起来、对话响起来——从短篇练起，把叙事学的知识变成自己的故事。",
+      "difficulty": 7,
+      "keywords": ["小说创作", "人物塑造", "场景描写", "对话", "短篇小说", "创意写作"],
+      "cognition_tags": ["expression", "aesthetic", "modeling"]
+    },
+    {
+      "id": "lit_nonfiction",
+      "subjectId": "literature",
+      "name": "非虚构写作",
+      "plain_name": "把真事写得好看",
+      "description": "特稿、回忆录、随笔——用讲故事的技巧写真实世界，让事实拥有小说般的吸引力。",
+      "difficulty": 6,
+      "keywords": ["非虚构", "特稿", "随笔", "回忆录", "纪实写作", "采访"],
+      "cognition_tags": ["expression", "logic"]
+    }
+  ],
+  "edges": [
+    {
+      "source": "lit_theory",
+      "target": "lit_narratology",
+      "type": "prerequisite",
+      "reason": "叙事学是文学理论的一个分支，需要先有'文本可以被分析'的理论自觉。"
+    },
+    {
+      "source": "lit_narratology",
+      "target": "lit_plot",
+      "type": "prerequisite",
+      "reason": "情节分析建立在叙事学'故事与话语'的区分之上：同一故事可有不同的情节编排。"
+    },
+    {
+      "source": "lit_narratology",
+      "target": "lit_pov",
+      "type": "prerequisite",
+      "reason": "视角是叙事学的核心概念之一：叙述者与聚焦的区分是分析视角的基础工具。"
+    },
+    {
+      "source": "lit_theory",
+      "target": "lit_poetry_appreciation",
+      "type": "prerequisite",
+      "reason": "诗歌鉴赏的细读方法直接来自文学理论：新批评的文本细读是基本功。"
+    },
+    {
+      "source": "lit_classical_poetry",
+      "target": "lit_poetry_appreciation",
+      "type": "related",
+      "reason": "古典诗词是鉴赏训练的最佳素材库：意象、格律的分析方法在唐诗宋词中最为典型。"
+    },
+    {
+      "source": "lit_classical_poetry",
+      "target": "lit_classical_prose",
+      "type": "related",
+      "reason": "诗文同源：典故、文言语感互相打通，韩愈苏轼既是古文大家也是诗人。"
+    },
+    {
+      "source": "lit_classical_prose",
+      "target": "lit_modern_cn",
+      "type": "related",
+      "reason": "现代文学是对文言传统的革命与继承：鲁迅的白话文里处处是古文的功底。"
+    },
+    {
+      "source": "lit_modern_cn",
+      "target": "lit_foreign",
+      "type": "related",
+      "reason": "中国现当代文学深受外国文学影响：鲁迅译介果戈里，莫言师法马尔克斯。"
+    },
+    {
+      "source": "lit_theory",
+      "target": "lit_foreign",
+      "type": "related",
+      "reason": "西方文学理论多从经典作品中生长出来，读经典与读理论互相印证。"
+    },
+    {
+      "source": "lit_writing_basics",
+      "target": "lit_fiction",
+      "type": "prerequisite",
+      "reason": "小说创作建立在基本写作功之上：句子不过关，人物和情节都立不起来。"
+    },
+    {
+      "source": "lit_writing_basics",
+      "target": "lit_nonfiction",
+      "type": "prerequisite",
+      "reason": "非虚构写作首先是写作：清晰的结构与准确的语言是真实故事的承重墙。"
+    },
+    {
+      "source": "lit_plot",
+      "target": "lit_fiction",
+      "type": "prerequisite",
+      "reason": "写小说要先懂故事骨架：三幕结构、冲突设计是创作的施工图。"
+    },
+    {
+      "source": "lit_pov",
+      "target": "lit_fiction",
+      "type": "related",
+      "reason": "选对视角是小说创作的关键决策：第一人称还是全知，决定故事的气质。"
+    },
+    {
+      "source": "lit_plot",
+      "target": "lit_nonfiction",
+      "type": "related",
+      "reason": "优秀特稿借用小说的情节技巧：悬念、场景、节奏让真实事件抓住读者。"
+    }
+  ]
+}

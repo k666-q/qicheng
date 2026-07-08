@@ -1,0 +1,570 @@
+{
+  "subject": {
+    "id": "physics",
+    "name": "物理学",
+    "color": "#ef4444",
+    "description": "从经典力学到量子世界，探索自然规律的基本科学。",
+    "category": "自然科学与工程"
+  },
+  "nodes": [
+    {
+      "id": "phys_mechanics",
+      "subjectId": "physics",
+      "name": "经典力学",
+      "plain_name": "物体怎么动起来的",
+      "description": "牛顿定律、能量守恒、动量——理解宏观物体运动的基础。",
+      "difficulty": 4,
+      "keywords": [
+        "力学",
+        "牛顿定律",
+        "能量守恒",
+        "动量",
+        "经典力学"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "logic"
+      ]
+    },
+    {
+      "id": "phys_electromagnetism",
+      "subjectId": "physics",
+      "name": "电磁学",
+      "plain_name": "电与磁的纠缠",
+      "description": "电场、磁场、麦克斯韦方程组——现代通信和电子设备的基石。",
+      "difficulty": 6,
+      "keywords": [
+        "电磁学",
+        "电场",
+        "磁场",
+        "麦克斯韦",
+        "电磁波"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "abstract"
+      ]
+    },
+    {
+      "id": "phys_thermodynamics",
+      "subjectId": "physics",
+      "name": "热力学",
+      "plain_name": "热量怎么跑的",
+      "description": "热力学定律、熵、状态方程——理解能量转化和自然过程的方向。",
+      "difficulty": 5,
+      "keywords": [
+        "热力学",
+        "熵",
+        "能量转化",
+        "温度",
+        "热力学定律"
+      ],
+      "cognition_tags": [
+        "system",
+        "modeling"
+      ]
+    },
+    {
+      "id": "phys_optics",
+      "subjectId": "physics",
+      "name": "光学",
+      "plain_name": "光是什么",
+      "description": "折射、干涉、衍射、偏振——从眼镜到激光都离不开光学。",
+      "difficulty": 5,
+      "keywords": [
+        "光学",
+        "折射",
+        "干涉",
+        "衍射",
+        "激光"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "phys_quantum",
+      "subjectId": "physics",
+      "name": "量子力学基础",
+      "plain_name": "微观世界的奇异规则",
+      "description": "波粒二象性、薛定谔方程、不确定性原理——颠覆直觉的微观物理。",
+      "difficulty": 9,
+      "keywords": [
+        "量子力学",
+        "波粒二象性",
+        "薛定谔方程",
+        "量子",
+        "不确定性"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "modeling"
+      ]
+    },
+    {
+      "id": "phys_relativity",
+      "subjectId": "physics",
+      "name": "相对论",
+      "plain_name": "时间和空间其实会弯曲",
+      "description": "狭义相对论与广义相对论——理解时空、引力和宇宙的框架。",
+      "difficulty": 9,
+      "keywords": [
+        "相对论",
+        "时空",
+        "引力",
+        "光速",
+        "爱因斯坦"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "system"
+      ]
+    },
+    {
+      "id": "phys_kinematics",
+      "subjectId": "physics",
+      "name": "运动学",
+      "plain_name": "只描述'怎么动'不问'为什么动'",
+      "description": "位移、速度、加速度、抛体运动——用数学语言精确描绘物体的运动轨迹。",
+      "difficulty": 3,
+      "keywords": [
+        "运动学",
+        "位移",
+        "速度",
+        "加速度",
+        "抛体运动",
+        "匀变速",
+        "力学"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "logic"
+      ]
+    },
+    {
+      "id": "phys_newton_laws",
+      "subjectId": "physics",
+      "name": "牛顿运动定律",
+      "plain_name": "力与运动的因果法则",
+      "description": "三大定律加受力分析——回答'为什么苹果往下掉而月亮不掉下来'的钥匙。",
+      "difficulty": 4,
+      "keywords": [
+        "牛顿定律",
+        "牛顿三定律",
+        "受力分析",
+        "惯性",
+        "F=ma",
+        "力学",
+        "动力学"
+      ],
+      "cognition_tags": [
+        "logic",
+        "modeling"
+      ]
+    },
+    {
+      "id": "phys_energy_momentum",
+      "subjectId": "physics",
+      "name": "功能与动量",
+      "plain_name": "碰撞和守恒的奥秘",
+      "description": "功、动能定理、动量守恒、碰撞——不用追踪每个细节，守恒量直接告诉你结局。",
+      "difficulty": 5,
+      "keywords": [
+        "功",
+        "动能定理",
+        "动量守恒",
+        "能量守恒",
+        "碰撞",
+        "冲量",
+        "力学"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "logic"
+      ]
+    },
+    {
+      "id": "phys_oscillation_wave",
+      "subjectId": "physics",
+      "name": "振动与波",
+      "plain_name": "来回晃动和它的传播",
+      "description": "简谐振动、共振、机械波、声波——从钟摆到地震波，世界充满了振动的节奏。",
+      "difficulty": 5,
+      "keywords": [
+        "振动",
+        "波",
+        "简谐振动",
+        "共振",
+        "机械波",
+        "声波",
+        "波长",
+        "频率"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "phys_electrostatics",
+      "subjectId": "physics",
+      "name": "静电场",
+      "plain_name": "静止电荷周围的'气场'",
+      "description": "库仑定律、电场强度、电势、高斯定理——看不见摸不着的电场如何被精确刻画。",
+      "difficulty": 5,
+      "keywords": [
+        "静电场",
+        "库仑定律",
+        "电场强度",
+        "电势",
+        "高斯定理",
+        "电荷",
+        "电磁学"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "modeling"
+      ]
+    },
+    {
+      "id": "phys_circuits",
+      "subjectId": "physics",
+      "name": "电路基础",
+      "plain_name": "电流在导线里跑圈圈",
+      "description": "欧姆定律、串并联、基尔霍夫定律、电容电感——从手电筒到主板都是电路的舞台。",
+      "difficulty": 5,
+      "keywords": [
+        "电路",
+        "欧姆定律",
+        "基尔霍夫",
+        "串并联",
+        "电阻",
+        "电容",
+        "电感",
+        "电磁学"
+      ],
+      "cognition_tags": [
+        "system",
+        "logic"
+      ]
+    },
+    {
+      "id": "phys_magnetism_induction",
+      "subjectId": "physics",
+      "name": "磁场与电磁感应",
+      "plain_name": "磁铁和发电机的原理",
+      "description": "安培力、洛伦兹力、法拉第电磁感应定律——变化的磁场生电，这就是发电机和变压器的全部秘密。",
+      "difficulty": 6,
+      "keywords": [
+        "磁场",
+        "电磁感应",
+        "法拉第",
+        "洛伦兹力",
+        "安培力",
+        "楞次定律",
+        "电磁学"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "modeling"
+      ]
+    },
+    {
+      "id": "phys_thermo_laws",
+      "subjectId": "physics",
+      "name": "热力学定律",
+      "plain_name": "能量账本和时间之箭",
+      "description": "热力学第一、第二定律与熵增原理——能量不会凭空产生，过程也不会自发倒流。",
+      "difficulty": 6,
+      "keywords": [
+        "热力学定律",
+        "热力学第一定律",
+        "热力学第二定律",
+        "熵增",
+        "卡诺循环",
+        "热机",
+        "热学"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "system"
+      ]
+    },
+    {
+      "id": "phys_kinetic_theory",
+      "subjectId": "physics",
+      "name": "分子动理论",
+      "plain_name": "温度其实是分子在抖",
+      "description": "理想气体、麦克斯韦速率分布、压强的微观解释——把宏观热现象还原成亿万分子的碰撞统计。",
+      "difficulty": 6,
+      "keywords": [
+        "分子动理论",
+        "理想气体",
+        "麦克斯韦分布",
+        "气体压强",
+        "微观解释",
+        "热学",
+        "统计"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "abstract"
+      ]
+    },
+    {
+      "id": "phys_geometric_optics",
+      "subjectId": "physics",
+      "name": "几何光学",
+      "plain_name": "光走直线时的世界",
+      "description": "反射、折射、透镜成像——眼镜、相机、显微镜都靠这几条光线作图规则设计出来。",
+      "difficulty": 4,
+      "keywords": [
+        "几何光学",
+        "反射",
+        "折射",
+        "透镜",
+        "成像",
+        "全反射",
+        "光学"
+      ],
+      "cognition_tags": [
+        "modeling",
+        "logic"
+      ]
+    },
+    {
+      "id": "phys_wave_optics",
+      "subjectId": "physics",
+      "name": "波动光学",
+      "plain_name": "光露出'波'的一面",
+      "description": "干涉、衍射、偏振——肥皂泡的彩色条纹和光盘的虹彩都是光波叠加的杰作。",
+      "difficulty": 6,
+      "keywords": [
+        "波动光学",
+        "干涉",
+        "衍射",
+        "偏振",
+        "双缝实验",
+        "薄膜干涉",
+        "光学"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "aesthetic"
+      ]
+    },
+    {
+      "id": "phys_special_relativity",
+      "subjectId": "physics",
+      "name": "狭义相对论",
+      "plain_name": "接近光速时的奇妙世界",
+      "description": "光速不变、时间膨胀、长度收缩、质能方程——高速运动让时间变慢、空间收缩。",
+      "difficulty": 8,
+      "keywords": [
+        "狭义相对论",
+        "光速不变",
+        "时间膨胀",
+        "质能方程",
+        "E=mc²",
+        "洛伦兹变换",
+        "近代物理"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "logic"
+      ]
+    },
+    {
+      "id": "phys_quantum_intro",
+      "subjectId": "physics",
+      "name": "量子物理初步",
+      "plain_name": "微观世界的入场券",
+      "description": "黑体辐射、光电效应、玻尔模型——一系列经典物理解释不了的实验，敲开了量子时代的大门。",
+      "difficulty": 7,
+      "keywords": [
+        "量子物理",
+        "光电效应",
+        "黑体辐射",
+        "玻尔模型",
+        "能级",
+        "光子",
+        "近代物理"
+      ],
+      "cognition_tags": [
+        "abstract",
+        "modeling"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "phys_mechanics",
+      "target": "phys_electromagnetism",
+      "type": "prerequisite",
+      "reason": "电磁学中的力、功、能量概念直接来自力学：洛伦兹力、电势能都是力学框架的电磁扩展。"
+    },
+    {
+      "source": "phys_mechanics",
+      "target": "phys_thermodynamics",
+      "type": "prerequisite",
+      "reason": "热力学是统计力学的宏观表现：温度本质是分子动能的平均值，压强是分子碰撞的力学效果。"
+    },
+    {
+      "source": "phys_electromagnetism",
+      "target": "phys_optics",
+      "type": "prerequisite",
+      "reason": "光是电磁波：麦克斯韦方程预言了光速，折射和干涉现象用电磁波理论完美解释。"
+    },
+    {
+      "source": "phys_mechanics",
+      "target": "phys_quantum",
+      "type": "prerequisite",
+      "reason": "量子力学取代了经典力学在微观尺度的描述，但保留了能量、动量等力学核心概念作为算符。"
+    },
+    {
+      "source": "phys_mechanics",
+      "target": "phys_relativity",
+      "type": "prerequisite",
+      "reason": "相对论修正了牛顿力学在高速和强引力场下的不适用：E=mc²是能量守恒在相对论下的新形式。"
+    },
+    {
+      "source": "phys_electromagnetism",
+      "target": "phys_quantum",
+      "type": "related",
+      "reason": "量子电动力学(QED)是电磁学的量子版本，光子是电磁场的量子化产物。"
+    },
+    {
+      "source": "phys_quantum",
+      "target": "phys_relativity",
+      "type": "related",
+      "reason": "统一量子力学与广义相对论是物理学最大的未解难题，弦理论和量子引力都在尝试这个统一。"
+    },
+    {
+      "source": "phys_kinematics",
+      "target": "phys_newton_laws",
+      "type": "prerequisite",
+      "reason": "牛顿第二定律 F=ma 中的加速度是运动学概念：先会描述运动，才能解释运动的原因。"
+    },
+    {
+      "source": "phys_kinematics",
+      "target": "phys_mechanics",
+      "type": "prerequisite",
+      "reason": "运动学是经典力学体系的第一块基石：位移、速度、加速度是后续所有力学分析的基本语言。"
+    },
+    {
+      "source": "phys_newton_laws",
+      "target": "phys_mechanics",
+      "type": "prerequisite",
+      "reason": "牛顿三定律是经典力学的公理基础：从天体轨道到机械设计，整个力学大厦由此推演。"
+    },
+    {
+      "source": "phys_newton_laws",
+      "target": "phys_energy_momentum",
+      "type": "prerequisite",
+      "reason": "动能定理由牛顿第二定律对位移积分导出，动量定理由它对时间积分导出，守恒律根植于牛顿定律。"
+    },
+    {
+      "source": "phys_newton_laws",
+      "target": "phys_oscillation_wave",
+      "type": "prerequisite",
+      "reason": "简谐振动的方程来自牛顿第二定律加回复力（F=-kx），振动分析就是动力学方程的求解。"
+    },
+    {
+      "source": "phys_oscillation_wave",
+      "target": "phys_optics",
+      "type": "related",
+      "reason": "光的干涉衍射是波动行为：机械波中建立的波长、相位、叠加概念直接迁移到光波。"
+    },
+    {
+      "source": "phys_electromagnetism",
+      "target": "phys_electrostatics",
+      "type": "prerequisite",
+      "reason": "静电场是电磁学的起点章节：场强与电势的概念框架需要先建立电荷与场的整体图像。"
+    },
+    {
+      "source": "phys_electrostatics",
+      "target": "phys_circuits",
+      "type": "prerequisite",
+      "reason": "电路中的电压本质是电势差，电流由电场驱动电荷形成——电路分析建立在静电概念之上。"
+    },
+    {
+      "source": "phys_electrostatics",
+      "target": "phys_magnetism_induction",
+      "type": "prerequisite",
+      "reason": "磁场与电场是同一电磁场的两面：理解感应电动势需要先掌握场强、电势和场线语言。"
+    },
+    {
+      "source": "phys_magnetism_induction",
+      "target": "phys_circuits",
+      "type": "related",
+      "reason": "发电机靠电磁感应产生电动势驱动电路，电感元件的自感现象就是电磁感应在电路中的体现。"
+    },
+    {
+      "source": "phys_thermodynamics",
+      "target": "phys_thermo_laws",
+      "type": "prerequisite",
+      "reason": "深入理解第一、第二定律需要先掌握温度、内能、热量这些热力学基本状态量。"
+    },
+    {
+      "source": "phys_thermodynamics",
+      "target": "phys_kinetic_theory",
+      "type": "prerequisite",
+      "reason": "分子动理论解释热力学宏观量的微观本质：先认识温度压强，再理解它们是分子运动的统计平均。"
+    },
+    {
+      "source": "phys_kinetic_theory",
+      "target": "phys_thermo_laws",
+      "type": "related",
+      "reason": "熵的微观解释（玻尔兹曼公式 S=klnW）用分子排列数说明熵增方向，两者互为表里。"
+    },
+    {
+      "source": "phys_optics",
+      "target": "phys_geometric_optics",
+      "type": "prerequisite",
+      "reason": "几何光学是光学的入门分支：先建立光线、成像的整体概念，再深入透镜组与光学仪器设计。"
+    },
+    {
+      "source": "phys_optics",
+      "target": "phys_wave_optics",
+      "type": "prerequisite",
+      "reason": "波动光学解释几何光学失效的场景：当障碍物尺度接近波长，干涉衍射成为主角。"
+    },
+    {
+      "source": "phys_oscillation_wave",
+      "target": "phys_wave_optics",
+      "type": "prerequisite",
+      "reason": "波动光学把机械波的叠加原理用于光波：双缝干涉的明暗条纹就是波峰波谷叠加的结果。"
+    },
+    {
+      "source": "phys_energy_momentum",
+      "target": "phys_special_relativity",
+      "type": "prerequisite",
+      "reason": "相对论重新定义了能量和动量：E=mc² 是能量动量关系在高速下的推广，守恒律依然成立。"
+    },
+    {
+      "source": "phys_electromagnetism",
+      "target": "phys_special_relativity",
+      "type": "related",
+      "reason": "狭义相对论诞生于电磁学危机：麦克斯韦方程给出固定光速，与伽利略变换矛盾，爱因斯坦选择相信光速。"
+    },
+    {
+      "source": "phys_special_relativity",
+      "target": "phys_relativity",
+      "type": "prerequisite",
+      "reason": "广义相对论是狭义相对论加引力的推广：先接受平直时空的洛伦兹变换，再理解弯曲时空。"
+    },
+    {
+      "source": "phys_quantum_intro",
+      "target": "phys_quantum",
+      "type": "prerequisite",
+      "reason": "光电效应和玻尔模型揭示能量量子化，这些半经典图像是理解薛定谔方程的历史与概念阶梯。"
+    },
+    {
+      "source": "phys_wave_optics",
+      "target": "phys_quantum_intro",
+      "type": "related",
+      "reason": "光的干涉证明波动性，光电效应证明粒子性——波粒二象性之争正是量子物理的起点。"
+    }
+  ]
+}
