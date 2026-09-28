@@ -88,8 +88,23 @@ export function nextCycleOf(nodeId: string, learned?: Set<string>): CycleNumber 
 export function recordCycleComplete(nodeId: string, record: CycleRecord): NodeMastery {
   const store = load();
   const rec = store[nodeId] || { ...blank(nodeId), level: getMasteryLevel(nodeId) };
-  rec.history = [...rec.history, record].slice(-12);
+  // 幂等：同一次会话（同 cycle + startedAt）重复收尾时覆盖而不是追加
+  const dupIdx = rec.history.findIndex((h) => h.cycle === record.cycle && h.startedAt === record.startedAt);
+  const isDup = dupIdx >= 0;
+  rec.history = isDup
+    ? rec.history.map((h, i) => (i === dupIdx ? record : h))
+    : [...rec.history, record].slice(-12);
   rec.lastTouched = record.completedAt;
+  if (isDup) {
+    // 重复触发不再叠加复习计数，只刷新 level/learned 状态
+    if (record.passed) {
+      if (record.cycle > rec.level) rec.level = record.cycle;
+      markLearned(nodeId);
+    }
+    store[nodeId] = rec;
+    save(store);
+    return rec;
+  }
   if (record.passed) {
     if (record.cycle > rec.level) rec.level = record.cycle;
     if (record.cycle >= 4) {

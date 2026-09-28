@@ -308,6 +308,8 @@ export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: 
   const retriedRef = useRef<Set<string>>(new Set());
   // 缺口诊断：同一节点只弹一次
   const gapShownRef = useRef(false);
+  // 收尾阶段只允许触发一次（总结提交与兜底自动收尾可能竞争）
+  const closingStartedRef = useRef(false);
   const [visibleCount, setVisibleCount] = useState(0);
   const [completedIdx, setCompletedIdx] = useState<Set<number>>(new Set());
   const [streaming, setStreaming] = useState(false);
@@ -463,15 +465,20 @@ export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: 
             requireDeepDive: cycleDef(c).script.requireDeepDive,
             requireCreate: cycleDef(c).script.requireCreate,
           });
+          // 第 1 周目缺 ASK_SUMMARY 属软问题（收尾安全网会自动进入 closing），不值得整段重试；
+          // 第 2/3 周目总结要按 rubric 打分，缺了就是硬问题。
+          const hard = issues.filter((i) => !(c === 1 && i.code === "no_summary"));
           if (issues.length > 0) {
+            trackEvent("script_invalid", { node_id: node?.id, cycle: c, issues: issues.map((i) => i.code), retried: hard.length > 0 });
+          }
+          if (hard.length > 0) {
             retriedRef.current.add("explore");
-            trackEvent("script_invalid", { node_id: node?.id, cycle: c, issues: issues.map((i) => i.code) });
             exploreTextRef.current = "";
             extraSegmentsRef.current = [];
             setSegments([]);
             setVisibleCount(0);
             setStreaming(false);
-            await streamPhaseRef.current?.("explore", "", issuesToInstruction(issues));
+            await streamPhaseRef.current?.("explore", "", issuesToInstruction(hard));
             return;
           }
         }
@@ -531,6 +538,7 @@ export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: 
       // 已经看过的段落不再重复触发副作用（点亮/回响/徽章）
       for (let i = 0; i < saved.visibleCount; i++) sideEffectsRef.current.add(i);
       setScript(saved.script);
+      closingStartedRef.current = saved.phase !== "explore";
       setPhase(saved.phase === "done" ? "closing" : saved.phase);
       setCompletedIdx(new Set(saved.completedIdx));
       setChatThreads(
@@ -548,6 +556,7 @@ export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: 
 
     const s = composeScript(node, cycle);
     setScript(s);
+    closingStartedRef.current = false;
     quizStatsRef.current = { total: 0, firstTry: 0, wrong: [], summary: "", startedAt: Date.now() };
     recordHookUsed(s.hookId);
     trackEvent("node_explored", { node_id: node.id, node_name: node.name, hook: s.hookId, cycle });
@@ -760,6 +769,8 @@ export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: 
   // 总结/造物主提交 → 收尾阶段
   const handleSubmitInput = useCallback(
     (text: string) => {
+      if (closingStartedRef.current) return;
+      closingStartedRef.current = true;
       quizStatsRef.current.summary = text.trim();
       setPhase("closing");
       streamPhase("closing", text);
@@ -834,17 +845,20 @@ export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: 
   const sessionDone = allShown && phase === "closing" && (hasGain || segments.length > 3);
   const waitingSummary = lastShown?.type === "ask_summary" || lastShown?.type === "create";
 
-  // 安全网：流结束 + 所有段落已显示 + 仍在 explore → 自动进入 closing
+  // 安全网：流结束 + 所有段落已显示 + 仍在 explore + 最后一张不是待交互卡 → 自动进入 closing
+  // （最后一张是 ASK_SUMMARY / CREATE 等阻塞卡时必须等用户提交，否则会以空总结收尾）
   useEffect(() => {
-    if (allShown && phase === "explore" && segments.length > 0 && !streaming) {
+    if (allShown && phase === "explore" && segments.length > 0 && !streaming && !lastBlocked) {
       const timer = setTimeout(() => {
+        if (closingStartedRef.current) return;
+        closingStartedRef.current = true;
         setPhase("closing");
         streamPhase("closing", "");
       }, 800);
       return () => clearTimeout(timer);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allShown, phase, segments.length, streaming]);
+  }, [allShown, phase, segments.length, streaming, lastBlocked]);
 
   // 跳过计时器：BLOCKING 段落超过 15 秒未完成时显示跳过按钮
   const [skipVisible, setSkipVisible] = useState(false);

@@ -236,6 +236,7 @@ ${req.retryInstruction || ""}`;
 
 ${steps.join("\n")}
 
+篇幅纪律：每个 [[TEACH]] ≤ 120 字，整段剧本必须在 2500 字内完成并**一定要输出到 [[ASK_SUMMARY]]**——宁可少讲一段，不可没有总结提问。
 输出完 [[ASK_SUMMARY]] 后立即停止。`;
   }
 
@@ -255,6 +256,7 @@ ${steps.join("\n")}
 
 ${steps.join("\n")}
 
+篇幅纪律：CODE ≤ 20 行、每个 TEACH ≤ 120 字，整段在 3500 字内完成并**一定要输出到 [[ASK_SUMMARY]]**。
 输出完 [[ASK_SUMMARY]] 后立即停止。`;
   }
 
@@ -443,7 +445,15 @@ export async function POST(req: NextRequest) {
     const stream = await client.chat.completions.create({
       model,
       messages,
-      max_tokens: parsed.phase === "chat" ? 1200 : parsed.phase === "layer" ? (parsed.layer?.tokenBudget || 4000) : 3500,
+      max_tokens:
+        parsed.phase === "chat"
+          ? 1200
+          : parsed.phase === "layer"
+            ? (parsed.layer?.tokenBudget || 4000)
+            : parsed.phase === "closing"
+              ? 2500
+              // explore：第 2 周目含 CODE/DERIVE + 3 题，最长；第 4 周目极简
+              : parsed.cycle === 2 ? 5200 : parsed.cycle === 4 ? 1200 : 4500,
       temperature: 0.8,
       stream: true,
     });
