@@ -4,7 +4,7 @@
 // 返回逻辑固定回到 /plan/detail，SideRail 自动高亮"计划"。
 
 import { Suspense } from "react";
-import { NodeLearnContent } from "@/app/universe/learn/page";
+import { NodeLearnContent } from "@/components/learn/NodeLearnCore";
 
 function LoadingFallback() {
   return (
