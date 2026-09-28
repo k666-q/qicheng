@@ -83,7 +83,11 @@ function PlanContent() {
   const [showVersions, setShowVersions] = useState(false);
   const initialized = useRef(false);
 
-  const generatePlan = useCallback(async () => {
+  const [retryCount, setRetryCount] = useState(0);
+  const MAX_RETRIES = 3;
+  const TIMEOUT_MS = 60000;
+
+  const generatePlan = useCallback(async (retry = 0) => {
     const draftStr = sessionStorage.getItem("qicheng_draft");
     const summaryStr = sessionStorage.getItem("qicheng_summary");
 
@@ -93,6 +97,13 @@ function PlanContent() {
       return;
     }
 
+    setError("");
+    setLoading(true);
+    setRetryCount(retry);
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
+
     try {
       const res = await fetch("/api/plan/generate", {
         method: "POST",
@@ -101,10 +112,19 @@ function PlanContent() {
           draft: JSON.parse(draftStr),
           conversationSummary: summaryStr || undefined,
         }),
+        signal: controller.signal,
       });
 
+      clearTimeout(timeout);
+
       if (!res.ok || !res.body) {
-        setError("生成失败，请重试。");
+        const status = res.status;
+        if (retry < MAX_RETRIES) {
+          setStreamingText(`生成遇到问题(${status})，正在第 ${retry + 1} 次重试...`);
+          await new Promise(r => setTimeout(r, 2000));
+          return generatePlan(retry + 1);
+        }
+        setError(`生成失败（HTTP ${status}）。AI 服务可能暂时不可用。`);
         setLoading(false);
         return;
       }
@@ -132,8 +152,12 @@ function PlanContent() {
               } else {
                 setStreamingText(accumulated.slice(0, metaIdx).trim());
               }
+            } else if (event.type === "error") {
+              throw new Error(event.content || "Stream error");
             }
-          } catch { /* ignore */ }
+          } catch (e) {
+            if (e instanceof Error && e.message !== "Stream error") throw e;
+          }
         }
       }
 
@@ -147,23 +171,51 @@ function PlanContent() {
 
         try {
           const parsed = JSON.parse(planJson) as GeneratedPlan;
+          if (!parsed.stages || !Array.isArray(parsed.stages) || parsed.stages.length === 0) {
+            throw new Error("stages 为空");
+          }
           setPlan(parsed);
           saveSessionItem("qicheng_plan", JSON.stringify(parsed));
           saveSessionItem("qicheng_plan_intro", intro);
-          // 新计划不继承上一个计划的版本历史
           saveSessionItem("qicheng_plan_versions", "[]");
           setVersions([]);
           syncSmallUniverseWithPlan(parsed);
           upsertPlanFromMirror();
-        } catch {
-          setError("计划解析失败，请重试。");
+        } catch (e) {
+          if (retry < MAX_RETRIES) {
+            setStreamingText(`计划格式异常，正在第 ${retry + 1} 次重试...`);
+            await new Promise(r => setTimeout(r, 2000));
+            return generatePlan(retry + 1);
+          }
+          setError(`计划解析失败：${e instanceof Error ? e.message : "JSON 格式不正确"}。请重试或返回调整引导信息。`);
         }
       } else {
+        if (retry < MAX_RETRIES) {
+          setStreamingText(`响应不完整，正在第 ${retry + 1} 次重试...`);
+          await new Promise(r => setTimeout(r, 2000));
+          return generatePlan(retry + 1);
+        }
         setIntroText(accumulated);
-        setError("计划生成不完整，请重试。");
+        setError("计划生成不完整，AI 未返回有效的计划结构。请重试。");
       }
-    } catch {
-      setError("网络错误，请重试。");
+    } catch (e) {
+      clearTimeout(timeout);
+      const isAbort = e instanceof DOMException && e.name === "AbortError";
+      if (isAbort) {
+        if (retry < MAX_RETRIES) {
+          setStreamingText(`请求超时，正在第 ${retry + 1} 次重试...`);
+          await new Promise(r => setTimeout(r, 2000));
+          return generatePlan(retry + 1);
+        }
+        setError("请求超时（60s），AI 服务响应过慢。请稍后重试。");
+      } else {
+        if (retry < MAX_RETRIES) {
+          setStreamingText(`网络异常，正在第 ${retry + 1} 次重试...`);
+          await new Promise(r => setTimeout(r, 2000));
+          return generatePlan(retry + 1);
+        }
+        setError("网络连接失败，请检查网络后重试。");
+      }
     }
 
     setLoading(false);
@@ -284,14 +336,30 @@ function PlanContent() {
       <div className="relative flex h-screen items-center justify-center bg-[#050510]">
         <CosmicBackground />
         <CyberOverlay />
-        <div className="relative z-10 text-center animate-fade-in">
-          <div className="w-10 h-10 border border-red-400/30 bg-red-500/10 flex items-center justify-center mx-auto mb-4">
-            <svg className="w-5 h-5 text-red-300/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <div className="relative z-10 text-center animate-fade-in max-w-md px-6">
+          <div className="w-12 h-12 border border-red-400/30 bg-red-500/10 flex items-center justify-center mx-auto mb-4">
+            <svg className="w-6 h-6 text-red-300/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
             </svg>
           </div>
-          <p className="text-white/60 text-sm">{error}</p>
-          <a href="/" className="mt-4 inline-block text-sm font-mono text-cyan-300/60 hover:text-cyan-200 transition-colors">← 回到首页</a>
+          <p className="text-white/70 text-sm mb-2">{error}</p>
+          {retryCount > 0 && (
+            <p className="text-white/30 text-xs mb-4">已尝试 {retryCount} 次</p>
+          )}
+          <div className="flex items-center justify-center gap-3 mt-5">
+            <button
+              onClick={() => generatePlan(0)}
+              className="border border-cyan-400/40 bg-cyan-400/10 px-5 py-2.5 text-sm font-mono text-cyan-200 hover:bg-cyan-400/20 transition-all shadow-[0_0_16px_rgba(34,211,238,0.12)]"
+            >
+              重新生成
+            </button>
+            <button
+              onClick={() => router.push("/onboarding")}
+              className="border border-white/15 bg-white/[0.03] px-5 py-2.5 text-sm font-mono text-white/50 hover:text-white/70 hover:border-white/25 transition-all"
+            >
+              返回调整
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -595,7 +663,12 @@ function StageCard({ stage, stageIndex, planTitle, planDomain }: { stage: PlanSt
       domain: planDomain,
       stageName: stage.name,
     }));
-    router.push("/plan/task");
+
+    if (task.type === "learn" && task.linked_node_id) {
+      router.push(`/plan/learn?node=${task.linked_node_id}`);
+    } else {
+      router.push("/plan/task");
+    }
   }
 
   const weekGroups: { weekNumber: number; tasks: { task: PlanTask; dayLabel?: string }[] }[] = [];
@@ -833,9 +906,17 @@ function TaskRow({ task, index, dayLabel, onClick, stageIndex }: { task: PlanTas
 
       {/* Task content - clickable */}
       <button onClick={handleOpen} className="flex-1 min-w-0 text-left">
-        <p className={`text-sm group-hover:text-white transition-colors ${completed ? "text-white/35 line-through" : "text-white/80"}`}>
-          {task.title_plain}
-        </p>
+        <div className="flex items-center gap-1.5">
+          {task.type === "learn" && (
+            <span className="shrink-0 text-[9px] font-mono px-1.5 py-0.5 rounded bg-violet-500/15 border border-violet-400/25 text-violet-300">学</span>
+          )}
+          {task.type === "do" && (
+            <span className="shrink-0 text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-500/15 border border-amber-400/25 text-amber-300">做</span>
+          )}
+          <p className={`text-sm group-hover:text-white transition-colors ${completed ? "text-white/35 line-through" : "text-white/80"}`}>
+            {task.title_plain}
+          </p>
+        </div>
         <p className="text-xs text-white/35 mt-0.5">{task.title_professional}</p>
       </button>
 

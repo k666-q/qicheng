@@ -40,7 +40,7 @@ export default function GrowthPage() {
             <p className="mt-1 font-mono text-xs uppercase tracking-[0.3em] text-cyan-300/40">growth_log // progress_scan</p>
             <p className="text-xs text-white/35 mt-0.5">每一步都算数</p>
           </div>
-          <button onClick={() => router.back()} className="border border-white/10 px-3 py-1.5 font-mono text-xs text-white/40 hover:bg-white/[0.06] hover:text-white/70 transition-colors">
+          <button onClick={() => router.push("/universe")} className="border border-white/10 px-3 py-1.5 font-mono text-xs text-white/40 hover:bg-white/[0.06] hover:text-white/70 transition-colors">
             返回
           </button>
         </div>

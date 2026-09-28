@@ -135,7 +135,14 @@ function OnboardingContent() {
       setCurrentOptions(options);
       setDraft(newDraft);
 
-      if (complete) {
+      // AI 标记完成 — 前端二次校验五要素
+      const hasFiveEssentials = !!(
+        newDraft.goal &&
+        newDraft.starting_point &&
+        (newDraft.time_budget || newDraft.rhythm) &&
+        newDraft.stages && (newDraft.stages as unknown[]).length >= 2
+      );
+      if (complete && hasFiveEssentials) {
         setIsComplete(true);
         sessionStorage.setItem("qicheng_draft", JSON.stringify(newDraft));
         localStorage.setItem("qicheng_draft_backup", JSON.stringify(newDraft));
@@ -161,11 +168,37 @@ function OnboardingContent() {
     setLoading(false);
   }, []);
 
+  // 恢复上次未完成的草稿对话
   useEffect(() => {
-    if (initialized.current || !initialInput) return;
+    if (initialized.current) return;
+    const savedSession = sessionStorage.getItem("qc_onboarding_session");
+    if (savedSession && !initialInput) {
+      try {
+        const session = JSON.parse(savedSession);
+        if (session.messages?.length > 0 && !session.isComplete) {
+          setMessages(session.messages);
+          setDraft(session.draft || {});
+          setCurrentOptions(session.options || null);
+          initialized.current = true;
+          return;
+        }
+      } catch { /* ignore */ }
+    }
+    if (!initialInput) return;
     initialized.current = true;
     sendToAI(initialInput, [], {});
   }, [initialInput, sendToAI]);
+
+  // 自动保存对话草稿
+  useEffect(() => {
+    if (messages.length === 0) return;
+    sessionStorage.setItem("qc_onboarding_session", JSON.stringify({
+      messages,
+      draft,
+      options: currentOptions,
+      isComplete,
+    }));
+  }, [messages, draft, currentOptions, isComplete]);
 
   function handleSend(text?: string) {
     const msg = text || input.trim();
@@ -396,26 +429,41 @@ function OnboardingContent() {
                   发送
                 </button>
               </form>
-              {/* 一键生成按钮 — 醒目的独立按钮 */}
-              {messages.filter(m => m.role === "user").length >= 2 && !loading && (
-                <div className="mt-3 pt-3 border-t border-cyan-400/10">
-                  <button
-                    onClick={() => {
-                      setIsComplete(true);
-                      sessionStorage.setItem("qicheng_draft", JSON.stringify(draft));
-                      localStorage.setItem("qicheng_draft_backup", JSON.stringify(draft));
-                      trackEvent("onboarding_early_generate", { rounds: messages.filter(m => m.role === "user").length });
-                    }}
-                    className="group w-full flex items-center justify-center gap-2 border border-cyan-400/25 bg-cyan-400/[0.05] px-4 py-2.5 font-mono text-sm text-cyan-100/70 hover:border-cyan-400/60 hover:bg-cyan-400/15 hover:text-cyan-50 transition-all"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_rgba(34,211,238,0.6)]" />
-                    <span>直接生成计划</span>
-                    <svg className="w-3.5 h-3.5 text-cyan-300/40 group-hover:text-cyan-200 group-hover:translate-x-0.5 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                  </button>
-                </div>
-              )}
+              {/* 一键生成按钮 — 信息不足时提示缺什么 */}
+              {messages.filter(m => m.role === "user").length >= 2 && !loading && (() => {
+                const missing: string[] = [];
+                if (!draft.goal) missing.push("目标");
+                if (!draft.starting_point) missing.push("当前水平");
+                if (!draft.time_budget) missing.push("时间安排");
+                const canGenerate = missing.length === 0;
+                return (
+                  <div className="mt-3 pt-3 border-t border-cyan-400/10">
+                    <button
+                      onClick={() => {
+                        if (!canGenerate) return;
+                        setIsComplete(true);
+                        sessionStorage.setItem("qicheng_draft", JSON.stringify(draft));
+                        localStorage.setItem("qicheng_draft_backup", JSON.stringify(draft));
+                        trackEvent("onboarding_early_generate", { rounds: messages.filter(m => m.role === "user").length });
+                      }}
+                      disabled={!canGenerate}
+                      className={`group w-full flex items-center justify-center gap-2 border px-4 py-2.5 font-mono text-sm transition-all ${
+                        canGenerate
+                          ? "border-cyan-400/25 bg-cyan-400/[0.05] text-cyan-100/70 hover:border-cyan-400/60 hover:bg-cyan-400/15 hover:text-cyan-50"
+                          : "border-white/10 bg-white/[0.02] text-white/25 cursor-not-allowed"
+                      }`}
+                    >
+                      <span className={`w-1.5 h-1.5 rounded-full ${canGenerate ? "bg-cyan-400 animate-pulse shadow-[0_0_8px_rgba(34,211,238,0.6)]" : "bg-white/20"}`} />
+                      <span>{canGenerate ? "直接生成计划" : `还需要了解：${missing.join("、")}`}</span>
+                      {canGenerate && (
+                        <svg className="w-3.5 h-3.5 text-cyan-300/40 group-hover:text-cyan-200 group-hover:translate-x-0.5 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                      )}
+                    </button>
+                  </div>
+                );
+              })()}
             </>
           )}
           </div>

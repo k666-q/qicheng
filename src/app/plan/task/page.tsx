@@ -1,10 +1,8 @@
 "use client";
 
-import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { useRouter } from "next/navigation";
-import { ChatBubbleGroup } from "@/components/onboarding/ChatBubble";
-import { MoodCheckin } from "@/components/mood/MoodCheckin";
-import { SoftUpgrade } from "@/components/SoftUpgrade";
+import { MessageNotePanel } from "@/components/notes/MessageNotePanel";
 import { trackEvent } from "@/lib/profile/events";
 import { recordDailyCompletion } from "@/lib/habit/streak";
 import { loadGraph, getLearnedNodeIds, markLearned, getStoredPlanScope } from "@/lib/universe/store";
@@ -14,23 +12,51 @@ import { saveSessionItem, loadSessionItem } from "@/lib/plan/store";
 import { taskChatKey, loadTaskChat, saveTaskChat } from "@/lib/storage/session-store";
 import { CosmicBackground } from "@/components/universe/CosmicBackground";
 import { CyberOverlay } from "@/components/universe/CyberOverlay";
-import { TaskFlowMap } from "@/components/learn/TaskFlowMap";
-import { AnchorHUD } from "@/components/learn/AnchorHUD";
 import { DeriveCard } from "@/components/learn/DeriveCard";
+import { ResizableDivider, useResizablePanel } from "@/components/ui/ResizableDivider";
 import {
   initialFlowState,
-  resolvePhase,
   type AnchorCard,
   type DeriveLine,
   type DeriveSequence,
-  type TaskFlowPhase,
   type TaskFlowState,
 } from "@/lib/learn/depth-types";
 import { getAnchorCard, saveAnchorCard } from "@/lib/learn/anchor-store";
 
 type ChatMessage = { role: "ai" | "user"; content: string };
 
-/** 读 SSE 流并累计文本 */
+// ─── 教学卡片类型 ───
+type TeachCard = {
+  type: "HOOK" | "TEACH" | "KEY" | "QUIZ" | "TIP" | "SUMMARY";
+  content: string;
+};
+
+function parseTeachCards(raw: string): TeachCard[] {
+  const cleaned = raw.replace(/\|\|\|SPLIT\|\|\|/g, "\n");
+  const regex = /\[\[(HOOK|TEACH|KEY|QUIZ|TIP|SUMMARY)\]\]/g;
+  const cards: TeachCard[] = [];
+  const matches: { type: string; index: number }[] = [];
+
+  let m;
+  while ((m = regex.exec(cleaned)) !== null) {
+    matches.push({ type: m[1], index: m.index + m[0].length });
+  }
+
+  for (let i = 0; i < matches.length; i++) {
+    const start = matches[i].index;
+    const end = i + 1 < matches.length ? cleaned.lastIndexOf("[[", matches[i + 1].index) : cleaned.length;
+    const content = cleaned.slice(start, end).trim();
+    if (content) {
+      cards.push({ type: matches[i].type as TeachCard["type"], content });
+    }
+  }
+
+  if (cards.length === 0 && cleaned.trim()) {
+    cards.push({ type: "TEACH", content: cleaned.trim() });
+  }
+  return cards;
+}
+
 async function readStream(res: Response): Promise<string> {
   if (!res.ok || !res.body) return "";
   const reader = res.body.getReader();
@@ -51,18 +77,12 @@ async function readStream(res: Response): Promise<string> {
   return accumulated;
 }
 
-/** 从 AI 输出中提取 JSON（容错：格式跑偏时返回 null） */
 function extractJson<T>(text: string): T | null {
   const match = text.match(/\{[\s\S]*\}/);
   if (!match) return null;
-  try {
-    return JSON.parse(match[0]) as T;
-  } catch {
-    return null;
-  }
+  try { return JSON.parse(match[0]) as T; } catch { return null; }
 }
 
-/** 深潜序列校验与清洗：check 不合法则降级为无检查的普通行 */
 function sanitizeDive(raw: unknown): DeriveSequence | null {
   if (!raw || typeof raw !== "object") return null;
   const seq = raw as DeriveSequence;
@@ -77,15 +97,7 @@ function sanitizeDive(raw: unknown): DeriveSequence | null {
         rule: typeof l.rule === "string" && l.rule.trim() ? l.rule : undefined,
       };
       const c = l.check;
-      if (
-        c &&
-        typeof c.question === "string" &&
-        Array.isArray(c.options) &&
-        c.options.length >= 2 &&
-        typeof c.answer === "number" &&
-        c.answer >= 0 &&
-        c.answer < c.options.length
-      ) {
+      if (c && typeof c.question === "string" && Array.isArray(c.options) && c.options.length >= 2 && typeof c.answer === "number" && c.answer >= 0 && c.answer < c.options.length) {
         line.check = {
           kind: c.kind === "predict" || c.kind === "blank" || c.kind === "counterfactual" ? c.kind : "predict",
           question: c.question,
@@ -98,12 +110,7 @@ function sanitizeDive(raw: unknown): DeriveSequence | null {
       return line;
     });
   if (lines.length === 0) return null;
-  return {
-    title: typeof seq.title === "string" ? seq.title : "逐行深潜",
-    intro: typeof seq.intro === "string" ? seq.intro : "",
-    kind,
-    lines,
-  };
+  return { title: typeof seq.title === "string" ? seq.title : "逐行深潜", intro: typeof seq.intro === "string" ? seq.intro : "", kind, lines };
 }
 
 export default function TaskDetailPage() {
@@ -122,44 +129,53 @@ function TaskDetailContent() {
   const [breakdown, setBreakdown] = useState<TaskBreakdown | null>(null);
   const [breakdownLoading, setBreakdownLoading] = useState(true);
 
+  // Center panel: step learning cards
+  const [activeStep, setActiveStep] = useState<number | null>(null);
+  const [teachCards, setTeachCards] = useState<TeachCard[]>([]);
+  const [visibleCardIdx, setVisibleCardIdx] = useState(0);
+  const [teachLoading, setTeachLoading] = useState(false);
+  const [teachStreamText, setTeachStreamText] = useState("");
+
+  // Right panel: chat + notes
+  const [rightTab, setRightTab] = useState<"chat" | "notes">("chat");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [chatLoading, setChatLoading] = useState(false);
   const [streamingText, setStreamingText] = useState("");
+  const [notes, setNotes] = useState("");
+
   const [completed, setCompleted] = useState(false);
   const [nextTask, setNextTask] = useState<PlanTask | null>(null);
-  const [searchingResource, setSearchingResource] = useState(false);
-  const [resourceResults, setResourceResults] = useState<{ title: string; url: string; reason: string }[]>([]);
   const [universeToast, setUniverseToast] = useState<string | null>(null);
 
-  // ── 深化系统状态 ──
+  // Deep system
   const [flow, setFlow] = useState<TaskFlowState>(initialFlowState());
   const [anchor, setAnchor] = useState<AnchorCard | null>(null);
-  const [anchorLoading, setAnchorLoading] = useState(false);
   const [dives, setDives] = useState<Record<number, DeriveSequence>>({});
   const [activeDive, setActiveDive] = useState<number | null>(null);
   const [diveLoadingOrder, setDiveLoadingOrder] = useState<number | null>(null);
-  const [showFlowMap, setShowFlowMap] = useState(false);
+
+  // Resizable panels
+  const leftPanel = useResizablePanel("qc_task_left_w", 260, 200, 400);
+  const rightPanel = useResizablePanel("qc_task_right_w", 320, 240, 480);
 
   const chatEndRef = useRef<HTMLDivElement>(null);
   const initialized = useRef(false);
 
-  // 任务锚定的知识宇宙节点（星核探索入口）
   const anchoredNodeId = useMemo(() => {
     if (!task) return null;
     try {
       const graph = loadGraph();
       const ids = getTaskNodeIds(task, graph.nodes, getStoredPlanScope());
       return ids.length > 0 ? ids[0] : null;
-    } catch {
-      return null;
-    }
+    } catch { return null; }
   }, [task]);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, streamingText]);
 
+  // ─── 初始化 ───
   useEffect(() => {
     if (initialized.current) return;
     initialized.current = true;
@@ -177,6 +193,7 @@ function TaskDetailContent() {
     setTask(t);
     setPlanContext(c);
 
+    // Find next task
     try {
       const planStr = loadSessionItem("qicheng_plan");
       if (planStr) {
@@ -193,28 +210,21 @@ function TaskDetailContent() {
             for (const tk of stage.tasks) allTasks.push(tk);
           }
         }
-        const idx = allTasks.findIndex(
-          (x) => x.title_plain === t.title_plain && x.title_professional === t.title_professional
-        );
-        if (idx >= 0 && idx < allTasks.length - 1) {
-          setNextTask(allTasks[idx + 1]);
-        }
+        const idx = allTasks.findIndex((x) => x.title_plain === t.title_plain && x.title_professional === t.title_professional);
+        if (idx >= 0 && idx < allTasks.length - 1) setNextTask(allTasks[idx + 1]);
       }
     } catch { /* ignore */ }
 
-    // 恢复深化系统状态：锚点卡 + 流程 + 深潜缓存
+    // Restore anchor
     const savedAnchor = getAnchorCard(taskChatKey(t));
     if (savedAnchor) setAnchor(savedAnchor);
 
-    // 恢复该任务此前的拆解与对话记录，有拆解就不再重复请求
+    // Restore session
     const saved = loadTaskChat(taskChatKey(t));
-    let restoredFlow: TaskFlowState | null = null;
     if (saved) {
-      if (Array.isArray(saved.messages) && saved.messages.length > 0) {
-        setMessages(saved.messages as ChatMessage[]);
-      }
+      if (Array.isArray(saved.messages) && saved.messages.length > 0) setMessages(saved.messages as ChatMessage[]);
       if (saved.flow && typeof saved.flow === "object") {
-        restoredFlow = { ...initialFlowState(), ...(saved.flow as TaskFlowState) };
+        const restoredFlow = { ...initialFlowState(), ...(saved.flow as TaskFlowState) };
         if (savedAnchor) restoredFlow.anchorDone = true;
         setFlow(restoredFlow);
       }
@@ -227,15 +237,16 @@ function TaskDetailContent() {
         setDives(restored);
       }
     }
-    if (!restoredFlow && savedAnchor) {
-      setFlow((prev) => ({ ...prev, anchorDone: true }));
-    }
-    // 第一屏：任务未完成时先展示流程全景
-    setShowFlowMap(true);
+    if (!saved?.flow && savedAnchor) setFlow((prev) => ({ ...prev, anchorDone: true }));
 
-    // 锚点缺失则提取（不阻塞拆解）
+    // Fetch anchor if missing
     if (!savedAnchor) fetchAnchor(t, c);
 
+    // Restore notes
+    const savedNotes = localStorage.getItem(`qc_task_notes_${taskChatKey(t)}`);
+    if (savedNotes) setNotes(savedNotes);
+
+    // Fetch breakdown
     if (saved?.breakdown) {
       setBreakdown(saved.breakdown as TaskBreakdown);
       setBreakdownLoading(false);
@@ -246,30 +257,21 @@ function TaskDetailContent() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
-  // 拆解/对话/流程/深潜持久化（流式进行中不存）
+  // Persist
   useEffect(() => {
     if (!task || chatLoading || breakdownLoading) return;
     if (!breakdown && messages.length === 0 && !anchor) return;
-    saveTaskChat({
-      taskKey: taskChatKey(task),
-      breakdown,
-      messages,
-      flow,
-      dives,
-    });
+    saveTaskChat({ taskKey: taskChatKey(task), breakdown, messages, flow, dives });
   }, [task, breakdown, messages, chatLoading, breakdownLoading, flow, dives, anchor]);
 
-  // 流程环节自动推导（用于流程图高亮与恢复定位）
+  // Save notes
   useEffect(() => {
-    setFlow((prev) => {
-      const phase = resolvePhase(prev, completed);
-      return prev.phase === phase ? prev : { ...prev, phase };
-    });
-  }, [completed, anchor, breakdown, dives, flow.anchorDone, flow.breakdownDone, flow.challengeDone, flow.artifactDone]);
+    if (!task || !notes) return;
+    localStorage.setItem(`qc_task_notes_${taskChatKey(task)}`, notes);
+  }, [task, notes]);
 
-  /** 提取锚点卡（严格 JSON，失败自动重试一次） */
+  // ─── Fetch functions ───
   const fetchAnchor = useCallback(async (t: PlanTask, ctx: { title: string; domain: string; stageName: string }) => {
-    setAnchorLoading(true);
     for (let attempt = 0; attempt < 2; attempt++) {
       try {
         const res = await fetch("/api/task-chat", {
@@ -286,84 +288,9 @@ function TaskDetailContent() {
           setFlow((prev) => ({ ...prev, anchorDone: true }));
           break;
         }
-      } catch { /* ignore, retry */ }
+      } catch { /* retry */ }
     }
-    setAnchorLoading(false);
   }, []);
-
-  /** 为某一步生成逐行深潜序列（缓存，失败自动重试一次） */
-  const fetchDive = useCallback(
-    async (step: { order: number; title: string; description: string }) => {
-      if (!task || !planContext) return;
-      if (dives[step.order]) {
-        setActiveDive(step.order);
-        return;
-      }
-      setDiveLoadingOrder(step.order);
-      for (let attempt = 0; attempt < 2; attempt++) {
-        try {
-          const res = await fetch("/api/task-chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              task,
-              planContext,
-              history: [],
-              userMessage: "",
-              mode: "deepdive",
-              step,
-            }),
-          });
-          const text = await readStream(res);
-          const seq = sanitizeDive(extractJson(text));
-          if (seq) {
-            setDives((prev) => ({ ...prev, [step.order]: seq }));
-            setFlow((prev) => ({
-              ...prev,
-              diveStates: {
-                ...prev.diveStates,
-                [step.order]: prev.diveStates[step.order] ?? {
-                  current: 0,
-                  total: seq.lines.length,
-                  stuckCount: 0,
-                  done: false,
-                },
-              },
-            }));
-            setActiveDive(step.order);
-            break;
-          }
-        } catch { /* ignore, retry */ }
-      }
-      setDiveLoadingOrder(null);
-    },
-    [task, planContext, dives]
-  );
-
-  /** 深潜中「没懂」→ 就这一行请求 AI 展开（独立请求，不进聊天记录） */
-  const expandDiveLine = useCallback(
-    async (line: DeriveLine, lineIndex: number): Promise<string | null> => {
-      if (!task || !planContext) return null;
-      try {
-        const res = await fetch("/api/task-chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            task,
-            planContext,
-            history: [],
-            userMessage: `我正在逐行深潜，卡在第 ${lineIndex + 1} 行没看懂。请**只针对这一行**，把它拆得更细来解释（可以拆成 2-3 个更小的步骤），用类比和画面感，不超过 150 字，纯文本不要用标题：\n\n这一行的内容：${line.content}\n原本的解释：${line.explain}`,
-            mode: "chat",
-          }),
-        });
-        const text = await readStream(res);
-        return text || null;
-      } catch {
-        return null;
-      }
-    },
-    [task, planContext]
-  );
 
   const fetchBreakdown = useCallback(async (t: PlanTask, ctx: { title: string; domain: string; stageName: string }) => {
     setBreakdownLoading(true);
@@ -371,15 +298,8 @@ function TaskDetailContent() {
       const res = await fetch("/api/task-chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          task: t,
-          planContext: ctx,
-          history: [],
-          userMessage: "",
-          mode: "breakdown",
-        }),
+        body: JSON.stringify({ task: t, planContext: ctx, history: [], userMessage: "", mode: "breakdown" }),
       });
-
       const accumulated = await readStream(res);
       const parsed = extractJson<TaskBreakdown>(accumulated);
       if (parsed) {
@@ -390,38 +310,99 @@ function TaskDetailContent() {
     setBreakdownLoading(false);
   }, []);
 
-  async function searchResource() {
-    if (!task) return;
-    setSearchingResource(true);
-    setResourceResults([]);
+  const fetchStepTeach = useCallback(async (step: { order: number; title: string; description: string }) => {
+    if (!task || !planContext) return;
+    setTeachLoading(true);
+    setTeachCards([]);
+    setVisibleCardIdx(0);
+    setTeachStreamText("");
+
     try {
-      const res = await fetch("/api/search-resource", {
+      const res = await fetch("/api/task-chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ task, planContext, history: [], userMessage: "", mode: "step-teach", step }),
+      });
+
+      if (!res.ok || !res.body) {
+        setTeachLoading(false);
+        return;
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let accumulated = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const text = decoder.decode(value, { stream: true });
+        for (const line of text.split("\n\n")) {
+          if (!line.startsWith("data: ")) continue;
+          try {
+            const event = JSON.parse(line.slice(6));
+            if (event.type === "text") {
+              accumulated += event.content;
+              setTeachStreamText(accumulated);
+            }
+          } catch { /* ignore */ }
+        }
+      }
+
+      const cards = parseTeachCards(accumulated);
+      setTeachCards(cards);
+      setVisibleCardIdx(0);
+      setTeachStreamText("");
+    } catch { /* ignore */ }
+    setTeachLoading(false);
+  }, [task, planContext]);
+
+  const fetchDive = useCallback(async (step: { order: number; title: string; description: string }) => {
+    if (!task || !planContext) return;
+    if (dives[step.order]) { setActiveDive(step.order); return; }
+    setDiveLoadingOrder(step.order);
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const res = await fetch("/api/task-chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ task, planContext, history: [], userMessage: "", mode: "deepdive", step }),
+        });
+        const text = await readStream(res);
+        const seq = sanitizeDive(extractJson(text));
+        if (seq) {
+          setDives((prev) => ({ ...prev, [step.order]: seq }));
+          setFlow((prev) => ({
+            ...prev,
+            diveStates: { ...prev.diveStates, [step.order]: prev.diveStates[step.order] ?? { current: 0, total: seq.lines.length, stuckCount: 0, done: false } },
+          }));
+          setActiveDive(step.order);
+          break;
+        }
+      } catch { /* retry */ }
+    }
+    setDiveLoadingOrder(null);
+  }, [task, planContext, dives]);
+
+  const expandDiveLine = useCallback(async (line: DeriveLine, lineIndex: number): Promise<string | null> => {
+    if (!task || !planContext) return null;
+    try {
+      const res = await fetch("/api/task-chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          query: `${task.title_professional} 教程`,
-          taskContext: `${task.title_plain}（${task.title_professional}）`,
+          task, planContext, history: [], mode: "chat",
+          userMessage: `我正在逐行深潜，卡在第 ${lineIndex + 1} 行没看懂。请只针对这一行，把它拆得更细来解释，用类比和画面感，不超过 150 字：\n\n这一行的内容：${line.content}\n原本的解释：${line.explain}`,
         }),
       });
-      const data = await res.json();
-      if (data.success && data.recommendations?.length > 0) {
-        setResourceResults(data.recommendations);
-      } else {
-        setResourceResults([{ title: "未找到结果", url: "", reason: `尝试在 B站搜索「${task.title_professional}」` }]);
-      }
-    } catch {
-      setResourceResults([{ title: "搜索失败", url: "", reason: "网络问题，请稍后重试" }]);
-    }
-    setSearchingResource(false);
-  }
+      return await readStream(res) || null;
+    } catch { return null; }
+  }, [task, planContext]);
 
+  // Right panel chat
   async function sendChat(customMsg?: string) {
     const msg = customMsg || input.trim();
     if (!msg || chatLoading || !task || !planContext) return;
-    // Track help request once per task (on first message)
-    if (messages.length === 0) {
-      trackEvent("task_help_requested", { title_plain: task.title_plain });
-    }
     setInput("");
     setChatLoading(true);
     setStreamingText("");
@@ -433,13 +414,7 @@ function TaskDetailContent() {
       const res = await fetch("/api/task-chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          task,
-          planContext,
-          history: newMessages,
-          userMessage: msg,
-          mode: "chat",
-        }),
+        body: JSON.stringify({ task, planContext, history: newMessages, userMessage: msg, mode: "chat" }),
       });
 
       if (!res.ok || !res.body) {
@@ -456,15 +431,11 @@ function TaskDetailContent() {
         const { done, value } = await reader.read();
         if (done) break;
         const text = decoder.decode(value, { stream: true });
-        const lines = text.split("\n\n");
-        for (const line of lines) {
+        for (const line of text.split("\n\n")) {
           if (!line.startsWith("data: ")) continue;
           try {
             const event = JSON.parse(line.slice(6));
-            if (event.type === "text") {
-              accumulated += event.content;
-              setStreamingText(accumulated);
-            }
+            if (event.type === "text") { accumulated += event.content; setStreamingText(accumulated); }
           } catch { /* ignore */ }
         }
       }
@@ -475,530 +446,398 @@ function TaskDetailContent() {
       setStreamingText("");
       setMessages([...newMessages, { role: "ai", content: "网络问题，请重试。" }]);
     }
-
     setChatLoading(false);
   }
 
-  function handleStepClick(step: { order: number; title: string; description: string }) {
-    if (chatLoading || !task) return;
-    const prompt = `请用"探索式"的方式带我搞懂「${step.title}」这一步。**不要写成试卷或教科书**，按下面的节奏来（使用 Markdown）：
-
-## 开场（真相钩子）
-
-不要说"我们来学习X"。用这一步知识能解释的一个**反直觉现象或切身问题**开场（一两句话），让我产生"我必须搞懂"的冲动。
-
-## 先猜一猜 🔮
-
-在讲解之前，先抛 1 个预测问题让我猜（给 2-3 个看起来都合理的选项）。然后写一行：
-> 心里选好了再往下看——
-
-接着揭晓答案并顺势讲解。
-
-## 探索讲解
-
-- 分成 2-3 个**短段落**，每段不超过 5 行，段与段之间用 --- 分隔，每段结尾留一个小悬念
-- 用画面感和类比讲，禁止堆术语；术语第一次出现必须用人话翻译
-- 每揭示一个关键规律，单独标一行：**🎯 规律捕获：xxx（一句话）**
-- 如果需要实操（装环境/敲命令/写代码），给出具体步骤和 \`命令\`，标注最容易踩的坑
-
-## 挑战时刻 ⚔️
-
-出 2 道挑战题（不叫"练习题"）：
-- 每道题先写一句对抗文案，如"**约 75% 的初学者会在这里栽跟头**"（数字要合理）
-- 选项里要埋一个最常见的错误想法
-- 答案和解析放在引用块里，并提醒我"先自己选，再展开看"
-- 解析重点讲"**为什么错的那个选项那么诱人**"
-
-## 收尾（你刚获得什么）
-
-不要总结知识点清单。用一两句话告诉我：完成这一步后我**获得了什么思维/能力**（比如"你现在拥有了 X 视角，以后看到 Y 你会下意识想到 Z"），以及一个值得带着睡觉的小问题。
-
-## 🎬 B站推荐搜索
-
-给 2 个精准搜索关键词：搜索：「关键词」（理由）
-
----
-
-背景信息：这是「${task.title_plain}」任务的第 ${step.order} 步。
-步骤描述：${step.description}
-所属阶段：${planContext?.stageName || ""}`;
-
-    sendChat(prompt);
+  function handleStepSelect(step: { order: number; title: string; description: string }) {
+    setActiveStep(step.order);
+    fetchStepTeach(step);
   }
 
-  /** 挑战验证：围绕锚点出题 */
-  function startChallenge() {
-    if (chatLoading || !task) return;
-    const anchorPart = anchor
-      ? `\n\n这个知识的锚点（出题必须围绕它）：\n- 本质：${anchor.essence}\n- 用时核心：${anchor.core}\n- 不可脱离：${anchor.invariant}`
-      : "";
-    const prompt = `我已经学完了「${task.title_plain}」（${task.title_professional}），现在进入挑战验证环节。请出 3 道阶梯递进的挑战题（用 Markdown）：
-
-- 第 1 题基础应用，第 2 题变式，第 3 题必须考「不可脱离的底线」——设计一个**违反了锚点不变量**的场景让我识别哪里错了
-- 每题带对抗文案（如"约 70% 的人栽在这"，数字合理）
-- 选项里埋最诱人的错误想法
-- 答案解析放引用块，提醒我先选再看，解析讲"为什么错的选项那么诱人"${anchorPart}`;
-    setShowFlowMap(false);
-    setFlow((prev) => ({ ...prev, challengeDone: true }));
-    sendChat(prompt);
+  function handleComplete() {
+    if (!task) return;
+    const graph = loadGraph();
+    const beforeLearned = getLearnedNodeIds(graph.nodes);
+    setCompleted(true);
+    recordDailyCompletion();
+    const nodeIds = getTaskNodeIds(task, graph.nodes, getStoredPlanScope());
+    for (const id of nodeIds) markLearned(id);
+    trackEvent("task_completed", { title_plain: task.title_plain, title_professional: task.title_professional, difficulty: task.difficulty, node_ids: nodeIds });
+    setTimeout(() => {
+      const afterLearned = getLearnedNodeIds(graph.nodes);
+      const newNodes = [...afterLearned].filter((id) => !beforeLearned.has(id));
+      if (newNodes.length > 0) {
+        const names = newNodes.map((id) => graph.nodes.find((n) => n.id === id)?.name).filter(Boolean);
+        setUniverseToast(names.length > 0 ? names.join("、") : null);
+        setTimeout(() => setUniverseToast(null), 6000);
+      }
+    }, 300);
   }
-
-  /** 产出成果：定义交付物 + 验收方式 */
-  function startArtifact() {
-    if (chatLoading || !task) return;
-    const prompt = `任务「${task.title_plain}」（${task.title_professional}）接近完成，现在进入产出环节。请：
-
-1. 给我定义一个 15-30 分钟能完成的**最小产出物**（编程=一段能跑的代码；数学=一道完整推导；其他=一段能讲给别人听的输出），要具体到"做什么、做成什么样算合格"
-2. 告诉我做完后**把产出粘贴到这个聊天框**，你会帮我验收：指出做对了什么、哪里还有缺口
-3. 语气像师傅布置出师作品，不要客套`;
-    setShowFlowMap(false);
-    setFlow((prev) => ({ ...prev, artifactDone: true }));
-    sendChat(prompt);
-  }
-
-  /** 流程图环节点击 */
-  function handlePhaseClick(phase: TaskFlowPhase) {
-    if (phase === "anchor") {
-      setShowFlowMap(false);
-      if (!anchor && !anchorLoading && task && planContext) fetchAnchor(task, planContext);
-      return;
-    }
-    if (phase === "breakdown" || phase === "deepdive") {
-      // 拆解/深潜都在右侧步骤面板操作
-      setShowFlowMap(false);
-      return;
-    }
-    if (phase === "challenge") { startChallenge(); return; }
-    if (phase === "artifact") { startArtifact(); return; }
-    setShowFlowMap(false);
-  }
-
-  const diveSummary = (() => {
-    const states = Object.values(flow.diveStates);
-    if (states.length === 0) return undefined;
-    const doneCount = states.filter((d) => d.done).length;
-    const active = activeDive !== null ? flow.diveStates[activeDive] : null;
-    const linePart = active && !active.done ? ` · ${active.current}/${active.total} 行` : "";
-    return `${doneCount}/${states.length} 步完成${linePart}`;
-  })();
 
   if (!task) return null;
 
   const DIFFICULTY_LABELS: Record<number, string> = { 1: "轻松", 2: "简单", 3: "适中", 4: "挑战", 5: "硬核" };
   const DIFFICULTY_COLORS: Record<number, string> = {
-    1: "bg-emerald-500/15 text-emerald-300 border border-emerald-400/20",
-    2: "bg-sky-500/15 text-sky-300 border border-sky-400/20",
-    3: "bg-amber-500/15 text-amber-300 border border-amber-400/20",
-    4: "bg-orange-500/15 text-orange-300 border border-orange-400/20",
-    5: "bg-red-500/15 text-red-300 border border-red-400/20",
+    1: "text-emerald-300", 2: "text-sky-300", 3: "text-amber-300", 4: "text-orange-300", 5: "text-red-300",
   };
 
   return (
-    <div className="flex h-screen bg-[#050510]">
+    <div className="flex h-screen bg-[#050510] md:pl-[var(--siderail-width)]">
       <CosmicBackground />
       <CyberOverlay />
-      {/* Left: AI Chat - main area */}
-      <div className="relative z-10 flex flex-1 flex-col">
-        {/* Header */}
-        <div className="relative border-b border-cyan-400/[0.12] px-6 py-4 backdrop-blur-sm bg-[#0a0a14]/60">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => router.back()}
-                className="w-7 h-7 border border-cyan-400/20 bg-cyan-400/[0.06] flex items-center justify-center text-cyan-300/60 hover:bg-cyan-400/15 hover:text-cyan-200 transition-all"
-              >
-                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <div>
-                <h1 className="cyber-glitch text-base font-semibold text-white/90" data-text={task.title_plain}>{task.title_plain}</h1>
-                <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-cyan-300/40">daily_ops // mission_log</p>
-                <div className="flex items-center gap-2 mt-0.5">
-                  <span className="font-mono text-[11px] tracking-wider text-cyan-200/50">{task.title_professional}</span>
-                  <span className={`text-[10px] px-1.5 py-0.5 font-mono font-medium tracking-wider ${DIFFICULTY_COLORS[task.difficulty] || DIFFICULTY_COLORS[3]}`}>
-                    {DIFFICULTY_LABELS[task.difficulty] || "适中"}
-                  </span>
-                  <span className="font-mono text-[10px] text-fuchsia-300/40">~{task.estimated_minutes}min</span>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-            {anchoredNodeId && (
-              <button
-                onClick={() => router.push(`/universe/learn?node=${encodeURIComponent(anchoredNodeId)}`)}
-                className="border border-indigo-400/40 bg-indigo-400/10 px-3.5 py-2 font-mono text-xs tracking-widest text-indigo-300 hover:bg-indigo-400/20 transition-colors"
-                title="进入沉浸式 AI 引导探索，学透这个任务背后的知识节点"
-              >
-                ✦ 星核探索
-              </button>
-            )}
-            {/* Complete button in header */}
-            {!completed ? (
-              <button
-                onClick={() => {
-                  const graph = loadGraph();
-                  const beforeLearned = getLearnedNodeIds(graph.nodes);
-                  setCompleted(true);
-                  recordDailyCompletion();
-                  // 直接点亮任务锚定的知识宇宙节点
-                  const nodeIds = getTaskNodeIds(task, graph.nodes, getStoredPlanScope());
-                  for (const id of nodeIds) markLearned(id);
-                  trackEvent("task_completed", {
-                    title_plain: task?.title_plain,
-                    title_professional: task?.title_professional,
-                    difficulty: task?.difficulty,
-                    node_ids: nodeIds,
-                  });
-                  setTimeout(() => {
-                    const afterLearned = getLearnedNodeIds(graph.nodes);
-                    const newNodes = [...afterLearned].filter((id) => !beforeLearned.has(id));
-                    if (newNodes.length > 0) {
-                      const names = newNodes.map((id) => graph.nodes.find((n) => n.id === id)?.name).filter(Boolean);
-                      setUniverseToast(names.length > 0 ? names.join("、") : null);
-                      setTimeout(() => setUniverseToast(null), 6000);
-                    }
-                  }, 300);
-                }}
-                className="border border-cyan-400/40 bg-cyan-400/10 px-4 py-2 font-mono text-xs tracking-widest text-cyan-200 hover:bg-cyan-400/20 transition-colors"
-              >
-                ✓ 完成任务
-              </button>
-            ) : (
-              <span className="text-xs text-emerald-300 font-mono font-medium tracking-widest bg-emerald-500/15 border border-emerald-400/20 px-3 py-1.5">已完成 ✓</span>
-            )}
-            </div>
-          </div>
 
-          {/* 迷你流程轨：全程知道自己在任务的哪个环节 */}
-          <div className="mt-2.5 flex items-center gap-3">
-            <TaskFlowMap flow={flow} completed={completed} compact onPhaseClick={handlePhaseClick} />
-            <button
-              onClick={() => setShowFlowMap(true)}
-              className="font-mono text-[10px] tracking-widest text-cyan-300/50 hover:text-cyan-200 transition-colors"
-            >
-              流程全景 ⌕
-            </button>
-            {diveSummary && (
-              <span className="font-mono text-[10px] text-fuchsia-300/50">深潜 {diveSummary}</span>
-            )}
+      {/* ═══ Left: Steps Navigation ═══ */}
+      <div className="relative z-10 flex flex-col border-r border-cyan-400/[0.12] bg-[#0a0a14]/60 backdrop-blur-xl max-md:hidden" style={{ width: leftPanel.size } as CSSProperties}>
+        {/* Task header */}
+        <div className="px-4 py-4 border-b border-cyan-400/[0.08]">
+          <button
+            onClick={() => router.push("/plan/detail")}
+            className="flex items-center gap-1.5 text-[11px] font-mono text-cyan-300/50 hover:text-cyan-200 transition-colors mb-2"
+          >
+            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+            返回计划
+          </button>
+          <h1 className="text-sm font-semibold text-white/90 leading-snug">{task.title_plain}</h1>
+          <p className="font-mono text-[10px] text-cyan-200/40 mt-1">{task.title_professional}</p>
+          <div className="flex items-center gap-2 mt-2">
+            <span className={`text-[10px] font-mono font-medium ${DIFFICULTY_COLORS[task.difficulty] || "text-amber-300"}`}>
+              {DIFFICULTY_LABELS[task.difficulty] || "适中"}
+            </span>
+            <span className="font-mono text-[10px] text-white/30">~{task.estimated_minutes}min</span>
           </div>
-          <div className="cyber-dataline absolute inset-x-0 bottom-0 h-px" />
         </div>
 
-        {/* 锚点卡 HUD：常驻右上角 */}
-        {(anchor || anchorLoading) && (
-          <div className="absolute right-4 top-[132px] z-20 max-lg:top-[150px]">
-            {anchor ? (
-              <AnchorHUD anchor={anchor} />
-            ) : (
-              <div className="cyber-panel px-3 py-2 font-mono text-[10px] tracking-widest text-amber-300/50 cyber-cursor">
-                提取锚点中...
-              </div>
-            )}
+        {/* Anchor card mini */}
+        {anchor && (
+          <div className="px-4 py-3 border-b border-cyan-400/[0.08]">
+            <p className="font-mono text-[9px] tracking-[0.2em] text-amber-300/60 mb-1">◈ 锚点</p>
+            <p className="text-[11px] text-white/60 leading-relaxed">{anchor.invariant}</p>
           </div>
         )}
 
-        {/* Chat area */}
-        <div className="flex-1 overflow-y-auto px-8 py-6 space-y-5">
-          {/* Initial AI guidance messages */}
-          {messages.length === 0 && !streamingText && !chatLoading && (
-            <div className="space-y-4">
-              <div className="flex justify-start">
-                <div className="cyber-panel max-w-[78%] px-5 py-3 text-[15px] leading-relaxed text-white/70">
-                  有什么不清楚的，随时问我
-                </div>
-              </div>
-              <div className="flex justify-start">
-                <div className="max-w-[78%] space-y-2">
-                  <p className="font-mono text-xs tracking-wider text-cyan-300/40 mb-2">你可以问我：</p>
-                  {["这一步具体怎么开始？", "有什么好的学习资源？", "我卡住了，能给个提示吗？"].map((q) => (
-                    <button
-                      key={q}
-                      onClick={() => sendChat(q)}
-                      className="block w-full text-left border border-cyan-400/[0.15] bg-cyan-400/[0.04] px-4 py-2.5 text-sm text-white/70 hover:bg-cyan-400/10 hover:border-cyan-400/30 hover:text-cyan-100 transition-all"
-                    >
-                      {q}
-                    </button>
-                  ))}
-                </div>
-              </div>
+        {/* Steps list */}
+        <div className="flex-1 overflow-y-auto scrollbar-cosmic px-3 py-3">
+          {breakdownLoading ? (
+            <div className="text-center py-8">
+              <div className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-cyan-400/20 border-t-cyan-400/80" />
+              <p className="mt-2 font-mono text-[10px] text-cyan-300/40">拆解任务中...</p>
             </div>
-          )}
-
-          {messages.map((msg, i) => (
-            <ChatBubbleGroup key={i} role={msg.role} content={msg.content} />
-          ))}
-
-          {/* Streaming */}
-          {streamingText && (
-            <div className="flex justify-start">
-              <div className="cyber-panel max-w-[78%] px-5 py-3 text-[15px] leading-relaxed text-white/70 whitespace-pre-wrap">
-                {streamingText}
-                <span className="inline-flex items-center ml-1.5 gap-0.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/60 animate-bounce [animation-delay:0ms]" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/60 animate-bounce [animation-delay:150ms]" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/60 animate-bounce [animation-delay:300ms]" />
-                </span>
-              </div>
-            </div>
-          )}
-
-          {chatLoading && !streamingText && (
-            <div className="flex justify-start">
-              <div className="cyber-panel px-5 py-3 text-[15px] text-cyan-200/50 flex items-center gap-2">
-                <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                </svg>
-                思考中...
-              </div>
-            </div>
-          )}
-
-          {/* Resource results inline */}
-          {resourceResults.length > 0 && (
-            <div className="flex justify-start">
-              <div className="cyber-panel cyber-corner max-w-[78%] p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <p className="font-mono text-xs font-medium tracking-wider text-cyan-200/70">📚 为你找到的资源</p>
-                  <button onClick={() => setResourceResults([])} className="text-xs text-fuchsia-300/40 hover:text-fuchsia-300">✕</button>
-                </div>
-                <div className="space-y-2">
-                  {resourceResults.map((r, i) => (
-                    <div key={i} className="border border-cyan-400/[0.12] bg-cyan-400/[0.03] p-2.5">
-                      {r.url ? (
-                        <a href={r.url} target="_blank" rel="noopener noreferrer" className="text-xs font-medium text-white/90 hover:text-cyan-300 hover:underline">
-                          {r.title}
-                        </a>
-                      ) : (
-                        <p className="text-xs font-medium text-white/70">{r.title}</p>
-                      )}
-                      <p className="text-[11px] text-white/50 mt-0.5">{r.reason}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          <div ref={chatEndRef} />
-          <div className="h-20" />
-        </div>
-
-        {/* Floating input area */}
-        <div className="px-8 pb-8">
-          <div className="cyber-panel cyber-corner p-4">
-            {/* Soft upgrade after completion */}
-            {completed && nextTask && (
-              <div className="mb-3 pb-3 border-b border-cyan-400/[0.12]">
-                <SoftUpgrade
-                  nextTaskName={nextTask.title_plain}
-                  nextTaskMinutes={nextTask.estimated_minutes}
-                  onAccept={() => {
-                    if (nextTask && planContext) {
-                      saveSessionItem("qicheng_current_task", JSON.stringify(nextTask));
-                      window.location.reload();
-                    }
-                  }}
-                />
-              </div>
-            )}
-
-            {/* Action buttons */}
-            <div className="flex gap-2 mb-3">
-              <button
-                onClick={searchResource}
-                disabled={searchingResource || chatLoading}
-                className="border border-cyan-400/30 bg-cyan-400/[0.06] px-3 py-1.5 font-mono text-[11px] tracking-wider text-cyan-200/80 hover:bg-cyan-400/15 transition-colors disabled:opacity-50"
-              >
-                {searchingResource ? "搜索中..." : "🔍 搜索学习资源"}
-              </button>
-              <MoodCheckin />
-            </div>
-
-            {/* Input form */}
-            <form onSubmit={(e) => { e.preventDefault(); sendChat(); }} className="flex gap-2 items-center">
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="问问这个任务怎么做..."
-                disabled={chatLoading}
-                className="flex-1 bg-transparent px-3 py-2.5 text-[15px] text-white/90 placeholder:text-cyan-200/25 focus:outline-none disabled:opacity-50"
-              />
-              <button
-                type="submit"
-                disabled={chatLoading || !input.trim()}
-                className="border border-cyan-400/40 bg-cyan-400/10 px-5 py-2.5 font-mono text-sm tracking-widest text-cyan-200 hover:bg-cyan-400/20 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-              >
-                发送
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-
-      {/* Right: Task breakdown panel */}
-      <div className="relative z-10 w-[380px] overflow-y-auto border-l border-cyan-400/[0.12] bg-[#0a0a14]/40 backdrop-blur-xl px-6 py-6 max-lg:hidden">
-        <div className="flex items-center gap-2 mb-1">
-          <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_6px_rgba(34,211,238,0.8)]" />
-          <h2 className="font-mono text-xs font-semibold text-cyan-200/60 uppercase tracking-[0.25em]">
-            任务拆解
-          </h2>
-        </div>
-        <p className="font-mono text-[11px] tracking-wider text-fuchsia-300/40 mb-4">
-          {planContext?.stageName || "执行步骤与提示"}
-        </p>
-        <div className="cyber-dataline mb-5 h-px w-full" />
-
-        {breakdownLoading ? (
-          <div className="text-center py-12">
-            <div className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-cyan-400/20 border-t-cyan-400/80" />
-            <p className="cyber-cursor mt-3 font-mono text-xs text-cyan-300/40">正在拆解任务...</p>
-          </div>
-        ) : breakdown ? (
-          <div className="space-y-5">
-            {/* Steps */}
-            <div>
-              <div className="flex items-center gap-1.5 font-mono text-xs font-medium tracking-wider text-cyan-200/60 mb-3">
-                <span>📋</span>
-                <span>执行步骤</span>
-              </div>
-              <p className="font-mono text-[10px] text-cyan-300/35 mb-2">点击步骤 → 左侧生成详细讲解与练习题</p>
-              <div className="space-y-2.5">
-                {breakdown.steps.map((step) => {
-                  const dstate = flow.diveStates[step.order];
-                  const isDiveLoading = diveLoadingOrder === step.order;
-                  return (
-                    <div key={step.order} className="cyber-panel flex gap-3 p-3.5 transition-all group">
-                      <span className="flex h-5 w-5 shrink-0 items-center justify-center border border-cyan-400/30 bg-cyan-400/10 font-mono text-[10px] font-medium text-cyan-200 mt-0.5 transition-colors group-hover:bg-cyan-400/25">
-                        {String(step.order).padStart(2, "0")}
+          ) : breakdown ? (
+            <div className="space-y-1.5">
+              {breakdown.steps.map((step) => {
+                const isActive = activeStep === step.order;
+                const dstate = flow.diveStates[step.order];
+                return (
+                  <button
+                    key={step.order}
+                    onClick={() => handleStepSelect(step)}
+                    className={`w-full text-left px-3 py-2.5 rounded transition-all ${
+                      isActive
+                        ? "bg-cyan-400/10 border border-cyan-400/30"
+                        : "hover:bg-white/[0.03] border border-transparent"
+                    }`}
+                  >
+                    <div className="flex items-start gap-2">
+                      <span className={`flex h-5 w-5 shrink-0 items-center justify-center rounded font-mono text-[10px] font-medium mt-0.5 ${
+                        isActive ? "bg-cyan-400/20 text-cyan-200" : "bg-white/[0.06] text-white/40"
+                      }`}>
+                        {step.order}
                       </span>
                       <div className="flex-1 min-w-0">
-                        <button
-                          onClick={() => handleStepClick(step)}
-                          disabled={chatLoading}
-                          className="block w-full text-left disabled:opacity-50"
-                        >
-                          <p className="text-sm font-medium text-white/90 group-hover:text-cyan-200 transition-colors">{step.title}</p>
-                          <p className="text-[11px] text-white/50 mt-1 leading-relaxed">{step.description}</p>
-                        </button>
-                        <div className="flex items-center gap-2 mt-2">
-                          <span className="font-mono text-[10px] text-fuchsia-300/40">~{step.estimated_minutes} 分钟</span>
-                          <button
-                            onClick={() => handleStepClick(step)}
-                            disabled={chatLoading}
-                            className="font-mono text-[10px] text-cyan-300/50 hover:text-cyan-200 transition-colors disabled:opacity-40"
-                          >
-                            讲解 →
-                          </button>
-                          <button
-                            onClick={() => fetchDive(step)}
-                            disabled={isDiveLoading || diveLoadingOrder !== null}
-                            title="逐行深潜：一行行推进，懂了才继续"
-                            className={`border px-2 py-0.5 font-mono text-[10px] tracking-wider transition-all disabled:opacity-40 ${
-                              dstate?.done
-                                ? "border-emerald-400/40 bg-emerald-400/10 text-emerald-300"
-                                : "border-fuchsia-400/30 bg-fuchsia-400/[0.06] text-fuchsia-300/80 hover:bg-fuchsia-400/15"
-                            }`}
-                          >
-                            {isDiveLoading ? "生成中..." : dstate?.done ? "✓ 深潜完成" : dstate ? `深潜 ${dstate.current}/${dstate.total}` : "⌄ 深潜"}
-                          </button>
+                        <p className={`text-[12px] font-medium leading-snug ${isActive ? "text-cyan-100" : "text-white/70"}`}>
+                          {step.title}
+                        </p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="font-mono text-[9px] text-white/30">~{step.estimated_minutes}min</span>
+                          {dstate?.done && <span className="text-[9px] text-emerald-400/70">✓</span>}
                         </div>
                       </div>
                     </div>
-                  );
-                })}
-              </div>
+                  </button>
+                );
+              })}
+
+              {/* Deep dive buttons */}
+              {activeStep !== null && breakdown.steps.find(s => s.order === activeStep) && (
+                <div className="mt-3 pt-3 border-t border-cyan-400/[0.08] space-y-2">
+                  <button
+                    onClick={() => {
+                      const step = breakdown.steps.find(s => s.order === activeStep);
+                      if (step) fetchDive(step);
+                    }}
+                    disabled={diveLoadingOrder !== null}
+                    className="w-full text-left px-3 py-2 border border-fuchsia-400/20 bg-fuchsia-400/[0.04] rounded text-[11px] text-fuchsia-200/70 hover:bg-fuchsia-400/10 transition-all disabled:opacity-40"
+                  >
+                    {diveLoadingOrder === activeStep ? "生成中..." : "⌄ 逐行深潜"}
+                  </button>
+                  {anchoredNodeId && (
+                    <button
+                      onClick={() => router.push(`/plan/learn?node=${encodeURIComponent(anchoredNodeId)}`)}
+                      className="w-full text-left px-3 py-2 border border-indigo-400/20 bg-indigo-400/[0.04] rounded text-[11px] text-indigo-200/70 hover:bg-indigo-400/10 transition-all"
+                    >
+                      ✦ 星核探索
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
+          ) : (
+            <div className="text-center py-8 text-white/30 text-[11px]">拆解失败</div>
+          )}
+        </div>
 
-            {/* Tips */}
-            {breakdown.tips && breakdown.tips.length > 0 && (
-              <div>
-                <div className="flex items-center gap-1.5 font-mono text-xs font-medium tracking-wider text-cyan-200/60 mb-2">
-                  <span>💡</span>
-                  <span>小贴士</span>
-                </div>
-                <div className="pl-5 space-y-1.5">
-                  {breakdown.tips.map((tip, i) => (
-                    <p key={i} className="text-[11px] text-white/70 leading-relaxed flex gap-1.5">
-                      <span className="text-cyan-400/50 shrink-0">▸</span>
-                      <span>{tip}</span>
-                    </p>
-                  ))}
-                </div>
-              </div>
-            )}
+        {/* Complete button */}
+        <div className="px-3 py-3 border-t border-cyan-400/[0.08]">
+          {!completed ? (
+            <button
+              onClick={handleComplete}
+              className="w-full border border-cyan-400/40 bg-cyan-400/10 px-4 py-2.5 font-mono text-xs tracking-widest text-cyan-200 hover:bg-cyan-400/20 transition-all"
+            >
+              ✓ 完成任务
+            </button>
+          ) : (
+            <div className="text-center">
+              <span className="text-xs text-emerald-300 font-mono font-medium">已完成 ✓</span>
+              {nextTask && (
+                <button
+                  onClick={() => {
+                    saveSessionItem("qicheng_current_task", JSON.stringify(nextTask));
+                    window.location.reload();
+                  }}
+                  className="mt-2 w-full border border-cyan-400/25 bg-cyan-400/[0.05] px-3 py-2 font-mono text-[11px] text-cyan-200/70 hover:bg-cyan-400/15 transition-all"
+                >
+                  下一个：{nextTask.title_plain} →
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
 
-            {/* Resources */}
-            {breakdown.resources && breakdown.resources.length > 0 && (
-              <div>
-                <div className="flex items-center gap-1.5 font-mono text-xs font-medium tracking-wider text-cyan-200/60 mb-2">
-                  <span>📚</span>
-                  <span>推荐资源</span>
+      {/* Left divider */}
+      <ResizableDivider direction="horizontal" storageKey="qc_task_left_w" defaultSize={260} minSize={200} maxSize={400} side="left" onResize={leftPanel.onResize} />
+
+      {/* ═══ Center: Card-based Learning ═══ */}
+      <div className="relative z-10 flex-1 flex flex-col min-w-0">
+        {/* Center header */}
+        <div className="px-6 py-3 border-b border-cyan-400/[0.08] bg-[#0a0a14]/40 backdrop-blur-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              {activeStep !== null && breakdown ? (
+                <div className="flex items-center gap-2">
+                  <span className="flex h-5 w-5 items-center justify-center rounded bg-cyan-400/15 font-mono text-[10px] text-cyan-200">{activeStep}</span>
+                  <span className="text-sm font-medium text-white/85">{breakdown.steps.find(s => s.order === activeStep)?.title}</span>
                 </div>
-                <div className="pl-5 space-y-1.5">
-                  {breakdown.resources.map((res, i) => (
-                    <p key={i} className="text-[11px] text-white/70 leading-relaxed flex gap-1.5">
-                      <span className="text-fuchsia-400/50 shrink-0">→</span>
-                      <span>{res}</span>
-                    </p>
-                  ))}
-                </div>
-              </div>
+              ) : (
+                <span className="text-sm text-white/50">选择左侧步骤开始学习</span>
+              )}
+            </div>
+            {teachCards.length > 0 && (
+              <span className="font-mono text-[10px] text-white/30">
+                {visibleCardIdx + 1} / {teachCards.length}
+              </span>
             )}
           </div>
-        ) : (
-          <div className="text-center py-12 text-white/35">
-            <p className="text-2xl">🔧</p>
-            <p className="mt-2 text-xs">拆解失败，可以直接问 AI</p>
+        </div>
+
+        {/* Cards content */}
+        <div className="flex-1 overflow-y-auto scrollbar-cosmic px-6 py-6">
+          {activeStep === null && !teachLoading && (
+            <div className="flex flex-col items-center justify-center h-full text-center">
+              <div className="w-16 h-16 border border-cyan-400/15 bg-cyan-400/[0.04] rounded-xl flex items-center justify-center mb-4">
+                <svg className="w-7 h-7 text-cyan-300/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.627 48.627 0 0 1 12 20.904a48.627 48.627 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342" />
+                </svg>
+              </div>
+              <h2 className="text-base font-medium text-white/60 mb-2">选择步骤开始学习</h2>
+              <p className="text-[12px] text-white/30 max-w-sm">
+                从左侧选择一个步骤，AI 会用卡片式教学一步步带你搞懂
+              </p>
+            </div>
+          )}
+
+          {/* Teach loading */}
+          {teachLoading && (
+            <div className="space-y-4">
+              {teachStreamText ? (
+                <div className="cyber-panel p-5 text-[14px] leading-relaxed text-white/70 whitespace-pre-wrap">
+                  {teachStreamText.slice(0, 200)}...
+                  <div className="mt-3 flex items-center gap-2 text-cyan-300/50 text-[11px]">
+                    <div className="h-3 w-3 animate-spin rounded-full border-2 border-cyan-400/20 border-t-cyan-400/80" />
+                    正在生成教学内容...
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center justify-center py-20">
+                  <div className="text-center">
+                    <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-cyan-400/20 border-t-cyan-400/80" />
+                    <p className="mt-3 font-mono text-xs text-cyan-300/40">正在为你准备教学卡片...</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Rendered cards */}
+          {!teachLoading && teachCards.length > 0 && (
+            <div className="space-y-4 max-w-2xl mx-auto">
+              {teachCards.slice(0, visibleCardIdx + 1).map((card, i) => (
+                <TeachCardRenderer key={i} card={card} isLatest={i === visibleCardIdx} />
+              ))}
+
+              {/* Next card button */}
+              {visibleCardIdx < teachCards.length - 1 && (
+                <div className="flex justify-center pt-4">
+                  <button
+                    onClick={() => setVisibleCardIdx((v) => v + 1)}
+                    className="border border-cyan-400/30 bg-cyan-400/[0.06] px-6 py-2.5 font-mono text-xs text-cyan-200/80 hover:bg-cyan-400/15 hover:border-cyan-400/50 transition-all"
+                  >
+                    继续 →
+                  </button>
+                </div>
+              )}
+
+              {visibleCardIdx === teachCards.length - 1 && (
+                <div className="flex justify-center pt-4">
+                  <span className="font-mono text-[11px] text-emerald-300/60">✓ 本步骤学习完成</span>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Right divider */}
+      <ResizableDivider direction="horizontal" storageKey="qc_task_right_w" defaultSize={320} minSize={240} maxSize={480} side="right" onResize={rightPanel.onResize} />
+
+      {/* ═══ Right: Notes + AI Chat ═══ */}
+      <div className="relative z-10 flex flex-col border-l border-[var(--border-1)] bg-[var(--bg-1)]/95 backdrop-blur-xl max-lg:hidden" style={{ width: rightPanel.size } as CSSProperties}>
+        {/* Tab header — matches learn page */}
+        <div className="flex items-center gap-1 border-b border-[var(--border-1)] px-3 py-2">
+          <button
+            onClick={() => setRightTab("notes")}
+            className={`flex items-center gap-1.5 rounded px-3 py-1.5 text-[var(--font-xs)] font-medium transition-all ${
+              rightTab === "notes"
+                ? "bg-amber-500/15 text-amber-200"
+                : "text-[var(--text-3)] hover:bg-[var(--bg-2)] hover:text-[var(--text-1)]"
+            }`}
+          >
+            <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+            笔记
+          </button>
+          <button
+            onClick={() => setRightTab("chat")}
+            className={`flex items-center gap-1.5 rounded px-3 py-1.5 text-[var(--font-xs)] font-medium transition-all ${
+              rightTab === "chat"
+                ? "bg-[var(--qc-accent-muted)] text-[var(--qc-accent)]"
+                : "text-[var(--text-3)] hover:bg-[var(--bg-2)] hover:text-[var(--text-1)]"
+            }`}
+          >
+            <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+            </svg>
+            AI 答疑
+            {messages.filter(m => m.role === "user").length > 0 && (
+              <span className="rounded-full bg-[var(--qc-accent-muted)] px-1.5 text-[9px] text-[var(--qc-accent)]">{messages.filter(m => m.role === "user").length}</span>
+            )}
+          </button>
+          <div className="flex-1" />
+          <button
+            onClick={() => setRightTab(rightTab === "notes" ? "chat" : "notes")}
+            title="切换面板"
+            className="rounded p-1.5 text-[var(--text-3)] hover:bg-[var(--bg-2)] hover:text-[var(--text-1)] transition-colors"
+          >
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Notes tab — uses MessageNotePanel */}
+        {rightTab === "notes" && task && (
+          <MessageNotePanel
+            subjectName={planContext?.domain || "general"}
+            nodeName={task.title_plain}
+            nodeId={`task_${task.title_professional}`}
+          />
+        )}
+
+        {/* AI Chat tab — thread-based like learn page */}
+        {rightTab === "chat" && (
+          <div className="flex-1 flex flex-col min-h-0">
+            <div className="flex-1 overflow-y-auto scrollbar-cosmic px-4 py-4 space-y-4">
+              {messages.length === 0 && !streamingText && (
+                <div className="flex flex-col items-center justify-center h-full text-center gap-2">
+                  <div className="text-2xl opacity-30">💬</div>
+                  <p className="text-[var(--font-sm)] text-[var(--text-3)]">探索途中有疑问？</p>
+                  <p className="text-[var(--font-xs)] text-[var(--text-3)]/60">在下方输入你的问题，不会打断学习流程</p>
+                </div>
+              )}
+
+              {messages.map((msg, i) => (
+                <div key={i}>
+                  {msg.role === "user" ? (
+                    <div className="flex justify-end">
+                      <div className="max-w-[85%] rounded-[var(--radius-panel)] bg-[var(--qc-accent-muted)] border border-[var(--qc-accent)]/15 px-3.5 py-2 text-[var(--font-sm)] text-[var(--text-1)]">
+                        {msg.content}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="rounded-[var(--radius-panel)] border border-[var(--border-1)] bg-[var(--bg-2)] px-3.5 py-2.5 text-[var(--font-sm)] text-[var(--text-2)] leading-relaxed whitespace-pre-wrap">
+                      {msg.content}
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              {streamingText && (
+                <div className="rounded-[var(--radius-panel)] border border-[var(--border-1)] bg-[var(--bg-2)] px-3.5 py-2.5 text-[var(--font-sm)] text-[var(--text-2)] leading-relaxed whitespace-pre-wrap">
+                  {streamingText}
+                  <span className="inline-flex ml-1 gap-0.5">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[var(--qc-accent)] animate-bounce" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-[var(--qc-accent)] animate-bounce [animation-delay:150ms]" />
+                  </span>
+                </div>
+              )}
+
+              {chatLoading && !streamingText && (
+                <div className="flex items-center gap-2 px-1 text-[var(--text-3)]">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--qc-accent)] animate-bounce" />
+                  <span className="text-[var(--font-xs)]">思考中…</span>
+                </div>
+              )}
+              <div ref={chatEndRef} />
+            </div>
+
+            {/* Chat input */}
+            <div className="px-3 py-3 border-t border-[var(--border-1)]">
+              <form onSubmit={(e) => { e.preventDefault(); sendChat(); }} className="flex gap-2">
+                <input
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="输入你的疑问…"
+                  disabled={chatLoading}
+                  className="flex-1 rounded-[var(--radius-control)] border border-[var(--border-1)] bg-[var(--bg-3)] px-3 py-2 text-[var(--font-sm)] text-[var(--text-1)] placeholder:text-[var(--text-3)] focus:border-[var(--qc-accent)] focus:outline-none disabled:opacity-50 transition-all"
+                />
+                <button
+                  type="submit"
+                  disabled={chatLoading || !input.trim()}
+                  className="rounded-[var(--radius-control)] bg-[var(--qc-accent-muted)] border border-[var(--qc-accent)]/20 px-3 py-2 text-[var(--font-xs)] font-medium text-[var(--qc-accent)] hover:bg-[var(--qc-accent)]/20 disabled:opacity-30 transition-all"
+                >
+                  发送
+                </button>
+              </form>
+            </div>
           </div>
         )}
       </div>
 
-      {/* 第一屏：任务流程全景图 */}
-      {showFlowMap && (
-        <div className="fixed inset-0 z-40 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setShowFlowMap(false)} />
-          <div className="cyber-panel cyber-corner relative w-full max-w-lg max-h-[86vh] overflow-y-auto p-6 shadow-2xl shadow-black/60">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <p className="font-mono text-[10px] tracking-[0.3em] text-cyan-300/50">MISSION FLOW // 任务流程</p>
-                <h2 className="mt-1 text-lg font-semibold text-white/90">{task.title_plain}</h2>
-                <p className="mt-0.5 font-mono text-[11px] text-cyan-200/40">{task.title_professional}</p>
-              </div>
-              <button onClick={() => setShowFlowMap(false)} className="text-white/40 hover:text-white/80 transition-colors">✕</button>
-            </div>
-
-            {/* 锚点卡预览 */}
-            <div className="mt-4 border border-amber-400/20 bg-amber-400/[0.04] p-3">
-              {anchor ? (
-                <>
-                  <p className="font-mono text-[9px] tracking-[0.25em] text-amber-300/70">◈ 锚点 · 最不能脱离的东西</p>
-                  <p className="mt-1 text-xs leading-relaxed text-white/75">{anchor.invariant}</p>
-                </>
-              ) : anchorLoading ? (
-                <p className="cyber-cursor font-mono text-[11px] text-amber-300/50">正在提取这个知识的锚点...</p>
-              ) : (
-                <p className="font-mono text-[11px] text-white/40">锚点提取失败，点击下方「锚点提取」环节重试</p>
-              )}
-            </div>
-
-            <div className="cyber-dataline my-4 h-px" />
-            <TaskFlowMap flow={flow} completed={completed} diveSummary={diveSummary} onPhaseClick={handlePhaseClick} />
-
-            <button
-              onClick={() => setShowFlowMap(false)}
-              className="mt-4 w-full border border-cyan-400/40 bg-cyan-400/10 px-4 py-2.5 font-mono text-xs tracking-widest text-cyan-200 hover:bg-cyan-400/20 transition-all"
-            >
-              {completed ? "回顾任务 →" : "继续任务 →"}
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* 逐行深潜卡 */}
+      {/* ═══ Deep Dive Modal ═══ */}
       {activeDive !== null && dives[activeDive] && (
         <div className="fixed inset-0 z-40 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setActiveDive(null)} />
@@ -1010,15 +849,7 @@ function TaskDetailContent() {
               onProgress={(current, stuckCount, done) => {
                 setFlow((prev) => ({
                   ...prev,
-                  diveStates: {
-                    ...prev.diveStates,
-                    [activeDive]: {
-                      current,
-                      total: dives[activeDive].lines.length,
-                      stuckCount,
-                      done,
-                    },
-                  },
+                  diveStates: { ...prev.diveStates, [activeDive]: { current, total: dives[activeDive].lines.length, stuckCount, done } },
                 }));
               }}
               onExpandLine={expandDiveLine}
@@ -1028,10 +859,10 @@ function TaskDetailContent() {
         </div>
       )}
 
-      {/* Universe node lit toast */}
+      {/* Universe toast */}
       {universeToast && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-[slide-up_0.3s_ease-out]">
-          <div className="cyber-panel cyber-corner flex items-center gap-3 px-5 py-3">
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-fade-in">
+          <div className="flex items-center gap-3 px-5 py-3 rounded border border-cyan-400/20 bg-[#0a0a14]/90 backdrop-blur-xl">
             <span className="text-lg">✨</span>
             <div>
               <p className="text-xs font-medium text-white/90">知识宇宙点亮了新节点</p>
@@ -1039,11 +870,138 @@ function TaskDetailContent() {
             </div>
             <button
               onClick={() => router.push("/universe")}
-              className="ml-2 border border-cyan-400/40 bg-cyan-400/10 px-3 py-1.5 font-mono text-[11px] font-medium tracking-wider text-cyan-200 hover:bg-cyan-400/20 transition-colors"
+              className="ml-2 border border-cyan-400/30 bg-cyan-400/10 px-3 py-1.5 font-mono text-[10px] text-cyan-200 hover:bg-cyan-400/20 transition-colors rounded"
             >
               去看看
             </button>
           </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Teach Card Component ───
+function TeachCardRenderer({ card, isLatest }: { card: TeachCard; isLatest: boolean }) {
+  const [quizAnswer, setQuizAnswer] = useState<string | null>(null);
+  const [showQuizResult, setShowQuizResult] = useState(false);
+
+  const typeStyles: Record<string, { border: string; icon: string; label: string }> = {
+    HOOK: { border: "border-amber-400/20", icon: "🪝", label: "HOOK" },
+    TEACH: { border: "border-cyan-400/15", icon: "📖", label: "TEACH" },
+    KEY: { border: "border-fuchsia-400/20", icon: "🎯", label: "KEY" },
+    QUIZ: { border: "border-indigo-400/20", icon: "⚔️", label: "QUIZ" },
+    TIP: { border: "border-emerald-400/20", icon: "💡", label: "TIP" },
+    SUMMARY: { border: "border-violet-400/20", icon: "✨", label: "SUMMARY" },
+  };
+
+  const style = typeStyles[card.type] || typeStyles.TEACH;
+
+  if (card.type === "QUIZ") {
+    return <QuizCardRenderer content={card.content} style={style} isLatest={isLatest} quizAnswer={quizAnswer} setQuizAnswer={setQuizAnswer} showResult={showQuizResult} setShowResult={setShowQuizResult} />;
+  }
+
+  return (
+    <div className={`border ${style.border} bg-[#0c0c1a]/60 rounded-lg p-5 ${isLatest ? "animate-fade-in" : ""}`}>
+      <div className="flex items-center gap-2 mb-3">
+        <span className="text-sm">{style.icon}</span>
+        <span className="font-mono text-[9px] tracking-[0.2em] text-white/25 uppercase">{style.label}</span>
+      </div>
+      <div className="text-[14px] text-white/75 leading-relaxed whitespace-pre-wrap">
+        {card.content}
+      </div>
+    </div>
+  );
+}
+
+function QuizCardRenderer({
+  content, style, isLatest, quizAnswer, setQuizAnswer, showResult, setShowResult,
+}: {
+  content: string; style: { border: string; icon: string; label: string }; isLatest: boolean;
+  quizAnswer: string | null; setQuizAnswer: (v: string | null) => void;
+  showResult: boolean; setShowResult: (v: boolean) => void;
+}) {
+  const lines = content.split("\n");
+  const questionLines: string[] = [];
+  const options: { label: string; text: string }[] = [];
+  let correctAnswer = "";
+  let explanation = "";
+
+  let section: "question" | "options" | "answer" = "question";
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (trimmed.match(/^-\s*[A-D]\)/)) {
+      section = "options";
+      const match = trimmed.match(/^-\s*([A-D])\)\s*(.*)/);
+      if (match) options.push({ label: match[1], text: match[2] });
+    } else if (trimmed.startsWith("ANSWER:")) {
+      section = "answer";
+      correctAnswer = trimmed.replace("ANSWER:", "").trim();
+    } else if (trimmed.startsWith("WHY:")) {
+      explanation = trimmed.replace("WHY:", "").trim();
+    } else if (section === "answer" && !trimmed.startsWith("ANSWER:") && trimmed) {
+      explanation += "\n" + trimmed;
+    } else if (section === "question") {
+      questionLines.push(line);
+    }
+  }
+
+  return (
+    <div className={`border ${style.border} bg-[#0c0c1a]/60 rounded-lg p-5 ${isLatest ? "animate-fade-in" : ""}`}>
+      <div className="flex items-center gap-2 mb-3">
+        <span className="text-sm">{style.icon}</span>
+        <span className="font-mono text-[9px] tracking-[0.2em] text-white/25 uppercase">{style.label}</span>
+      </div>
+      <div className="text-[14px] text-white/75 leading-relaxed mb-4 whitespace-pre-wrap">
+        {questionLines.join("\n")}
+      </div>
+
+      <div className="space-y-2">
+        {options.map((opt) => {
+          const isSelected = quizAnswer === opt.label;
+          const isCorrect = opt.label === correctAnswer;
+          const showColor = showResult;
+          return (
+            <button
+              key={opt.label}
+              onClick={() => {
+                if (showResult) return;
+                setQuizAnswer(opt.label);
+              }}
+              className={`w-full text-left px-4 py-2.5 rounded border transition-all text-[13px] ${
+                showColor && isCorrect
+                  ? "border-emerald-400/40 bg-emerald-400/10 text-emerald-200"
+                  : showColor && isSelected && !isCorrect
+                    ? "border-red-400/40 bg-red-400/10 text-red-200"
+                    : isSelected
+                      ? "border-cyan-400/40 bg-cyan-400/10 text-cyan-100"
+                      : "border-white/10 bg-white/[0.02] text-white/60 hover:bg-white/[0.04] hover:border-white/20"
+              }`}
+            >
+              <span className="font-mono font-medium mr-2">{opt.label})</span>
+              {opt.text}
+            </button>
+          );
+        })}
+      </div>
+
+      {quizAnswer && !showResult && (
+        <button
+          onClick={() => setShowResult(true)}
+          className="mt-4 border border-cyan-400/30 bg-cyan-400/[0.06] px-4 py-2 rounded font-mono text-[11px] text-cyan-200/80 hover:bg-cyan-400/15 transition-all"
+        >
+          确认答案
+        </button>
+      )}
+
+      {showResult && (
+        <div className="mt-4 p-3 rounded border border-white/10 bg-white/[0.02]">
+          <p className={`text-[12px] font-medium mb-1 ${quizAnswer === correctAnswer ? "text-emerald-300" : "text-red-300"}`}>
+            {quizAnswer === correctAnswer ? "✓ 正确！" : `✗ 正确答案是 ${correctAnswer}`}
+          </p>
+          {explanation && (
+            <p className="text-[12px] text-white/50 leading-relaxed">{explanation}</p>
+          )}
         </div>
       )}
     </div>

@@ -38,7 +38,7 @@ const BOTTOM_ITEMS: NavItem[] = [
   { href: "/profile", label: "画像", icon: User },
 ];
 
-const IMMERSIVE_ROUTES = ["/onboarding", "/first-day", "/plan/task", "/universe/learn", "/login", "/admin"];
+const IMMERSIVE_ROUTES = ["/onboarding", "/first-day", "/plan/task", "/plan/learn", "/universe/learn", "/login", "/admin"];
 
 const STORAGE_KEY = "qc_siderail_expanded";
 

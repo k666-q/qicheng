@@ -130,6 +130,11 @@ function buildSystemPrompt(draft?: Record<string, unknown>): string {
 - difficulty: 难度 1-10（整数，1=最简单 10=最难。注意要合理分布，不要全部都是5-6，要有真实的难度起伏。简单任务给2-3，适中给4-6，有挑战给7-8，高难度给9-10）
 - day_label: 同 day 字段
 - reason: 可选，为什么放在这天
+- type: **必填**，"learn" 或 "do"
+  - "learn"：前置知识学习任务，用户去星核探索（基础学习）界面完成。适用于需要先理解某个概念/知识点才能推进后续实践的任务。
+  - "do"：实践/动手任务，用户在任务工作台完成。适用于动手做、产出成果、综合运用的任务。
+  - **分配原则**：一份计划中 learn 和 do 应交替出现。通常一个 learn 任务对应后续的 do 任务（学了知识→用知识做事）。不要全部都是 do 或全部都是 learn。
+- linked_node_id: 当 type="learn" 时**必填**，从下方候选节点中选一个最匹配的 id，用户会跳转到该知识节点的学习页。type="do" 时不需要此字段。
 - node_ids: 可选，知识宇宙节点 id 数组（0-2 个）。从下方「知识宇宙候选节点」中选择与该任务知识点**明确对应**的节点 id；没有明确对应就输出空数组 []，不要硬凑。
   - **学科一致性**：整份计划的所有 node_ids 必须来自同一个或紧密相关的少数学科（如编程+数学），绝不能因为字面相似就跨到无关学科（如计算机任务锚到设计学节点）。
   - 如果计划的主题领域在候选列表里没有对应学科，则**全部任务的 node_ids 都输出 []**，宁缺毋滥。
@@ -171,9 +176,15 @@ ${buildKnowledgeNodeCatalog(domain)}
           "week_number": 1,
           "theme": "本周主题",
           "days": [
-            {"day": "周一", "energy_note": "精力好，啃新概念", "tasks": [...]},
-            {"day": "周三", "tasks": [...]},
-            {"day": "周六", "energy_note": "整块时间做项目", "tasks": [...]}
+            {"day": "周一", "energy_note": "精力好，啃新概念", "tasks": [
+              {"title_plain": "搞懂什么是变量", "title_professional": "变量声明与数据类型", "estimated_minutes": 30, "difficulty": 3, "day_label": "周一", "type": "learn", "linked_node_id": "prog_variables", "node_ids": ["prog_variables"]}
+            ]},
+            {"day": "周三", "tasks": [
+              {"title_plain": "用变量做一个简易计算器", "title_professional": "JavaScript 表达式与运算", "estimated_minutes": 45, "difficulty": 5, "day_label": "周三", "type": "do", "node_ids": ["prog_variables"]}
+            ]},
+            {"day": "周六", "energy_note": "整块时间做项目", "tasks": [
+              {"title_plain": "做一个能显示时间的页面", "title_professional": "DOM 操作与 Date API", "estimated_minutes": 60, "difficulty": 6, "day_label": "周六", "type": "do", "node_ids": []}
+            ]}
           ],
           "outcome": "本周成果"
         }

@@ -157,7 +157,7 @@ export default function ProfilePage() {
             </p>
           </div>
           <button
-            onClick={() => router.back()}
+            onClick={() => router.push("/universe")}
             className="border border-cyan-400/20 px-4 py-1.5 font-mono text-sm tracking-widest text-cyan-300/60 hover:border-cyan-400/50 hover:text-cyan-200 transition-colors"
           >
             ← 返回

@@ -209,7 +209,7 @@ export default function NotesPage() {
                         </span>
                       )}
                       <button
-                        onClick={() => router.push(`/universe/learn?node=${encodeURIComponent(note.nodeId)}`)}
+                        onClick={() => router.push(`/universe/learn?node=${encodeURIComponent(note.nodeId)}&from=${encodeURIComponent("/notes")}`)}
                         title={`回到「${note.nodeName}」继续学习`}
                         className="flex items-center gap-1 border border-cyan-400/20 bg-white/[0.04] px-2 py-px font-mono text-[10px] text-white/50 transition-all hover:border-cyan-400/50 hover:bg-cyan-400/10 hover:text-cyan-300"
                       >

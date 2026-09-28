@@ -1214,66 +1214,19 @@ export default function UniversePage() {
 
       {/* Plan constellation route bar */}
       {plan && routeNodes.length > 0 && (
-        <div className="pointer-events-none absolute inset-x-0 top-[60px] z-10 flex justify-center px-6 md:pl-[calc(var(--siderail-width)+24px)] transition-[padding] duration-[var(--dur-base)] ease-[var(--ease)]">
-          <div className="pointer-events-auto max-w-2xl rounded-[var(--radius-panel)] bg-[var(--bg-1)]/70 backdrop-blur-xl overflow-hidden">
-            <button
-              onClick={() => setRouteBarOpen(!routeBarOpen)}
-              className="flex w-full items-center gap-2 px-3.5 py-2 hover:bg-white/[0.04] transition-colors"
-            >
-              <span className="h-[5px] w-[5px] rounded-full bg-amber-400/80" />
-              <span className="text-[var(--font-sm)] text-[var(--text-2)] font-medium truncate max-w-[220px]">{plan.title}</span>
-              <span className="text-[var(--font-xs)] text-[var(--text-3)] tabular-nums shrink-0">
-                {routeNodes.filter((n) => learned.has(n.id)).length}/{routeNodes.length}
-              </span>
-              <svg
-                className={`h-2.5 w-2.5 text-[var(--text-3)] shrink-0 transition-transform ${routeBarOpen ? "rotate-180" : ""}`}
-                fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            {routeBarOpen && (
-              <div className="flex flex-wrap gap-1.5 px-3.5 pb-3">
-                {routeNodes.map((n, i) => {
-                  const lit = learned.has(n.id);
-                  const isCurrent = n.id === currentTaskNodeId;
-                  return (
-                    <button
-                      key={n.id}
-                      onClick={() => {
-                        // 在别的学科视图里时，先切到该节点所在学科
-                        if (focusedSubjectId && focusedSubjectId !== n.subjectId) {
-                          setFocusedSubjectId(n.subjectId);
-                          setDrillNodeId(n.parentId ?? null);
-                          setTimeout(() => {
-                            setFocusNodeId(n.id);
-                            setTimeout(() => setFocusNodeId(null), 3000);
-                          }, 600);
-                          return;
-                        }
-                        setDrillNodeId(n.parentId ?? null);
-                        setFocusNodeId(n.id);
-                        setTimeout(() => setFocusNodeId(null), 3000);
-                      }}
-                      className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] transition-colors ${
-                        isCurrent
-                          ? "bg-amber-400/15 text-amber-200"
-                          : lit
-                            ? "bg-[var(--qc-success)]/10 text-[var(--qc-success)] hover:bg-[var(--qc-success)]/20"
-                            : "bg-white/[0.05] text-[var(--text-3)] hover:bg-white/[0.09] hover:text-[var(--text-1)]"
-                      }`}
-                      title={isCurrent ? "当前任务节点" : lit ? "已点亮" : "待点亮"}
-                    >
-                      <span className="text-[9px] opacity-60 tabular-nums">{i + 1}</span>
-                      {n.name}
-                      {lit && <span>✓</span>}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        </div>
+        <RouteBar
+          plan={plan}
+          routeNodes={routeNodes}
+          learned={learned}
+          currentTaskNodeId={currentTaskNodeId}
+          routeBarOpen={routeBarOpen}
+          setRouteBarOpen={setRouteBarOpen}
+          focusedSubjectId={focusedSubjectId}
+          setFocusedSubjectId={setFocusedSubjectId}
+          setDrillNodeId={setDrillNodeId}
+          setFocusNodeId={setFocusNodeId}
+          router={router}
+        />
       )}
 
       {/* 计划领域未被宇宙收录的提示 — 顶栏下方 toast */}
@@ -1791,7 +1744,7 @@ export default function UniversePage() {
       {/* Welcome overlay: first entry without a plan */}
       {showWelcome && (
         <div className="absolute inset-0 z-50 flex items-center justify-center">
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowWelcome(false)} />
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" onClick={() => setShowWelcome(false)} />
           <div className="relative w-full max-w-lg mx-4 rounded-[var(--radius-panel)] border border-[var(--border-1)] bg-[var(--bg-1)] p-8 shadow-[var(--shadow-modal)]">
             <div className="text-center mb-6">
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-[var(--radius-panel)] border border-[var(--qc-accent)]/30 bg-[var(--qc-accent-muted)] text-[var(--qc-accent)] text-lg font-bold mb-4">
@@ -1847,6 +1800,152 @@ export default function UniversePage() {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+// ═══ RouteBar: plan constellation with deep-node expansion ═══
+function RouteBar({
+  plan, routeNodes, learned, currentTaskNodeId, routeBarOpen, setRouteBarOpen,
+  focusedSubjectId, setFocusedSubjectId, setDrillNodeId, setFocusNodeId, router,
+}: {
+  plan: GeneratedPlan;
+  routeNodes: KnowledgeNode[];
+  learned: Set<string>;
+  currentTaskNodeId: string | null;
+  routeBarOpen: boolean;
+  setRouteBarOpen: (v: boolean) => void;
+  focusedSubjectId: string | null;
+  setFocusedSubjectId: (id: string | null) => void;
+  setDrillNodeId: (id: string | null) => void;
+  setFocusNodeId: (id: string | null) => void;
+  router: ReturnType<typeof useRouter>;
+}) {
+  const [expandedNodeId, setExpandedNodeId] = useState<string | null>(null);
+  const [deepChildren, setDeepChildren] = useState<KnowledgeNode[]>([]);
+  const [deepLoading, setDeepLoading] = useState(false);
+
+  const handleNodeClick = useCallback(async (n: KnowledgeNode) => {
+    if (expandedNodeId === n.id) {
+      setExpandedNodeId(null);
+      setDeepChildren([]);
+      return;
+    }
+
+    // Focus on map
+    if (focusedSubjectId && focusedSubjectId !== n.subjectId) {
+      setFocusedSubjectId(n.subjectId);
+      setDrillNodeId(n.parentId ?? null);
+      setTimeout(() => { setFocusNodeId(n.id); setTimeout(() => setFocusNodeId(null), 3000); }, 600);
+    } else {
+      setDrillNodeId(n.parentId ?? null);
+      setFocusNodeId(n.id);
+      setTimeout(() => setFocusNodeId(null), 3000);
+    }
+
+    // Load deep children if available
+    if (n.hasChildren) {
+      setExpandedNodeId(n.id);
+      setDeepLoading(true);
+      try {
+        const data = await loadDeepNodes(n.id);
+        if (data) setDeepChildren(data.nodes);
+        else setDeepChildren([]);
+      } catch { setDeepChildren([]); }
+      setDeepLoading(false);
+    } else {
+      setExpandedNodeId(null);
+      setDeepChildren([]);
+    }
+  }, [expandedNodeId, focusedSubjectId, setFocusedSubjectId, setDrillNodeId, setFocusNodeId]);
+
+  return (
+    <div className="pointer-events-none absolute inset-x-0 top-[60px] z-10 flex justify-center px-6 md:pl-[calc(var(--siderail-width)+24px)] transition-[padding] duration-[var(--dur-base)] ease-[var(--ease)]">
+      <div className="pointer-events-auto max-w-2xl rounded-[var(--radius-panel)] bg-[var(--bg-1)]/70 backdrop-blur-xl overflow-hidden">
+        <button
+          onClick={() => setRouteBarOpen(!routeBarOpen)}
+          className="flex w-full items-center gap-2 px-3.5 py-2 hover:bg-white/[0.04] transition-colors"
+        >
+          <span className="h-[5px] w-[5px] rounded-full bg-amber-400/80" />
+          <span className="text-[var(--font-sm)] text-[var(--text-2)] font-medium truncate max-w-[220px]">{plan.title}</span>
+          <span className="text-[var(--font-xs)] text-[var(--text-3)] tabular-nums shrink-0">
+            {routeNodes.filter((n) => learned.has(n.id)).length}/{routeNodes.length}
+          </span>
+          <svg
+            className={`h-2.5 w-2.5 text-[var(--text-3)] shrink-0 transition-transform ${routeBarOpen ? "rotate-180" : ""}`}
+            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        {routeBarOpen && (
+          <div className="px-3.5 pb-3">
+            <div className="flex flex-wrap gap-1.5">
+              {routeNodes.map((n, i) => {
+                const lit = learned.has(n.id);
+                const isCurrent = n.id === currentTaskNodeId;
+                const isExpanded = expandedNodeId === n.id;
+                return (
+                  <button
+                    key={n.id}
+                    onClick={() => handleNodeClick(n)}
+                    className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] transition-colors ${
+                      isExpanded
+                        ? "bg-cyan-400/15 text-cyan-200 ring-1 ring-cyan-400/30"
+                        : isCurrent
+                          ? "bg-amber-400/15 text-amber-200"
+                          : lit
+                            ? "bg-[var(--qc-success)]/10 text-[var(--qc-success)] hover:bg-[var(--qc-success)]/20"
+                            : "bg-white/[0.05] text-[var(--text-3)] hover:bg-white/[0.09] hover:text-[var(--text-1)]"
+                    }`}
+                    title={n.hasChildren ? "点击展开子节点" : isCurrent ? "当前任务节点" : lit ? "已点亮" : "待点亮"}
+                  >
+                    <span className="text-[9px] opacity-60 tabular-nums">{i + 1}</span>
+                    {n.name}
+                    {lit && <span>✓</span>}
+                    {n.hasChildren && <span className="text-[8px] opacity-40">▸</span>}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Deep children expansion */}
+            {expandedNodeId && (
+              <div className="mt-2 pt-2 border-t border-white/[0.06]">
+                {deepLoading ? (
+                  <div className="flex items-center gap-2 px-1 py-1">
+                    <div className="h-3 w-3 animate-spin rounded-full border border-cyan-400/20 border-t-cyan-400/80" />
+                    <span className="text-[10px] text-[var(--text-3)]">加载子节点...</span>
+                  </div>
+                ) : deepChildren.length > 0 ? (
+                  <div className="flex flex-wrap gap-1.5">
+                    {deepChildren.map((child) => {
+                      const childLit = learned.has(child.id);
+                      return (
+                        <button
+                          key={child.id}
+                          onClick={() => router.push(`/universe/learn?node=${encodeURIComponent(child.id)}&from=${encodeURIComponent("/universe")}`)}
+                          className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] transition-colors ${
+                            childLit
+                              ? "bg-emerald-400/10 text-emerald-300 hover:bg-emerald-400/20"
+                              : "bg-white/[0.03] text-[var(--text-3)] hover:bg-white/[0.07] hover:text-[var(--text-2)]"
+                          }`}
+                        >
+                          <span className="text-[8px] opacity-40">└</span>
+                          {child.name}
+                          {childLit && <span className="text-[8px]">✓</span>}
+                        </button>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p className="text-[10px] text-[var(--text-3)] px-1 py-1">暂无子节点</p>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -6,8 +6,12 @@ export type PlanTask = {
   difficulty: number;
   day_label: string;
   reason?: string;
+  /** 任务类型：learn=前置知识学习(走星核探索), do=实践任务(走任务工作台) */
+  type?: "learn" | "do";
   /** 关联的知识宇宙节点 id（生成时由 AI 锚定，旧计划由关键词匹配兜底） */
   node_ids?: string[];
+  /** learn 类型直接关联的单个知识节点（跳转星核探索用） */
+  linked_node_id?: string;
 };
 
 export type TaskBreakdown = {

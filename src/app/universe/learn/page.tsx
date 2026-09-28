@@ -4,7 +4,7 @@
 // 流式解析标记协议 → 单卡推进（连续悬念）→ 总结后收尾 → 点亮节点回星图庆祝。
 
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { loadGraph, getLearnedNodeIds, markLearned } from "@/lib/universe/store";
 import { completeTask, buildTaskId } from "@/lib/plan/completion";
 import { PageGuide } from "@/components/ui/PageGuide";
@@ -31,6 +31,7 @@ import {
 import type { ExploreScript, Segment } from "@/lib/stimulus/types";
 import { CorrectFeedback, ComboCounter } from "@/components/stimulus/CorrectFeedback";
 import { MessageNotePanel } from "@/components/notes/MessageNotePanel";
+import { ResizableDivider, useResizablePanel } from "@/components/ui/ResizableDivider";
 import { addNote } from "@/lib/notes/message-notes";
 import {
   HookCard,
@@ -159,13 +160,19 @@ function saveCachedVideo(nodeId: string, url: string) {
   } catch { /* quota */ }
 }
 
-function NodeLearnContent() {
+export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: string } = {}) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
   const nodeId = searchParams.get("node") || "";
   const urlPlanId = searchParams.get("planId");
   const urlFrom = searchParams.get("from");
   const isStarNode = nodeId.startsWith("star_");
+
+  // 计算返回路径：优先使用 overrideReturnPath（/plan/learn 传入），其次 from 参数，最后根据上下文决定
+  const computedReturnPath = overrideReturnPath
+    || (urlFrom ? decodeURIComponent(urlFrom) : null)
+    || (pathname.startsWith("/plan") ? "/plan/detail" : "/universe");
 
   const graph = useMemo(() => loadGraph(), []);
 
@@ -259,6 +266,9 @@ function NodeLearnContent() {
     return () => clearTimeout(timer);
   }, [isStarNode, staticNode, deepNode]);
 
+  // Preview phase: show node context before diving in
+  const [showPreview, setShowPreview] = useState(true);
+
   const [script, setScript] = useState<ExploreScript | null>(null);
   const [segments, setSegments] = useState<Segment[]>([]);
   const [visibleCount, setVisibleCount] = useState(0);
@@ -292,6 +302,7 @@ function NodeLearnContent() {
   // 右侧常驻工具面板：默认展开，Tab 切换 笔记 / AI 答疑（笔记默认激活）
   const [panelOpen, setPanelOpen] = useState(true);
   const [sideTab, setSideTab] = useState<"notes" | "qa">("notes");
+  const learnRightPanel = useResizablePanel("qc_learn_right_w", 380, 280, 500);
   const [excerptToast, setExcerptToast] = useState(false);
 
   // 答对连击计数
@@ -419,9 +430,18 @@ function NodeLearnContent() {
   // 初始化：尝试恢复存档，否则组剧本 + 启动探索
   useEffect(() => {
     if (!node || startedRef.current) return;
-    startedRef.current = true;
 
+    // 有存档 → 跳过预览直接恢复
     const saved = loadExploreSession(node.id);
+    if (saved && saved.exploreText) {
+      setShowPreview(false);
+      startedRef.current = true;
+    } else if (showPreview) {
+      return; // 等待用户确认预览后再开始
+    } else {
+      startedRef.current = true;
+    }
+
     if (saved && saved.exploreText) {
       // 从存档恢复：原始协议文本重新解析，进度与对话原样回放
       restoredRef.current = true;
@@ -455,7 +475,7 @@ function NodeLearnContent() {
     setScript(s);
     recordHookUsed(s.hookId);
     trackEvent("node_explored", { node_id: node.id, node_name: node.name, hook: s.hookId });
-  }, [node, graph]);
+  }, [node, graph, showPreview]);
 
   // 初始化 Manim 视频缓存（一次性迁移：清除 v2 prompt 重写之前的所有旧缓存）
   useEffect(() => {
@@ -823,6 +843,135 @@ function NodeLearnContent() {
     );
   }
 
+  // ═══ Preview Phase: 链路预览过渡层 ═══
+  if (showPreview) {
+    const prereqEdges = graph.edges.filter((e) => e.type === "prerequisite" && e.target === nodeId);
+    const nextEdges = graph.edges.filter((e) => e.type === "prerequisite" && e.source === nodeId);
+    const learned = getLearnedNodeIds(graph.nodes);
+
+    const prereqNodes = prereqEdges
+      .map((e) => graph.nodes.find((n) => n.id === e.source))
+      .filter((n): n is KnowledgeNode => !!n);
+    const nextNodes = nextEdges
+      .map((e) => graph.nodes.find((n) => n.id === e.target))
+      .filter((n): n is KnowledgeNode => !!n);
+
+    const allPrereqLearned = prereqNodes.every((n) => learned.has(n.id));
+
+    return (
+      <div className="relative h-screen overflow-hidden bg-[var(--bg-0)] flex flex-col md:pl-[var(--siderail-width)]">
+        <MiniStarfield />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(76,29,149,0.18),transparent_60%),radial-gradient(ellipse_at_70%_80%,rgba(30,58,138,0.15),transparent_60%)]" />
+
+        {/* 顶栏 */}
+        <header className="relative z-10 flex items-center border-b border-[var(--border-1)] bg-[var(--bg-0)]/70 backdrop-blur-xl px-5 py-3">
+          <button
+            onClick={() => router.push(computedReturnPath)}
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded border border-[var(--border-1)] bg-[var(--bg-2)] text-[var(--text-2)] hover:bg-[var(--bg-3)] transition-colors"
+          >
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <span className="ml-3 font-mono text-[10px] tracking-[0.2em] text-white/30 uppercase">链路预览</span>
+        </header>
+
+        {/* 预览内容 */}
+        <div className="relative z-10 flex-1 flex items-center justify-center px-6">
+          <div className="w-full max-w-xl animate-fade-in">
+            {/* 当前节点 */}
+            <div className="text-center mb-8">
+              {subject && (
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <span className="h-2.5 w-2.5 rounded-full" style={{ background: subject.color }} />
+                  <span className="font-mono text-[11px] text-white/40">{subject.name}</span>
+                </div>
+              )}
+              <h1 className="text-2xl font-bold text-white/90">{node.name}</h1>
+              {node.plain_name && node.plain_name !== node.name && (
+                <p className="text-sm text-white/40 mt-1">{node.plain_name}</p>
+              )}
+              {node.description && (
+                <p className="text-[13px] text-white/50 mt-3 max-w-md mx-auto leading-relaxed">{node.description}</p>
+              )}
+              {learned.has(node.id) && (
+                <span className="inline-block mt-3 font-mono text-[10px] text-emerald-300/70 bg-emerald-400/10 border border-emerald-400/20 px-2.5 py-1 rounded">已学习 ✓</span>
+              )}
+            </div>
+
+            {/* 前置节点 */}
+            {prereqNodes.length > 0 && (
+              <div className="mb-6">
+                <p className="font-mono text-[10px] tracking-[0.15em] text-white/30 mb-2 text-center">前置知识</p>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {prereqNodes.map((pn) => {
+                    const isLearned = learned.has(pn.id);
+                    return (
+                      <button
+                        key={pn.id}
+                        onClick={() => router.push(`${pathname}?node=${encodeURIComponent(pn.id)}${urlFrom ? `&from=${urlFrom}` : ""}`)}
+                        className={`px-3 py-1.5 rounded border text-[12px] transition-all ${
+                          isLearned
+                            ? "border-emerald-400/20 bg-emerald-400/[0.06] text-emerald-200/70"
+                            : "border-amber-400/20 bg-amber-400/[0.06] text-amber-200/70 hover:bg-amber-400/10"
+                        }`}
+                      >
+                        {isLearned ? "✓ " : "○ "}{pn.name}
+                      </button>
+                    );
+                  })}
+                </div>
+                {!allPrereqLearned && (
+                  <p className="text-center text-[11px] text-amber-300/50 mt-2">
+                    有前置知识未学习，建议先完成
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* 连接线视觉 */}
+            {(prereqNodes.length > 0 || nextNodes.length > 0) && (
+              <div className="flex items-center justify-center gap-3 my-4 text-white/15">
+                {prereqNodes.length > 0 && <span className="font-mono text-[10px]">{prereqNodes.length} 前置</span>}
+                <span>→</span>
+                <span className="font-mono text-[11px] text-cyan-300/60 font-medium">{node.name}</span>
+                <span>→</span>
+                {nextNodes.length > 0 && <span className="font-mono text-[10px]">{nextNodes.length} 后续</span>}
+              </div>
+            )}
+
+            {/* 后续节点 */}
+            {nextNodes.length > 0 && (
+              <div className="mb-8">
+                <p className="font-mono text-[10px] tracking-[0.15em] text-white/30 mb-2 text-center">学完后解锁</p>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {nextNodes.slice(0, 5).map((nn) => (
+                    <span key={nn.id} className="px-3 py-1.5 rounded border border-white/10 bg-white/[0.02] text-[12px] text-white/40">
+                      {nn.name}
+                    </span>
+                  ))}
+                  {nextNodes.length > 5 && (
+                    <span className="px-3 py-1.5 text-[12px] text-white/25">+{nextNodes.length - 5} 更多</span>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* 开始按钮 */}
+            <div className="flex justify-center">
+              <button
+                onClick={() => setShowPreview(false)}
+                className="border border-cyan-400/40 bg-cyan-400/10 px-8 py-3 font-mono text-sm tracking-widest text-cyan-200 hover:bg-cyan-400/20 hover:border-cyan-400/60 transition-all shadow-[0_0_20px_rgba(34,211,238,0.1)]"
+              >
+                开始探索 →
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative h-screen overflow-hidden bg-[var(--bg-0)] flex">
       <PageGuide
@@ -844,7 +993,11 @@ function NodeLearnContent() {
       <header className="relative z-10 flex items-center justify-between border-b border-[var(--border-1)] bg-[var(--bg-0)]/70 backdrop-blur-xl px-5 py-3">
         <div className="flex items-center gap-3 min-w-0">
           <button
-            onClick={() => router.push(isStarNode ? `/plan/universe${urlPlanId ? `?planId=${urlPlanId}` : ""}` : `/universe?focus=${node.id}`)}
+            onClick={() => router.push(
+              isStarNode
+                ? `/plan/universe${urlPlanId ? `?planId=${urlPlanId}` : ""}`
+                : computedReturnPath
+            )}
             className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-control)] border border-[var(--border-1)] bg-[var(--bg-2)] text-[var(--text-2)] hover:bg-[var(--bg-3)] transition-colors"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -912,7 +1065,7 @@ function NodeLearnContent() {
                   {prereqWarning.map((p) => (
                     <button
                       key={p.id}
-                      onClick={() => router.push(`/universe/learn?node=${encodeURIComponent(p.id)}`)}
+                      onClick={() => router.push(`${pathname}?node=${encodeURIComponent(p.id)}${urlFrom ? `&from=${urlFrom}` : ""}`)}
                       className="rounded-lg border border-amber-400/20 bg-amber-500/10 px-2.5 py-1 text-[11px] text-amber-200 hover:bg-amber-500/20 transition-colors"
                     >
                       {p.name} →
@@ -1165,8 +1318,8 @@ function NodeLearnContent() {
                 <button
                   onClick={() => router.push(
                     isStarNode
-                      ? `/universe/learn?node=${nextPlanNode.id}&planId=${urlPlanId || starPlanRef.current?.planId || ""}&from=plan`
-                      : `/universe/learn?node=${nextPlanNode.id}`
+                      ? `/universe/learn?node=${nextPlanNode.id}&planId=${urlPlanId || starPlanRef.current?.planId || ""}`
+                      : `${pathname}?node=${nextPlanNode.id}${urlFrom ? `&from=${urlFrom}` : ""}`
                   )}
                   className="rounded-[var(--radius-control)] bg-[var(--qc-accent)] px-8 py-3 text-[var(--font-sm)] font-medium text-white hover:bg-[var(--qc-accent-hover)] transition-all"
                 >
@@ -1177,7 +1330,7 @@ function NodeLearnContent() {
                 onClick={() => router.push(
                   isStarNode
                     ? `/plan/universe${urlPlanId ? `?planId=${urlPlanId}` : ""}`
-                    : `/universe?focus=${node.id}&celebrate=1`
+                    : computedReturnPath
                 )}
                 className={`rounded-[var(--radius-control)] px-8 py-3 text-[var(--font-sm)] font-medium text-[var(--text-1)] transition-all ${nextPlanNode ? "border border-[var(--border-1)] bg-[var(--bg-2)] hover:bg-[var(--bg-3)]" : "bg-[var(--qc-accent)] text-white hover:bg-[var(--qc-accent-hover)]"}`}
               >
@@ -1227,7 +1380,10 @@ function NodeLearnContent() {
 
       {/* 右侧常驻工具面板：Tab 切换 笔记 / AI 答疑（窄屏变为抽屉浮层） */}
       {panelOpen && node && subject && (
-        <aside className="w-[380px] shrink-0 h-screen flex flex-col border-l border-[var(--border-1)] bg-[var(--bg-1)]/95 backdrop-blur-xl shadow-[var(--shadow-float)] max-lg:fixed max-lg:inset-y-0 max-lg:right-0 max-lg:z-40 max-lg:w-[min(380px,90vw)]">
+        <ResizableDivider direction="horizontal" storageKey="qc_learn_right_w" defaultSize={380} minSize={280} maxSize={500} side="right" onResize={learnRightPanel.onResize} />
+      )}
+      {panelOpen && node && subject && (
+        <aside className="shrink-0 h-screen flex flex-col border-l border-[var(--border-1)] bg-[var(--bg-1)]/95 backdrop-blur-xl shadow-[var(--shadow-float)] max-lg:fixed max-lg:inset-y-0 max-lg:right-0 max-lg:z-40 max-lg:w-[min(380px,90vw)]" style={{ width: learnRightPanel.size }}>
           {/* Tab 栏 */}
           <div className="flex items-center gap-1 border-b border-[var(--border-1)] px-3 py-2">
             <button
