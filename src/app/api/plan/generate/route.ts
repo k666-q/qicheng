@@ -11,7 +11,56 @@ export const dynamic = "force-dynamic";
 const RequestSchema = z.object({
   draft: z.record(z.string(), z.unknown()),
   conversationSummary: z.string().optional(),
+  /** 多周目（NG+）：周目号，缺省 1 */
+  cycle: z.number().int().min(1).max(4).default(1),
+  /** NG+：上一周目的计划（标题/阶段名/学过的节点），用于"同一目标、更高难度" */
+  previous: z
+    .object({
+      title: z.string(),
+      stageNames: z.array(z.string()).default([]),
+      learnedNodeIds: z.array(z.string()).default([]),
+      /** 上一周目暴露出的缺口（节点 id + 卡点描述） */
+      gaps: z.array(z.object({ nodeId: z.string(), note: z.string().optional() })).default([]),
+      totalWeeks: z.number().optional(),
+    })
+    .optional(),
 });
+
+function buildCycleInstructions(cycle: number, previous?: z.infer<typeof RequestSchema>["previous"]): string {
+  if (cycle <= 1 || !previous) return "";
+  const gapLines = previous.gaps.length
+    ? previous.gaps.map((g) => `- ${g.nodeId}${g.note ? `：${g.note}` : ""}`).join("\n")
+    : "- （无明确缺口记录）";
+  const cycleGoal =
+    cycle === 2
+      ? `第 2 周目「精读」：同一个目标，但每个任务都要求**能做、能拆、知道为什么**。
+- learn 任务的 linked_node_id **优先复用**上一周目学过的节点（他们要进入第 2 周目精读），并优先覆盖下面列出的缺口节点。
+- do 任务必须要求产出**可运行/可验证的东西**（代码、推导、作品），不接受"看/读/了解"类任务。
+- 难度整体比上一周目提高 1-2 级（difficulty 字段），但第一周先用一个"重新热身"的任务把他拉回来。
+- 阶段名称不要照抄上一周目，用"回到 X 的内部"、"拆开 Y"这类视角。`
+      : cycle === 3
+        ? `第 3 周目「贯通」：不再按知识点排任务，按**迁移与创造**排任务。
+- 每个阶段至少 1 个 do 任务要求把两个以上已学节点**组合**起来解决一个陌生问题。
+- 至少 1 个任务是"把它教给别人"（写一篇讲解 / 做一个 3 分钟讲解稿）。
+- 至少 1 个任务是"出题"：设计能骗过 80% 人的题目。
+- learn 任务只保留缺口节点，且 linked_node_id 只能来自缺口列表。
+- 难度提到 7-9。周期可以比上一周目短。`
+        : `第 4 周目「守护」：极简复习计划。每周只排 1-2 个 15 分钟以内的回忆任务，覆盖上一周目全部节点。`;
+
+  return `
+
+## 多周目（NG+）指令 · 当前生成第 ${cycle} 周目
+
+用户已完成同一目标的第 ${cycle - 1} 周目计划「${previous.title}」（${previous.totalWeeks || "?"} 周），阶段：${previous.stageNames.join(" → ") || "（未知）"}。
+上周目学过的节点：${previous.learnedNodeIds.slice(0, 40).join(", ") || "（无）"}
+上周目暴露的缺口：
+${gapLines}
+
+${cycleGoal}
+
+标题格式必须是：「${previous.title.replace(/\s*·\s*第\s*\d\s*周目$/, "")} · 第 ${cycle} 周目」。
+在开头的自然语言介绍里，明确告诉用户：这一周目和上一周目**有什么不同**，以及为什么现在值得再来一遍。`;
+}
 
 function getClient() {
   return new OpenAI({
@@ -59,8 +108,13 @@ function inferDomainFromDraft(draft: Record<string, unknown>): string | undefine
   return undefined;
 }
 
-function buildSystemPrompt(draft?: Record<string, unknown>): string {
+function buildSystemPrompt(
+  draft?: Record<string, unknown>,
+  cycle = 1,
+  previous?: z.infer<typeof RequestSchema>["previous"]
+): string {
   const domain = draft ? inferDomainFromDraft(draft) : undefined;
+  const cycleBlock = buildCycleInstructions(cycle, previous);
   const sceneInstructions = `## 当前场景：计划生成
 
 **重要：本场景不使用 |||SPLIT||| 分条规则。** 你需要输出一段自然语言介绍 + |||PLAN||| + 完整JSON。不要把JSON拆成多条消息。
@@ -194,7 +248,7 @@ ${buildKnowledgeNodeCatalog(domain)}
     }
   ],
   "first_step": {"task_name": "第一个任务的通俗名称", "minutes": 预计分钟数}
-}`;
+}${cycleBlock}`;
 
   return buildFullPersonaPrompt(sceneInstructions);
 }
@@ -216,7 +270,7 @@ export async function POST(req: NextRequest) {
     const parsed = RequestSchema.parse(body);
 
     const userId = req.headers.get("x-user-id") || "anonymous";
-    recordEvent(userId, "ai_call:plan-generate", {});
+    recordEvent(userId, "ai_call:plan-generate", { cycle: parsed.cycle });
 
     const client = getClient();
     const model = process.env.AI_MODEL || "deepseek-chat";
@@ -224,7 +278,7 @@ export async function POST(req: NextRequest) {
     const stream = await client.chat.completions.create({
       model,
       messages: [
-        { role: "system", content: buildSystemPrompt(parsed.draft) },
+        { role: "system", content: buildSystemPrompt(parsed.draft, parsed.cycle, parsed.previous) },
         { role: "user", content: buildUserMessage(parsed.draft, parsed.conversationSummary) },
       ],
       max_tokens: 8000,

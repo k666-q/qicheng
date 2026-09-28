@@ -184,6 +184,9 @@ export default function PlanArchivePage() {
                     {/* 元数据 */}
                     <p className="mt-2 font-mono text-[10px] tracking-wider text-cyan-200/40">
                       周期 {sp.plan.total_weeks} 周 · 阶段 x{sp.plan.stages.length} · 任务 x{countTasks(sp.plan)}
+                      {(sp.cycle || 1) > 1 && (
+                        <span className="ml-2 text-violet-300/70">· 第 {sp.cycle} 周目 NG+</span>
+                      )}
                     </p>
                     <p className="mt-0.5 font-mono text-[10px] tracking-wider text-fuchsia-300/40">
                       建档 {formatDate(sp.createdAt)} · 领域 {meta.zh}

@@ -16,7 +16,11 @@ import { ensureDailyPlan } from "@/lib/plan/daily-scheduler";
 import type { KnowledgeGraph, KnowledgeNode } from "@/lib/universe/types";
 import type { GeneratedPlan, PlanStage, PlanTask } from "@/lib/plan/types";
 import { saveSessionItem, loadSessionItem } from "@/lib/plan/store";
-import { upsertPlanFromMirror } from "@/lib/plan/plans-store";
+import { upsertPlanFromMirror, getNgPlusPending, setNgPlusPending, loadPlans, isPlanFullyComplete } from "@/lib/plan/plans-store";
+import { getCompletedTasks, buildTaskId as buildCompletionTaskId } from "@/lib/plan/completion";
+import { getGapNodes } from "@/lib/universe/mastery";
+import { cycleDef } from "@/lib/learn/cycles";
+import { trackEvent } from "@/lib/profile/events";
 import type { StageCard as StageCardType } from "@/lib/cards/types";
 import { EchoNotice } from "@/components/stimulus/EchoNotice";
 import { CosmicBackground } from "@/components/universe/CosmicBackground";
@@ -104,6 +108,9 @@ function PlanContent() {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
+    // NG+：详情页发起的下一周目生成
+    const ngPlus = getNgPlusPending();
+
     try {
       const res = await fetch("/api/plan/generate", {
         method: "POST",
@@ -111,6 +118,7 @@ function PlanContent() {
         body: JSON.stringify({
           draft: JSON.parse(draftStr),
           conversationSummary: summaryStr || undefined,
+          ...(ngPlus ? { cycle: ngPlus.cycle, previous: ngPlus.previous } : {}),
         }),
         signal: controller.signal,
       });
@@ -180,7 +188,13 @@ function PlanContent() {
           saveSessionItem("qicheng_plan_versions", "[]");
           setVersions([]);
           syncSmallUniverseWithPlan(parsed);
-          upsertPlanFromMirror();
+          if (ngPlus) {
+            upsertPlanFromMirror({ cycle: ngPlus.cycle, parentPlanId: ngPlus.parentPlanId });
+            setNgPlusPending(null);
+            trackEvent("plan_ng_plus_started", { cycle: ngPlus.cycle, parent: ngPlus.parentPlanId, title: parsed.title });
+          } else {
+            upsertPlanFromMirror();
+          }
         } catch (e) {
           if (retry < MAX_RETRIES) {
             setStreamingText(`计划格式异常，正在第 ${retry + 1} 次重试...`);
@@ -396,8 +410,9 @@ function PlanContent() {
             <div className="w-8 h-8 border border-cyan-400/40 bg-cyan-400/10 flex items-center justify-center text-cyan-200 text-xs font-bold shadow-[0_0_12px_rgba(34,211,238,0.25)]">N</div>
             <div>
               <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-cyan-300/40">mission_dossier // active_plan</p>
-              <h1 className="text-base font-semibold cyber-neon text-cyan-300">
+              <h1 className="text-base font-semibold cyber-neon text-cyan-300 flex items-center gap-2">
                 {plan?.title || "生成计划中..."}
+                {plan && <PlanCycleBadge planTitle={plan.title} />}
               </h1>
               {plan && (
                 <p className="text-[11px] font-mono text-white/35 mt-0.5">
@@ -437,6 +452,9 @@ function PlanContent() {
 
         {/* Emotion curve inline */}
         {!loading && plan && <MiniEmotionCurve />}
+
+        {/* 多周目（NG+）：全部任务完成后出现 */}
+        {!loading && plan && <NgPlusCard plan={plan} />}
 
         {/* Stats section */}
         {!loading && plan && (
@@ -534,6 +552,147 @@ function PlanContent() {
 
       </main>
 
+    </div>
+  );
+}
+
+/** 头部周目徽章：第 2 周目起显示 */
+function PlanCycleBadge({ planTitle }: { planTitle: string }) {
+  const [cycle, setCycle] = useState(1);
+  useEffect(() => {
+    const stored = loadPlans().find((p) => p.id === `plan_${planTitle}`);
+    setCycle(stored?.cycle || 1);
+  }, [planTitle]);
+  if (cycle <= 1) return null;
+  const d = cycleDef(cycle);
+  return (
+    <span
+      className="rounded px-1.5 py-0.5 font-mono text-[9px] tracking-wider border"
+      style={{ color: d.visual.tint, borderColor: `${d.visual.tint}50`, background: `${d.visual.tint}14` }}
+    >
+      第 {cycle} 周目 · {d.name}
+    </span>
+  );
+}
+
+/**
+ * NG+（多周目）入口卡：当前计划全部任务完成 → 提议开启下一周目。
+ * 下一周目：同一目标、更高难度、优先覆盖上一周目暴露的缺口。
+ */
+function NgPlusCard({ plan }: { plan: GeneratedPlan }) {
+  const [state, setState] = useState<{ ready: boolean; cycle: number; storedId: string; doneRatio: number } | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    const id = `plan_${plan.title}`;
+    const stored = loadPlans().find((p) => p.id === id);
+    const cycle = stored?.cycle || 1;
+    const completed = getCompletedTasks();
+    let total = 0;
+    let done = 0;
+    plan.stages.forEach((st, si) => {
+      getAllTasks(st).forEach(({ task }, ti) => {
+        total++;
+        if (completed.has(buildCompletionTaskId(si, ti, task.title_plain))) done++;
+      });
+    });
+    const ready = stored
+      ? isPlanFullyComplete(stored, (si, ti, tp) => completed.has(buildCompletionTaskId(si, ti, tp)))
+      : total > 0 && done >= total;
+    setState({ ready, cycle, storedId: id, doneRatio: total ? done / total : 0 });
+  }, [plan]);
+
+  if (!state) return null;
+  const next = state.cycle + 1;
+  if (next > 4) return null;
+  // 未完成：完成率 ≥ 80% 时以弱提示形式预告；否则不显示
+  if (!state.ready && state.doneRatio < 0.8) return null;
+  const nd = cycleDef(next);
+
+  function startNextCycle() {
+    if (busy) return;
+    setBusy(true);
+    try {
+      const graph = getGraph();
+      const learned = getLearnedNodeIds(graph.nodes);
+      const scope = getStoredPlanScope();
+      const planNodeIds = new Set<string>();
+      for (const st of plan.stages) {
+        for (const { task } of getAllTasks(st)) {
+          if (task.linked_node_id) planNodeIds.add(task.linked_node_id);
+          for (const id of task.node_ids || []) planNodeIds.add(id);
+          for (const id of getTaskNodeIds(task, graph.nodes, scope)) planNodeIds.add(id);
+        }
+      }
+      const learnedInPlan = [...planNodeIds].filter((id) => learned.has(id));
+      const gaps = getGapNodes()
+        .filter((g) => planNodeIds.has(g.nodeId) || g.level < next - 1)
+        .slice(0, 12)
+        .map((g) => ({ nodeId: g.nodeId, note: g.stickingPoints[0] || g.debts[0] }));
+
+      // 草图：沿用上次的引导草图；没有则由计划合成一份
+      let draft: Record<string, unknown> = {};
+      try {
+        draft = JSON.parse(sessionStorage.getItem("qicheng_draft") || "{}");
+      } catch { /* ignore */ }
+      if (!draft || Object.keys(draft).length === 0) {
+        draft = { goal: plan.title.replace(/\s*·\s*第\s*\d\s*周目$/, ""), domain: plan.domain, total_weeks: plan.total_weeks };
+      }
+      sessionStorage.setItem("qicheng_draft", JSON.stringify(draft));
+
+      setNgPlusPending({
+        parentPlanId: state!.storedId,
+        cycle: next,
+        previous: {
+          title: plan.title,
+          stageNames: plan.stages.map((s) => s.name),
+          learnedNodeIds: learnedInPlan,
+          gaps,
+          totalWeeks: plan.total_weeks,
+        },
+        draft,
+      });
+      // 同页跳转不会重跑初始化 effect，用整页导航触发生成流程
+      window.location.assign("/plan/detail?regenerate=1");
+    } catch {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div
+      className="mb-6 cyber-panel cyber-corner p-5 animate-fade-in"
+      style={{ borderColor: `${nd.visual.tint}40`, boxShadow: `0 0 24px ${nd.visual.tint}14` }}
+    >
+      <div className="flex items-start justify-between gap-4 flex-wrap">
+        <div className="min-w-0 flex-1">
+          <p className="font-mono text-[10px] uppercase tracking-[0.3em]" style={{ color: `${nd.visual.tint}99` }}>
+            new_game_plus // cycle_{next}
+          </p>
+          <h3 className="mt-1 text-base font-semibold text-white/90">
+            {state.ready ? `第 ${state.cycle} 周目完成。` : `第 ${state.cycle} 周目接近尾声。`}
+            {" "}开启第 {next} 周目「{nd.name}」？
+          </h3>
+          <p className="mt-1.5 text-[13px] text-white/60 leading-relaxed">{nd.goal}</p>
+          <ul className="mt-2 space-y-0.5 text-[12px] text-white/45">
+            <li>· 同一个目标，任务难度整体提高，{next === 2 ? "每个任务都要求能做、能拆、知道为什么" : next === 3 ? "按迁移与创造排任务，含出题与讲解" : "极简回忆任务，维持记忆"}</li>
+            <li>· 优先覆盖上一周目暴露的缺口与小助理记下的卡点</li>
+            <li>· 上一周目的档案保留在档案馆，可随时回看</li>
+          </ul>
+        </div>
+        <div className="shrink-0 flex flex-col items-end gap-2">
+          <button
+            onClick={startNextCycle}
+            disabled={busy || !state.ready}
+            title={state.ready ? "生成下一周目计划" : "完成全部任务后解锁"}
+            className="border px-5 py-2.5 font-mono text-sm tracking-widest transition-all disabled:opacity-40 hover:brightness-125"
+            style={{ color: nd.visual.tint, borderColor: `${nd.visual.tint}60`, background: `${nd.visual.tint}1a` }}
+          >
+            {busy ? "准备中…" : state.ready ? `开启第 ${next} 周目 →` : `还差 ${Math.round((1 - state.doneRatio) * 100)}%`}
+          </button>
+          <span className="font-mono text-[10px] text-white/30">{nd.persona.role} 将接手引导</span>
+        </div>
+      </div>
     </div>
   );
 }

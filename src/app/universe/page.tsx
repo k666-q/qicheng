@@ -15,6 +15,7 @@ import {
 } from "@/lib/universe/store";
 import { getPlanRoute, getTaskNodeIds } from "@/lib/universe/plan-link";
 import { computeCognition, primaryDimOfNode, nodeDimGains } from "@/lib/universe/cognition";
+import { getMasteryMap } from "@/lib/universe/mastery";
 import { CognitionPanel } from "@/components/universe/CognitionPanel";
 import { loadSessionItem } from "@/lib/plan/store";
 import { getEventsByType } from "@/lib/profile/events";
@@ -740,8 +741,11 @@ export default function UniversePage() {
 
   const nodeById = useMemo(() => new Map(graph.nodes.map((n) => [n.id, n])), [graph.nodes]);
 
-  // Cognition layer data
-  const cognition = useMemo(() => computeCognition(learned, graph), [learned, graph]);
+  // 多周目掌握度（learned 变化时重算；显式记录 ∪ 隐式 level 1）
+  const masteryLevels = useMemo(() => getMasteryMap(graph.nodes), [graph.nodes, learned]);
+
+  // Cognition layer data（按掌握度加权：初见 0.4 · 精读 1.0 · 贯通 1.8 · 守护 2.0）
+  const cognition = useMemo(() => computeCognition(learned, graph, masteryLevels), [learned, graph, masteryLevels]);
   const cognitionData = useMemo(() => {
     const nodeDimColor = new Map<string, string>();
     for (const node of graph.nodes) {
@@ -1184,6 +1188,7 @@ export default function UniversePage() {
         <KnowledgeUniverse
           graph={displayGraph}
           statuses={statuses}
+          masteryLevels={masteryLevels}
           expandedSubjects={expandedSubjects}
           alwaysVisibleIds={alwaysVisibleIds}
           selectedNodeId={selectedNode?.id ?? null}

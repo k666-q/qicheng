@@ -4,6 +4,8 @@ import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import type { KnowledgeNode, NodeStatus, SubjectNode } from "@/lib/universe/types";
 import { getNodeDebt } from "@/lib/stimulus/echo";
+import { getMastery } from "@/lib/universe/mastery";
+import { cycleDef, nextCycleFor, MAX_CYCLE } from "@/lib/learn/cycles";
 
 const STATUS_META: Record<NodeStatus, { label: string; className: string }> = {
   learned: { label: "已掌握", className: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" },
@@ -57,8 +59,19 @@ export function NodeDetailPanel({
   const isLearned = status === "learned";
   const debt = useMemo(() => getNodeDebt(node.id), [node.id]);
 
-  function goExplore() {
-    router.push(`/universe/learn?node=${encodeURIComponent(node.id)}`);
+  // 多周目掌握度：显式记录优先，learned 但无记录视为第 1 周目
+  const mastery = useMemo(() => {
+    const m = getMastery(node.id);
+    const level = Math.max(m.level, isLearned ? 1 : 0) as typeof m.level;
+    return { ...m, level };
+  }, [node.id, isLearned]);
+  const nextCycle = nextCycleFor(mastery.level);
+  const nextDef = cycleDef(nextCycle);
+  const lastRun = mastery.history[mastery.history.length - 1];
+
+  function goExplore(cycle?: number) {
+    const c = cycle ? `&cycle=${cycle}` : "";
+    router.push(`/universe/learn?node=${encodeURIComponent(node.id)}${c}&from=${encodeURIComponent("/universe")}`);
   }
 
   function goLearn() {
@@ -97,9 +110,22 @@ export function NodeDetailPanel({
         <div className="flex-1 overflow-y-auto px-6 py-5 space-y-5">
           {/* 状态 + 难度 */}
           <div className="flex items-center gap-2 flex-wrap">
-            <span className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${statusMeta.className}`}>
-              {statusMeta.label}
-            </span>
+            {isLearned ? (
+              <span
+                className="rounded-full px-2.5 py-1 text-[11px] font-medium border"
+                style={{
+                  color: cycleDef(mastery.level).visual.tint,
+                  borderColor: `${cycleDef(mastery.level).visual.tint}50`,
+                  background: `${cycleDef(mastery.level).visual.tint}1a`,
+                }}
+              >
+                第 {mastery.level} 周目 · {cycleDef(mastery.level).name}
+              </span>
+            ) : (
+              <span className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${statusMeta.className}`}>
+                {statusMeta.label}
+              </span>
+            )}
             <span className="rounded-full bg-white/5 border border-white/10 px-2.5 py-1 text-[11px] text-white/50">
               难度 · {DIFFICULTY_LABELS[node.difficulty] || "适中"}
             </span>
@@ -117,6 +143,56 @@ export function NodeDetailPanel({
               <p className="text-[12px] text-white/60 leading-relaxed line-clamp-3">{debt.prompt}</p>
             </div>
           )}
+
+          {/* 多周目进度 */}
+          <div className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-3">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-[11px] font-medium text-white/40">周目进度</p>
+              <span className="font-mono text-[10px] text-white/30">{mastery.level}/{MAX_CYCLE}</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              {([1, 2, 3, 4] as const).map((c) => {
+                const d = cycleDef(c);
+                const done = mastery.level >= c;
+                const isNext = c === nextCycle && mastery.level < MAX_CYCLE;
+                return (
+                  <button
+                    key={c}
+                    onClick={() => (done || isNext) && goExplore(c)}
+                    disabled={!done && !isNext}
+                    title={`第 ${c} 周目 · ${d.name}：${d.goal}${done ? "（点击回炉）" : isNext ? "（点击开始）" : ""}`}
+                    className={`flex-1 rounded-md border px-1 py-1.5 text-center transition-all ${
+                      done || isNext ? "hover:brightness-125" : "opacity-40 cursor-default"
+                    }`}
+                    style={{
+                      borderColor: done ? `${d.visual.tint}60` : isNext ? `${d.visual.tint}40` : "rgba(255,255,255,0.08)",
+                      background: done ? `${d.visual.tint}22` : isNext ? `${d.visual.tint}0d` : "transparent",
+                      color: done || isNext ? d.visual.tint : "rgba(255,255,255,0.4)",
+                    }}
+                  >
+                    <div className="text-[11px] font-medium leading-none">{d.name}</div>
+                    <div className="mt-1 font-mono text-[9px] opacity-70">{done ? "✓" : isNext ? "→" : "·"}</div>
+                  </button>
+                );
+              })}
+            </div>
+            {mastery.level < MAX_CYCLE && (
+              <p className="mt-2 text-[11px] text-white/45 leading-relaxed">
+                下一步「{nextDef.name}」：{nextDef.goal}
+              </p>
+            )}
+            {mastery.level >= MAX_CYCLE && (
+              <p className="mt-2 text-[11px] text-amber-300/70">已进入守护周期，系统会按 1/3/7/21 天召回复习。</p>
+            )}
+            {mastery.stickingPoints.length > 0 && (
+              <p className="mt-2 text-[11px] text-white/50 italic">📌 小助理记得：{mastery.stickingPoints[0]}</p>
+            )}
+            {lastRun && lastRun.quizTotal > 0 && (
+              <p className="mt-1 font-mono text-[10px] text-white/30">
+                上次一次正确率 {Math.round((lastRun.quizFirstTry / lastRun.quizTotal) * 100)}%
+              </p>
+            )}
+          </div>
 
           {/* 描述 */}
           <div>
@@ -254,10 +330,14 @@ export function NodeDetailPanel({
         {/* Footer actions */}
         <div className="border-t border-white/10 px-6 py-4 space-y-2">
           <button
-            onClick={goExplore}
+            onClick={() => goExplore()}
             className="w-full rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2.5 text-sm font-medium text-white hover:from-indigo-500 hover:to-purple-500 transition-all shadow-lg shadow-indigo-500/20"
           >
-            {isLearned ? "👑 重访这颗星（造物主模式）" : "✦ 开始探索这颗星"}
+            {!isLearned
+              ? "✦ 开始探索这颗星"
+              : mastery.level >= MAX_CYCLE
+                ? "🔁 守护复习（一题即走）"
+                : `${nextCycle === 2 ? "🔬" : nextCycle === 3 ? "👑" : "🛡"} 开始第 ${nextCycle} 周目 · ${nextDef.name}`}
           </button>
           <button
             onClick={goLearn}

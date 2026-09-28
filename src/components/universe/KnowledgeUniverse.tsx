@@ -8,6 +8,7 @@ import type {
   NodeStatus,
   SubjectNode,
 } from "@/lib/universe/types";
+import { cycleDef, type MasteryLevel } from "@/lib/learn/cycles";
 
 const ForceGraph3D = dynamic(() => import("react-force-graph-3d"), {
   ssr: false,
@@ -30,6 +31,8 @@ export type UniverseNode = {
   label: string;
   color: string;
   status?: NodeStatus;
+  /** 多周目掌握度 0-4（learned 节点缺省 1） */
+  mastery?: MasteryLevel;
   data?: KnowledgeNode;
   subjectData?: SubjectNode;
   x?: number;
@@ -68,6 +71,8 @@ export type MiniMapNode = {
 type Props = {
   graph: KnowledgeGraph;
   statuses: Map<string, NodeStatus>;
+  /** 多周目掌握度：决定已学节点的亮度/光晕/脉冲（缺省：learned = 1） */
+  masteryLevels?: Map<string, MasteryLevel>;
   expandedSubjects: Set<string>;
   /** 总览模式下额外保持可见的节点（计划路线/已点亮/当前任务），绕过 expandedSubjects 过滤 */
   alwaysVisibleIds?: Set<string>;
@@ -113,6 +118,7 @@ function hexToRgba(hex: string, alpha: number): string {
 export function KnowledgeUniverse({
   graph,
   statuses,
+  masteryLevels,
   expandedSubjects,
   alwaysVisibleIds,
   selectedNodeId,
@@ -220,7 +226,7 @@ export function KnowledgeUniverse({
     const instances = nodeInstancesRef.current;
     const materialize = (fresh: UniverseNode): UniverseNode => {
       const old = instances.get(fresh.id);
-      if (old && old.kind === fresh.kind && old.status === fresh.status && old.label === fresh.label && old.color === fresh.color) {
+      if (old && old.kind === fresh.kind && old.status === fresh.status && old.label === fresh.label && old.color === fresh.color && (old.mastery ?? 0) === (fresh.mastery ?? 0)) {
         old.data = fresh.data;
         old.subjectData = fresh.subjectData;
         return old;
@@ -252,12 +258,14 @@ export function KnowledgeUniverse({
     for (const node of graph.nodes) {
       if (!expandedSubjects.has(node.subjectId) && !alwaysVisibleIds?.has(node.id)) continue;
       const subject = subjectById.get(node.subjectId);
+      const st = statuses.get(node.id) || "locked";
       nodes.push(materialize({
         id: node.id,
         kind: "knowledge",
         label: node.name,
         color: subject?.color || "#a8a29e",
-        status: statuses.get(node.id) || "locked",
+        status: st,
+        mastery: st === "learned" ? Math.max(1, masteryLevels?.get(node.id) || 0) as MasteryLevel : 0,
         data: node,
         subjectData: subject,
       }));
@@ -296,7 +304,7 @@ export function KnowledgeUniverse({
     }
 
     return { nodes, links };
-  }, [graph, expandedSubjects, alwaysVisibleIds, statuses, subjectById, planRouteIds]);
+  }, [graph, expandedSubjects, alwaysVisibleIds, statuses, masteryLevels, subjectById, planRouteIds]);
 
   // Neighbor map for hover highlight
   const neighborMap = useMemo(() => {
@@ -688,11 +696,15 @@ export function KnowledgeUniverse({
           group.add(mesh);
         } else {
           const learned = status === "learned";
-          const geo = new THREE.SphereGeometry(sz, learned ? 24 : 20, learned ? 24 : 20);
+          // 多周目：已学节点按掌握度分级发光（1 初见微亮 → 2 精读明亮 → 3 贯通脉冲 → 4 守护金晕）
+          const level = learned ? Math.max(1, node.mastery || 1) : 0;
+          const vis = learned ? cycleDef(level).visual : null;
+          const baseEmissive = vis ? vis.emissive : 0.6;
+          const geo = new THREE.SphereGeometry(sz * (level >= 3 ? 1.12 : 1), learned ? 24 : 20, learned ? 24 : 20);
           const mat = new THREE.MeshPhongMaterial({
             color: node.color,
             emissive: node.color,
-            emissiveIntensity: learned ? 1.2 : 0.6,
+            emissiveIntensity: baseEmissive,
             transparent: true,
             opacity: 1,
             shininess: 100,
@@ -700,19 +712,34 @@ export function KnowledgeUniverse({
           geos.push(geo); mats.push(mat);
           const mesh = new THREE.Mesh(geo, mat);
           mesh.userData.isCoreNode = true;
-          mesh.userData.baseEmissive = learned ? 1.2 : 0.6;
+          mesh.userData.baseEmissive = baseEmissive;
           mesh.userData.baseColor = node.color;
+          mesh.userData.masteryLevel = level;
           group.add(mesh);
 
-          if (learned) {
-            const glowGeo = new THREE.SphereGeometry(sz * 2.2, 16, 16);
-            const glowMat = new THREE.MeshBasicMaterial({ color: node.color, transparent: true, opacity: 0.2, side: THREE.BackSide });
+          if (learned && vis) {
+            const glowGeo = new THREE.SphereGeometry(sz * (2.2 + level * 0.25), 16, 16);
+            // 守护周目（4）带金色外晕，其余沿用学科色
+            const glowColor = level >= 4 ? vis.tint : node.color;
+            const glowMat = new THREE.MeshBasicMaterial({ color: glowColor, transparent: true, opacity: vis.glow, side: THREE.BackSide });
             geos.push(glowGeo); mats.push(glowMat);
             const glow = new THREE.Mesh(glowGeo, glowMat);
             glow.userData.isGlow = true;
-            glow.userData.glowBase = 0.2;
-            glow.userData.baseColor = node.color;
+            glow.userData.glowBase = vis.glow;
+            glow.userData.baseColor = glowColor;
+            glow.userData.masteryPulse = vis.pulse;
             group.add(glow);
+
+            // 第 3 周目起：细环，一眼区分"会用"与"贯通"
+            if (level >= 3) {
+              const ringGeo = new THREE.RingGeometry(sz * 1.6, sz * 1.75, 40);
+              const ringMat = new THREE.MeshBasicMaterial({ color: vis.tint, transparent: true, opacity: 0.55, side: THREE.DoubleSide });
+              geos.push(ringGeo); mats.push(ringMat);
+              const ring = new THREE.Mesh(ringGeo, ringMat);
+              ring.userData.isMasteryRing = true;
+              ring.rotation.x = Math.PI / 2.6;
+              group.add(ring);
+            }
           }
         }
 
@@ -960,10 +987,17 @@ export function KnowledgeUniverse({
           }
         }
 
+        // 多周目细环：缓慢自转，随 dim 隐去
+        if (c?.userData?.isMasteryRing && c.material) {
+          if (c.rotation) c.rotation.z = t * 0.35;
+          c.material.opacity = (dimmed || subjDim || cogMode) ? 0 : 0.45 + breathVal * 0.15;
+        }
+
         // Glow pulse + dim
         if (c?.userData?.isGlow && c.material) {
           const glowBase = (c.userData.glowBase as number) || 0.12;
-          c.material.opacity = (dimmed || subjDim) ? 0 : Math.max(0.03, glowBase + breathVal * 0.04);
+          const mp = c.userData.masteryPulse ? pulse * 0.12 : 0;
+          c.material.opacity = (dimmed || subjDim) ? 0 : Math.max(0.03, glowBase + breathVal * 0.04 + mp);
 
           if (cogMode) {
             if (kind === "subject") {
@@ -1279,7 +1313,9 @@ export function KnowledgeUniverse({
 
   const nodeLabel = useCallback((node: UniverseNode) => {
     if (node.kind === "subject") return node.label;
-    const statusText = node.status === "learned" ? " ✓ 已掌握" : node.status === "locked" ? " 🔒 未解锁" : " · 可以学";
+    const statusText = node.status === "learned"
+      ? ` ✓ 第 ${node.mastery || 1} 周目 · ${cycleDef(node.mastery || 1).name}`
+      : node.status === "locked" ? " 🔒 未解锁" : " · 可以学";
     return `${node.label}${statusText}`;
   }, []);
 

@@ -31,7 +31,13 @@ export type StoredPlan = {
   versions: StoredPlanVersion[];
   createdAt: number;
   updatedAt: number;
+  /** 多周目（NG+）：本计划是第几周目，缺省 1 */
+  cycle?: number;
+  /** NG+：上一周目计划 id */
+  parentPlanId?: string;
 };
+
+export type PlanMeta = Pick<StoredPlan, "cycle" | "parentPlanId">;
 
 const PLANS_KEY = "qc_plans";
 const ACTIVE_PLAN_KEY = "qc_active_plan_id";
@@ -81,7 +87,7 @@ function removeMirrorItem(key: string) {
  * 把当前镜像（qicheng_plan 等）收编/更新进仓库。
  * 计划详情页在生成、编辑、回退成功后调用，保证仓库始终与镜像同步。
  */
-export function upsertPlanFromMirror(): StoredPlan | null {
+export function upsertPlanFromMirror(meta?: PlanMeta): StoredPlan | null {
   const raw = loadSessionItem(MIRROR_PLAN);
   if (!raw) return null;
   let plan: GeneratedPlan;
@@ -104,13 +110,56 @@ export function upsertPlanFromMirror(): StoredPlan | null {
   const now = Date.now();
 
   if (idx >= 0) {
-    all[idx] = { ...all[idx], plan, intro, versions, updatedAt: now };
+    all[idx] = { ...all[idx], plan, intro, versions, updatedAt: now, ...(meta || {}) };
   } else {
-    all.push({ id, plan, intro, versions, createdAt: now, updatedAt: now });
+    all.push({ id, plan, intro, versions, createdAt: now, updatedAt: now, ...(meta || {}) });
   }
   savePlans(all);
   setActivePlanId(id);
   return all[idx >= 0 ? idx : all.length - 1];
+}
+
+/** NG+ 待创建的下一周目上下文（跨页面传递：详情页 → 生成页） */
+const NG_PLUS_KEY = "qc_ng_plus_pending";
+export type NgPlusPending = {
+  parentPlanId: string;
+  cycle: number;
+  previous: {
+    title: string;
+    stageNames: string[];
+    learnedNodeIds: string[];
+    gaps: { nodeId: string; note?: string }[];
+    totalWeeks?: number;
+  };
+  draft: Record<string, unknown>;
+};
+export function setNgPlusPending(p: NgPlusPending | null) {
+  if (typeof window === "undefined") return;
+  if (p) sessionStorage.setItem(NG_PLUS_KEY, JSON.stringify(p));
+  else sessionStorage.removeItem(NG_PLUS_KEY);
+}
+export function getNgPlusPending(): NgPlusPending | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = sessionStorage.getItem(NG_PLUS_KEY);
+    return raw ? (JSON.parse(raw) as NgPlusPending) : null;
+  } catch {
+    return null;
+  }
+}
+
+/** 一个计划的所有任务是否已完成（NG+ 入口条件） */
+export function isPlanFullyComplete(stored: StoredPlan, isTaskDone: (stageIdx: number, taskIdx: number, titlePlain: string) => boolean): boolean {
+  let total = 0;
+  let done = 0;
+  stored.plan.stages.forEach((st, si) => {
+    const tasks = st.tasks?.length ? st.tasks : (st.weeks || []).flatMap((w) => w.days.flatMap((d) => d.tasks));
+    tasks.forEach((t, ti) => {
+      total++;
+      if (isTaskDone(si, ti, t.title_plain)) done++;
+    });
+  });
+  return total > 0 && done >= total;
 }
 
 /**
