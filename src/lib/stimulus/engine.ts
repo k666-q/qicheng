@@ -3,6 +3,7 @@
 
 import type { KnowledgeNode, NodeStatus } from "@/lib/universe/types";
 import type { ExploreScript, StimulusId } from "./types";
+import { cycleDef } from "@/lib/learn/cycles";
 
 const HOOK_POOL: StimulusId[] = [
   "truth",
@@ -40,18 +41,29 @@ function pickHook(): StimulusId {
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
-/** 为节点生成一次探索剧本 */
-export function composeScript(node: KnowledgeNode, status: NodeStatus): ExploreScript {
+/**
+ * 为节点生成一次探索剧本。
+ * 多周目：剧本参数由周目定义决定（cycles.ts），难度只做微调。
+ * 兼容旧签名：传 NodeStatus 时，learned → 第 3 周目（造物主），否则第 1 周目。
+ */
+export function composeScript(node: KnowledgeNode, cycleOrStatus: number | NodeStatus = 1): ExploreScript {
+  const cycle =
+    typeof cycleOrStatus === "number" ? cycleOrStatus : cycleOrStatus === "learned" ? 3 : 1;
+  const def = cycleDef(cycle);
   const d = node.difficulty;
+  const s = def.script;
   return {
     hookId: pickHook(),
-    huntCount: d >= 5 ? 3 : 2,
-    quizCount: d >= 4 ? 2 : 1,
-    useFlash: true,
-    useBlank: d >= 4,
-    useDiscovery: Math.random() < 0.5,
-    useSeed: d >= 5 && Math.random() < 0.6,
-    useDebt: d >= 6 && Math.random() < 0.5,
-    creatorMode: status === "learned",
+    // 第 1 周目：难题多埋一个规律；其余周目按定义
+    huntCount: def.cycle === 1 && d >= 6 ? s.huntCount + 1 : s.huntCount,
+    quizCount: s.quizCount,
+    useFlash: s.useFlash,
+    // 第 1 周目只有高难度节点才留空白；第 2 周目固定留
+    useBlank: def.cycle === 1 ? d >= 7 : s.useBlank,
+    useDiscovery: s.useDiscovery && Math.random() < 0.7,
+    useSeed: s.useSeed && (def.cycle >= 2 || d >= 5),
+    useDebt: s.useDebt,
+    creatorMode: s.requireCreate,
+    cycle: def.cycle,
   };
 }

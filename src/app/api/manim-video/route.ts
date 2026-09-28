@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimitGuard, POLICIES } from "@/lib/api/rate-limit";
 import OpenAI from "openai";
 
 export const dynamic = "force-dynamic";
@@ -637,6 +638,8 @@ async function renderVideo(
 }
 
 export async function POST(req: NextRequest) {
+  const limited = rateLimitGuard(req, "manim-video", POLICIES.manim);
+  if (limited) return limited;
   try {
     const body = await req.json();
     const { nodeId, name, description, keywords, subjectName } = body;

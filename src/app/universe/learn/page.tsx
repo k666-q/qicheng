@@ -19,7 +19,17 @@ import { loadSessionItem } from "@/lib/plan/store";
 import type { GeneratedPlan } from "@/lib/plan/types";
 import { nodeDimGains } from "@/lib/universe/cognition";
 import { composeScript, recordHookUsed } from "@/lib/stimulus/engine";
-import { parseSegments } from "@/lib/stimulus/protocol";
+import { parseSegments, validateScript, issuesToInstruction } from "@/lib/stimulus/protocol";
+import { cycleDef, type CycleNumber } from "@/lib/learn/cycles";
+import {
+  nextCycleOf,
+  memoryFor,
+  recordCycleComplete,
+  addStickingPoint,
+  addDebt,
+  getMasteryMap,
+} from "@/lib/universe/mastery";
+import { diagnoseGap } from "@/lib/learn/gap-diagnosis";
 import { addEcho } from "@/lib/stimulus/echo";
 import { awardBadge, getAbilityPoints } from "@/lib/stimulus/rewards";
 import { trackEvent } from "@/lib/profile/events";
@@ -51,6 +61,8 @@ import {
   CodeCard,
   DeriveCard,
   LayerDoneCard,
+  StickCard,
+  GapCard,
 } from "@/components/stimulus/StimulusCards";
 
 /** 阻塞型卡片：完成交互前不能继续推进 */
@@ -271,6 +283,41 @@ export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: 
 
   const [script, setScript] = useState<ExploreScript | null>(null);
   const [segments, setSegments] = useState<Segment[]>([]);
+
+  // ═══ 多周目 ═══
+  // 本次进入的周目号：来自 URL ?cycle=（回炉时可指定），否则由掌握度推算下一周目。star_ 节点固定 1。
+  const urlCycle = Number(searchParams.get("cycle") || 0);
+  const cycle: CycleNumber = useMemo(() => {
+    if (!node || isStarNode) return 1;
+    if (urlCycle >= 1 && urlCycle <= 4) return urlCycle as CycleNumber;
+    return nextCycleOf(node.id, getLearnedNodeIds(graph.nodes));
+  }, [node, isStarNode, urlCycle, graph.nodes]);
+  const cycleInfo = cycleDef(cycle);
+  // 小助理跨周目记忆（第 2 周目起发给模型）
+  const memory = useMemo(() => {
+    if (!node || isStarNode) return undefined;
+    const learned = getLearnedNodeIds(graph.nodes);
+    const m = memoryFor(node.id, learned);
+    const neighborIds = new Set<string>();
+    for (const e of graph.edges) {
+      if (e.source === node.id) neighborIds.add(e.target);
+      if (e.target === node.id) neighborIds.add(e.source);
+    }
+    const neighborLearned = [...neighborIds]
+      .filter((id) => learned.has(id))
+      .map((id) => graph.nodes.find((n) => n.id === id)?.name)
+      .filter((n): n is string => !!n)
+      .slice(0, 6);
+    return { ...m, neighborLearned };
+  }, [node, isStarNode, graph]);
+  // 本周目答题统计（GAIN 时写入 CycleRecord）
+  const quizStatsRef = useRef<{ total: number; firstTry: number; wrong: string[]; summary: string; startedAt: number }>({
+    total: 0, firstTry: 0, wrong: [], summary: "", startedAt: Date.now(),
+  });
+  // 输出校验重试计数（每阶段最多 1 次）
+  const retriedRef = useRef<Set<string>>(new Set());
+  // 缺口诊断：同一节点只弹一次
+  const gapShownRef = useRef(false);
   const [visibleCount, setVisibleCount] = useState(0);
   const [completedIdx, setCompletedIdx] = useState<Set<number>>(new Set());
   const [streaming, setStreaming] = useState(false);
@@ -322,9 +369,15 @@ export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: 
   const sideEffectsRef = useRef<Set<number>>(new Set());
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  // 缺口诊断卡的插入位置（运行时合成，不进协议文本）
+  const gapInsertRef = useRef<{ afterIdx: number; seg: Segment } | null>(null);
+
   const rebuildSegments = useCallback(() => {
     const base = parseSegments(exploreTextRef.current).segments;
-    setSegments([...base, ...extraSegmentsRef.current]);
+    const all = [...base, ...extraSegmentsRef.current];
+    const g = gapInsertRef.current;
+    if (g) all.splice(Math.min(g.afterIdx + 1, all.length), 0, g.seg);
+    setSegments(all);
   }, []);
 
   /** 调用流式接口，返回累计文本；onText 在每次增量后回调 */
@@ -332,7 +385,8 @@ export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: 
     async (
       callPhase: "explore" | "closing" | "chat",
       userMessage: string,
-      onText: (accumulated: string) => void
+      onText: (accumulated: string) => void,
+      retryInstruction?: string
     ): Promise<string | null> => {
       if (!node || !script) return null;
       const res = await fetch("/api/node-learn", {
@@ -352,6 +406,9 @@ export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: 
           phase: callPhase,
           history: historyRef.current,
           userMessage,
+          cycle: script.cycle || cycle,
+          memory,
+          retryInstruction,
         }),
       });
       if (!res.ok || !res.body) return null;
@@ -379,12 +436,12 @@ export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: 
       }
       return accumulated;
     },
-    [node, script, subject]
+    [node, script, subject, cycle, memory]
   );
 
   /** explore / closing 阶段：段落进入主推进队列 */
   const streamPhase = useCallback(
-    async (callPhase: "explore" | "closing", userMessage: string) => {
+    async (callPhase: "explore" | "closing", userMessage: string, retryInstruction?: string) => {
       setStreaming(true);
       setError(null);
       try {
@@ -398,12 +455,35 @@ export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: 
             ];
           }
           rebuildSegments();
-        });
+        }, retryInstruction);
 
         if (accumulated === null) {
           setError("引导者失联了，请重试");
           setStreaming(false);
           return;
+        }
+
+        // §4 输出校验：explore 阶段结构不合格 → 带纠错说明重试一次
+        if (callPhase === "explore" && script && !retriedRef.current.has("explore")) {
+          const c = (script.cycle || cycle) as CycleNumber;
+          const issues = validateScript(parseSegments(accumulated).segments, {
+            cycle: c,
+            minQuestions: c === 4 ? 1 : Math.max(1, script.quizCount),
+            requireSummary: c !== 4,
+            requireDeepDive: cycleDef(c).script.requireDeepDive,
+            requireCreate: cycleDef(c).script.requireCreate,
+          });
+          if (issues.length > 0) {
+            retriedRef.current.add("explore");
+            trackEvent("script_invalid", { node_id: node?.id, cycle: c, issues: issues.map((i) => i.code) });
+            exploreTextRef.current = "";
+            extraSegmentsRef.current = [];
+            setSegments([]);
+            setVisibleCount(0);
+            setStreaming(false);
+            await streamPhaseRef.current?.("explore", "", issuesToInstruction(issues));
+            return;
+          }
         }
 
         // 固化本轮段落与对话历史
@@ -424,15 +504,22 @@ export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: 
       }
       setStreaming(false);
     },
-    [callStream, rebuildSegments]
+    [callStream, rebuildSegments, script, cycle, node]
   );
+  // 让 streamPhase 内部可以递归调用自身（校验失败重试）
+  const streamPhaseRef = useRef<typeof streamPhase | null>(null);
+  streamPhaseRef.current = streamPhase;
 
   // 初始化：尝试恢复存档，否则组剧本 + 启动探索
   useEffect(() => {
     if (!node || startedRef.current) return;
 
-    // 有存档 → 跳过预览直接恢复
-    const saved = loadExploreSession(node.id);
+    // 有存档 → 跳过预览直接恢复；但存档属于别的周目（上周目已完成 / 指定回炉）→ 丢弃，重新开始
+    let saved = loadExploreSession(node.id);
+    if (saved && saved.exploreText && (saved.script?.cycle ?? 1) !== cycle) {
+      clearExploreSession(node.id);
+      saved = null;
+    }
     if (saved && saved.exploreText) {
       setShowPreview(false);
       startedRef.current = true;
@@ -469,13 +556,13 @@ export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: 
       return;
     }
 
-    const learned = getLearnedNodeIds(graph.nodes);
-    const status = learned.has(node.id) ? "learned" : "available";
-    const s = composeScript(node, status);
+    const s = composeScript(node, cycle);
     setScript(s);
+    quizStatsRef.current = { total: 0, firstTry: 0, wrong: [], summary: "", startedAt: Date.now() };
     recordHookUsed(s.hookId);
-    trackEvent("node_explored", { node_id: node.id, node_name: node.name, hook: s.hookId });
-  }, [node, graph, showPreview]);
+    trackEvent("node_explored", { node_id: node.id, node_name: node.name, hook: s.hookId, cycle });
+    trackEvent("cycle_started", { node_id: node.id, cycle });
+  }, [node, graph, showPreview, cycle]);
 
   // 初始化 Manim 视频缓存（一次性迁移：清除 v2 prompt 重写之前的所有旧缓存）
   useEffect(() => {
@@ -574,6 +661,25 @@ export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: 
       if (seg.type === "gain") {
         sideEffectsRef.current.add(i);
         if (!isStarNode) {
+          // 多周目：写入周目记录（内部会同步 markLearned，等级只升不降）
+          const st = quizStatsRef.current;
+          const c = (script?.cycle || cycle) as CycleNumber;
+          const ratio = st.total > 0 ? st.firstTry / st.total : 1;
+          const passed = restoredRef.current
+            ? true
+            : ratio >= cycleInfo.pass.minFirstTryRatio && st.summary.length >= cycleInfo.pass.minSummaryChars;
+          recordCycleComplete(node.id, {
+            cycle: c,
+            startedAt: st.startedAt,
+            completedAt: Date.now(),
+            quizTotal: st.total,
+            quizFirstTry: st.firstTry,
+            wrongOptions: st.wrong,
+            summary: st.summary || undefined,
+            // 第 1 周目永远通过（初见只求建立直觉）；其余周目按门槛
+            passed: c === 1 || passed,
+          });
+          trackEvent("cycle_completed", { node_id: node.id, cycle: c, passed: c === 1 || passed, first_try_ratio: ratio });
           markLearned(node.id);
           markDailyComplete(node.id);
         }
@@ -612,6 +718,10 @@ export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: 
       } else if (seg.type === "debt") {
         sideEffectsRef.current.add(i);
         addEcho({ nodeId: node.id, nodeName: node.name, kind: "debt", prompt: seg.content });
+        if (!isStarNode) addDebt(node.id, seg.content.slice(0, 80));
+      } else if (seg.type === "stick") {
+        sideEffectsRef.current.add(i);
+        if (!isStarNode) addStickingPoint(node.id, seg.content);
       } else if (seg.type === "layer_done") {
         sideEffectsRef.current.add(i);
         // C6: 层完成时持久化进度
@@ -629,6 +739,7 @@ export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: 
         } catch { /* spec-store not available */ }
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visibleCount, segments, node]);
 
   // 进度持久化：每次推进/作答/对话结束后保存（流式中不存，保证存的是完整文本）
@@ -659,10 +770,38 @@ export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: 
   // 总结/造物主提交 → 收尾阶段
   const handleSubmitInput = useCallback(
     (text: string) => {
+      quizStatsRef.current.summary = text.trim();
       setPhase("closing");
       streamPhase("closing", text);
     },
     [streamPhase]
+  );
+
+  // §3 缺口诊断：第 2 周目起，QUIZ 两次都错 → 回溯前置 → 插入 GAP 卡
+  const handleQuizFail = useCallback(
+    (quizIdx: number, wrongLabels: string[]) => {
+      if (!node) return;
+      quizStatsRef.current.wrong.push(...wrongLabels.map((l) => `Q${quizIdx}:${l}`));
+      if (isStarNode || cycle < 2 || gapShownRef.current) return;
+      const diag = diagnoseGap(node.id, cycle, graph, getMasteryMap(graph.nodes));
+      if (diag.kind !== "gap") return;
+      gapShownRef.current = true;
+      const p = diag.primary;
+      const gapSeg: Segment = {
+        type: "gap",
+        content: `这道题的坑，根源可能不在「${node.name}」本身。你在前置知识「${p.node.name}」上目前是第 ${p.currentLevel} 级，而第 ${cycle} 周目需要它至少到第 ${p.requiredLevel} 级。${
+          diag.others.length ? `另外「${diag.others.map((o) => o.node.name).join("」「")}」也偏弱。` : ""
+        }先回炉再回来，这颗星会好走很多。`,
+        gapNodeId: p.node.id,
+        gapNodeName: p.node.name,
+        gapCycle: p.suggestedCycle,
+      };
+      trackEvent("gap_diagnosed", { node_id: node.id, cycle, gap_node: p.node.id, distance: p.distance });
+      // 插在当前 quiz 卡后面；不进持久化文本，刷新后消失（诊断是一次性的）
+      gapInsertRef.current = { afterIdx: quizIdx, seg: gapSeg };
+      rebuildSegments();
+    },
+    [node, isStarNode, cycle, graph, rebuildSegments]
   );
 
   // 自由提问（探索途中，独立线程渲染）
@@ -894,7 +1033,42 @@ export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: 
               {node.description && (
                 <p className="text-[13px] text-white/50 mt-3 max-w-md mx-auto leading-relaxed">{node.description}</p>
               )}
-              {learned.has(node.id) && (
+              {/* 多周目：本次周目 */}
+              {!isStarNode && (
+                <div className="mt-4 inline-flex flex-col items-center gap-1.5">
+                  <div className="flex items-center gap-1.5">
+                    {[1, 2, 3, 4].map((c) => {
+                      const d = cycleDef(c);
+                      const done = (memory?.level || 0) >= c;
+                      const current = c === cycle;
+                      return (
+                        <span
+                          key={c}
+                          title={`第 ${c} 周目 · ${d.name} · ${d.goal}`}
+                          className={`h-2 w-2 rounded-full transition-all ${current ? "scale-150 ring-2 ring-offset-1 ring-offset-black/40" : ""}`}
+                          style={{
+                            background: done || current ? d.visual.tint : "rgba(255,255,255,0.12)",
+                            boxShadow: current ? `0 0 10px ${d.visual.tint}` : undefined,
+                            ["--tw-ring-color" as string]: d.visual.tint,
+                          }}
+                        />
+                      );
+                    })}
+                  </div>
+                  <span
+                    className="font-mono text-[10px] tracking-[0.15em] px-2.5 py-1 rounded border"
+                    style={{ color: cycleInfo.visual.tint, borderColor: `${cycleInfo.visual.tint}40`, background: `${cycleInfo.visual.tint}14` }}
+                  >
+                    第 {cycle} 周目 · {cycleInfo.name}
+                  </span>
+                  <p className="text-[11px] text-white/45 max-w-sm">{cycleInfo.goal}</p>
+                  <p className="text-[10px] text-white/30">你的向导：{cycleInfo.persona.role}</p>
+                  {memory && memory.stickingPoints.length > 0 && (
+                    <p className="mt-1 text-[11px] text-white/50 italic max-w-sm">📌 上次记下：{memory.stickingPoints[0]}</p>
+                  )}
+                </div>
+              )}
+              {isStarNode && learned.has(node.id) && (
                 <span className="inline-block mt-3 font-mono text-[10px] text-emerald-300/70 bg-emerald-400/10 border border-emerald-400/20 px-2.5 py-1 rounded">已学习 ✓</span>
               )}
             </div>
@@ -963,7 +1137,7 @@ export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: 
                 onClick={() => setShowPreview(false)}
                 className="border border-cyan-400/40 bg-cyan-400/10 px-8 py-3 font-mono text-sm tracking-widest text-cyan-200 hover:bg-cyan-400/20 hover:border-cyan-400/60 transition-all shadow-[0_0_20px_rgba(34,211,238,0.1)]"
               >
-                开始探索 →
+                {cycle === 1 ? "开始探索 →" : cycle === 2 ? "开始精读 →" : cycle === 3 ? "开始贯通 →" : "开始守护 →"}
               </button>
             </div>
           </div>
@@ -1010,6 +1184,15 @@ export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: 
                 <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: subject.color }} />
               )}
               <h1 className="truncate text-[var(--font-base)] font-semibold text-[var(--text-1)]">{node.name}</h1>
+              {!isStarNode && (
+                <span
+                  className="shrink-0 rounded px-1.5 py-0.5 font-mono text-[9px] tracking-wider border"
+                  style={{ color: cycleInfo.visual.tint, borderColor: `${cycleInfo.visual.tint}40`, background: `${cycleInfo.visual.tint}14` }}
+                  title={cycleInfo.goal}
+                >
+                  {cycle}周目 · {cycleInfo.name}
+                </span>
+              )}
             </div>
             <p className="text-[var(--font-xs)] text-[var(--text-3)] truncate">{node.plain_name}</p>
           </div>
@@ -1170,7 +1353,36 @@ export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: 
                 card = <BlankCard seg={seg} onComplete={() => markComplete(i)} initialCompleted={completedIdx.has(i)} />;
                 break;
               case "quiz":
-                card = <QuizCard seg={seg} onComplete={() => markComplete(i)} initialCompleted={completedIdx.has(i)} />;
+                card = (
+                  <QuizCard
+                    seg={seg}
+                    hintPolicy={cycleInfo.script.hintPolicy}
+                    onComplete={(firstTry) => {
+                      if (!completedIdx.has(i)) {
+                        quizStatsRef.current.total += 1;
+                        if (firstTry) quizStatsRef.current.firstTry += 1;
+                      }
+                      markComplete(i);
+                    }}
+                    onFail={(wrong) => handleQuizFail(i, wrong)}
+                    initialCompleted={completedIdx.has(i)}
+                  />
+                );
+                break;
+              case "stick":
+                card = <StickCard seg={seg} />;
+                break;
+              case "gap":
+                card = (
+                  <GapCard
+                    seg={seg}
+                    onGo={(gid) => {
+                      const back = encodeURIComponent(`${pathname}?node=${encodeURIComponent(node.id)}${urlFrom ? `&from=${urlFrom}` : ""}`);
+                      router.push(`${pathname}?node=${encodeURIComponent(gid)}&cycle=${seg.gapCycle || 1}&from=${back}`);
+                    }}
+                    onDismiss={() => setVisibleCount((v) => Math.min(v + 1, segments.length))}
+                  />
+                );
                 break;
               case "hunt":
                 card = <HuntCard seg={seg} />;
@@ -1238,7 +1450,7 @@ export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: 
             // 可摘录的讲解型卡片：悬停显示「摘录」按钮，一键存入笔记
             // flash 类型封存后（已 complete）不可再摘录——限时记忆的意义就在于逼迫你当下记住
             const isFlashSealed = seg.type === "flash" && completedIdx.has(i);
-            const excerptable = ["hook", "teach", "flash", "hunt", "feedback", "giant", "seed", "debt"].includes(seg.type) && seg.content?.trim() && !isFlashSealed;
+            const excerptable = ["hook", "teach", "flash", "hunt", "feedback", "giant", "seed", "debt", "stick"].includes(seg.type) && seg.content?.trim() && !isFlashSealed;
             return (
               <div key={key} className="group/card relative">
                 {card}
@@ -1314,6 +1526,29 @@ export function NodeLearnContent({ overrideReturnPath }: { overrideReturnPath?: 
           {/* 会话完成 */}
           {sessionDone && (
             <div className="animate-slide-up text-center pt-2 space-y-4">
+              {!isStarNode && cycle < 4 && (
+                <div
+                  className="mx-auto max-w-md rounded-[var(--radius-panel)] border px-5 py-4 text-left"
+                  style={{ borderColor: `${cycleDef(cycle + 1).visual.tint}40`, background: `${cycleDef(cycle + 1).visual.tint}0f` }}
+                >
+                  <p className="font-mono text-[10px] tracking-[0.15em] text-white/40">第 {cycle} 周目完成</p>
+                  <p className="mt-1 text-[13px] text-white/80">
+                    下一周目「{cycleDef(cycle + 1).name}」：{cycleDef(cycle + 1).goal}
+                  </p>
+                  <p className="mt-0.5 text-[11px] text-white/40">建议隔一天再来——间隔本身就是记忆的一部分。</p>
+                  <button
+                    onClick={() => {
+                      clearExploreSession(node.id);
+                      router.push(`${pathname}?node=${encodeURIComponent(node.id)}&cycle=${cycle + 1}${urlFrom ? `&from=${urlFrom}` : ""}`);
+                      setTimeout(() => window.location.reload(), 50);
+                    }}
+                    className="mt-3 rounded-[var(--radius-control)] border px-4 py-2 font-mono text-xs tracking-widest transition-all hover:brightness-125"
+                    style={{ color: cycleDef(cycle + 1).visual.tint, borderColor: `${cycleDef(cycle + 1).visual.tint}60`, background: `${cycleDef(cycle + 1).visual.tint}1a` }}
+                  >
+                    现在就开始第 {cycle + 1} 周目 →
+                  </button>
+                </div>
+              )}
               {nextPlanNode && (
                 <button
                   onClick={() => router.push(

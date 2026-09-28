@@ -25,6 +25,8 @@ const MARKER_TO_TYPE: Record<string, SegmentType> = {
   CODE: "code",
   DERIVE: "derive",
   LAYER_DONE: "layer_done",
+  STICK: "stick",
+  GAP: "gap",
 };
 
 type RawBlock = { type: SegmentType; param?: string; lines: string[] };
@@ -194,4 +196,63 @@ export function parseSegments(text: string): ParseResult {
     segments: blocks.map(finalizeBlock),
     lastOpen: blocks.length > 0,
   };
+}
+
+// ─────────────────────────────────────────────────────────────
+// 输出校验：协议不能靠祈祷。探索流结束后检查结构，不合格则重试一次。
+// ─────────────────────────────────────────────────────────────
+
+export type ScriptExpectation = {
+  cycle: number;
+  /** 至少几道 quiz/predict */
+  minQuestions: number;
+  /** 是否必须以 ASK_SUMMARY 收束（第 4 周目不需要） */
+  requireSummary: boolean;
+  /** 第 2 周目 CS/数学：必须有 CODE 或 DERIVE */
+  requireDeepDive: boolean;
+  /** 第 3 周目：必须有 CREATE */
+  requireCreate: boolean;
+};
+
+export type ValidationIssue = { code: string; message: string };
+
+export function validateScript(segments: Segment[], expect: ScriptExpectation): ValidationIssue[] {
+  const issues: ValidationIssue[] = [];
+  const has = (t: SegmentType) => segments.some((s) => s.type === t);
+  const count = (t: SegmentType) => segments.filter((s) => s.type === t).length;
+
+  if (segments.length === 0) {
+    issues.push({ code: "empty", message: "没有解析到任何 [[标记]] 段落" });
+    return issues;
+  }
+  if (!has("hook") && expect.cycle <= 3) {
+    issues.push({ code: "no_hook", message: "缺少 [[HOOK]] 开场" });
+  }
+  const questions = count("quiz") + count("predict");
+  if (questions < expect.minQuestions) {
+    issues.push({ code: "few_questions", message: `题目数不足：需要 ≥${expect.minQuestions}，实际 ${questions}` });
+  }
+  // 每道题必须有 ANSWER 且选项 ≥ 2
+  for (const s of segments) {
+    if ((s.type === "quiz" || s.type === "predict") && (!s.answer || !s.options || s.options.length < 2)) {
+      issues.push({ code: "bad_question", message: "存在题目缺少 ANSWER 或选项不足 2 个" });
+      break;
+    }
+  }
+  if (expect.requireSummary && !has("ask_summary")) {
+    issues.push({ code: "no_summary", message: "缺少 [[ASK_SUMMARY]] 收束" });
+  }
+  if (expect.requireDeepDive && !has("code") && !has("derive")) {
+    issues.push({ code: "no_deep_dive", message: "第 2 周目必须包含 [[CODE]] 或 [[DERIVE]] 逐行/逐步段" });
+  }
+  if (expect.requireCreate && !has("create")) {
+    issues.push({ code: "no_create", message: "第 3 周目必须包含 [[CREATE]] 造物主任务" });
+  }
+  return issues;
+}
+
+/** 供重试时追加到 system prompt 的纠错说明 */
+export function issuesToInstruction(issues: ValidationIssue[]): string {
+  if (issues.length === 0) return "";
+  return `\n\n## 上一次输出违反了协议，必须修正\n${issues.map((i) => `- ${i.message}`).join("\n")}\n严格按标记协议重新输出全部内容。`;
 }

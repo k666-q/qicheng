@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { rateLimitGuard, POLICIES } from "@/lib/api/rate-limit";
 import { z } from "zod";
 import OpenAI from "openai";
 import { matchDiscipline, getTemplate } from "@/lib/learn/discipline-templates";
@@ -107,6 +108,8 @@ const SpecOutputSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  const limited = rateLimitGuard(req, "node-spec", POLICIES.llm);
+  if (limited) return limited;
   try {
     const body = await req.json();
     const parsed = RequestSchema.parse(body);

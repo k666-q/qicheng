@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimitGuard, POLICIES } from "@/lib/api/rate-limit";
 import OpenAI from "openai";
 
 export const dynamic = "force-dynamic";
@@ -45,6 +46,8 @@ const SYSTEM_PROMPT = `你是一位教育课程架构师，精通学科知识体
 8. 只输出 JSON，不要任何其他文字`;
 
 export async function POST(req: NextRequest) {
+  const limited = rateLimitGuard(req, "generate-subtree", POLICIES.heavy);
+  if (limited) return limited;
   try {
     const body = await req.json();
     const { nodeId, nodeName, description, subjectName, subjectId, depth } =

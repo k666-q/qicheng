@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimitGuard, POLICIES } from "@/lib/api/rate-limit";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
+  const limited = rateLimitGuard(req, "profile-events", POLICIES.cheap);
+  if (limited) return limited;
   try {
     const body = await req.json();
     const events = body.events as { event_type: string; event_data?: Record<string, unknown> }[];

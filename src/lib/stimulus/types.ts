@@ -107,9 +107,10 @@ export type ExploreScript = {
   useSeed: boolean;
   /** 收尾是否记一笔认知债务 */
   useDebt: boolean;
-  /** 已掌握节点 → 造物主模式（设计题目而非解题） */
+  /** 已掌握节点 → 造物主模式（设计题目而非解题）；多周目下等价于 cycle === 3 */
   creatorMode: boolean;
-  /** 成长刺激：学完获得的"思维"名称，由 AI 生成 */
+  /** 周目号（1 初见 · 2 精读 · 3 贯通 · 4 守护）。旧存档缺省视为 1 */
+  cycle?: number;
 };
 
 /** 探索流中的卡片段落类型（AI 标记协议 → 前端卡片） */
@@ -131,7 +132,9 @@ export type SegmentType =
   | "create" // 造物主：请用户设计题目
   | "code" // 代码逐行深潜
   | "derive" // 公式/推导逐步深潜
-  | "layer_done"; // 当前层完成标记
+  | "layer_done" // 当前层完成标记
+  | "stick" // 小助理记下的卡点（跨周目记忆）
+  | "gap"; // 缺口诊断卡（前端合成，非 AI 输出）
 
 export type ChoiceOption = { label: string; text: string };
 
@@ -167,6 +170,11 @@ export type Segment = {
   codeLines?: { line: number; code: string; comment: string }[];
   /** derive 段的步骤：{ step, formula, why }[] */
   deriveSteps?: { step: string; formula: string; why: string }[];
+  /** gap 卡：诊断出的缺口前置节点 */
+  gapNodeId?: string;
+  gapNodeName?: string;
+  /** gap 卡：建议去的周目 */
+  gapCycle?: number;
   /** 流式过程中的临时段（尚未固化） */
   _tmp?: boolean;
 };

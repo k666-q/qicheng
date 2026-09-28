@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { rateLimitGuard, POLICIES } from "@/lib/api/rate-limit";
 import { z } from "zod";
 import OpenAI from "openai";
 import { searchBilibili, formatSearchResults } from "@/lib/search/bilibili";
@@ -19,6 +20,8 @@ function getClient() {
 }
 
 export async function POST(req: NextRequest) {
+  const limited = rateLimitGuard(req, "search-resource", POLICIES.llm);
+  if (limited) return limited;
   try {
     const body = await req.json();
     const parsed = RequestSchema.parse(body);

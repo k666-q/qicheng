@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimitGuard, POLICIES } from "@/lib/api/rate-limit";
 import OpenAI from "openai";
 
 export const dynamic = "force-dynamic";
@@ -26,6 +27,8 @@ const SYSTEM_PROMPT = `你是一名学习笔记整理助手。用户会给你一
 即使用户的笔记完全没有 Markdown 格式，你也能将其整理为结构化的 Markdown。`;
 
 export async function POST(req: NextRequest) {
+  const limited = rateLimitGuard(req, "format-note", POLICIES.llm);
+  if (limited) return limited;
   try {
     const { content, nodeName } = await req.json();
 

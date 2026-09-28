@@ -1,7 +1,9 @@
 import { NextRequest } from "next/server";
+import { rateLimitGuard, POLICIES } from "@/lib/api/rate-limit";
 import { z } from "zod";
 import OpenAI from "openai";
 import { recordEvent } from "@/lib/admin/usage-store";
+import { cycleDef } from "@/lib/learn/cycles";
 
 export const dynamic = "force-dynamic";
 
@@ -28,8 +30,25 @@ const RequestSchema = z.object({
     useSeed: z.boolean(),
     useDebt: z.boolean(),
     creatorMode: z.boolean(),
+    cycle: z.number().int().min(1).max(4).optional(),
   }),
   phase: z.enum(["explore", "closing", "chat", "layer"]),
+  /** 多周目：周目号（缺省 1）与小助理跨周目记忆 */
+  cycle: z.number().int().min(1).max(4).default(1),
+  memory: z
+    .object({
+      level: z.number().optional(),
+      stickingPoints: z.array(z.string()).default([]),
+      debts: z.array(z.string()).default([]),
+      prevSummary: z.string().optional(),
+      prevFirstTryRatio: z.number().optional(),
+      cyclesDone: z.number().optional(),
+      /** 第 3 周目融合题用：相邻已学节点名 */
+      neighborLearned: z.array(z.string()).default([]),
+    })
+    .optional(),
+  /** 输出校验失败后的重试：附加纠错说明 */
+  retryInstruction: z.string().optional(),
   layer: z.object({
     id: z.string(),
     level: z.string(),
@@ -112,6 +131,7 @@ STEP: 步骤描述
 FORMULA: 公式（LaTeX 格式）
 WHY: 为什么这一步成立
 - [[LAYER_DONE]] 当前层学习完成标记。内容是对本层掌握程度的一句话评价。前端收到后触发层进度保存。
+- [[STICK]] 小助理的观察笔记（仅收尾阶段）。**一行**、≤30 字、第三人称客观描述本次观察到的卡点或倾向（如"对递归终止条件的判断不稳定""倾向于用直觉替代推导"）。没有明显卡点时写他的优势。这条会被系统记住，下周目开场引用。
 
 ## 写作铁律
 
@@ -122,78 +142,191 @@ WHY: 为什么这一步成立
 5. 偶尔用身份刺激的口吻："数学家看到这里会先问……"。`;
 }
 
+function isCSNode(node: Req["node"]) {
+  return /编程|代码|算法|程序|软件|前端|后端|web|python|java|数据结构|计算机/i.test(
+    `${node.subjectName || ""} ${node.name} ${node.description}`
+  );
+}
+function isMathNode(node: Req["node"]) {
+  return /数学|微积分|线性代数|概率|统计|方程|几何|证明|物理|力学/i.test(
+    `${node.subjectName || ""} ${node.name} ${node.description}`
+  );
+}
+
+/** 小助理跨周目记忆块：让用户看见"它认识我" */
+function buildMemoryBlock(req: Req): string {
+  const m = req.memory;
+  if (!m || req.cycle <= 1) return "";
+  const lines: string[] = [];
+  lines.push(`## 关于这位学习者（你的记忆，必须在开场自然引用其中至少一条，用第二人称，不要念清单）`);
+  lines.push(`- 这颗星他已完成 ${m.cyclesDone ?? req.cycle - 1} 个周目，当前进入第 ${req.cycle} 周目`);
+  if (m.stickingPoints.length) lines.push(`- 上次记下的卡点：${m.stickingPoints.slice(0, 3).join("；")}`);
+  if (m.debts.length) lines.push(`- 未还的认知欠条：${m.debts.slice(0, 2).join("；")}`);
+  if (m.prevFirstTryRatio !== undefined) lines.push(`- 上周目题目一次正确率：${Math.round(m.prevFirstTryRatio * 100)}%`);
+  if (m.prevSummary) lines.push(`- 他上次的总结原话："${m.prevSummary.slice(0, 120)}"`);
+  if (m.neighborLearned.length) lines.push(`- 他已学过的相邻知识：${m.neighborLearned.slice(0, 4).join("、")}`);
+  return lines.join("\n") + "\n";
+}
+
+function personaBlock(req: Req): string {
+  const def = cycleDef(req.cycle);
+  return `## 你的角色：${def.persona.role}（第 ${def.cycle} 周目「${def.name}」）
+${def.persona.stance}
+本周目目标：${def.goal}
+Bloom 层级：${def.bloom.join(" / ")}
+提示策略：${
+    def.script.hintPolicy === "always"
+      ? "QUIZ 的 HINT 正常给"
+      : def.script.hintPolicy === "after_first_wrong"
+        ? "QUIZ 的 HINT 只在第一次答错后显示（照常写 HINT 字段，前端控制时机）"
+        : "不给 HINT（HINT 字段写「无提示，自己想」）"
+  }
+干扰项来源：${
+    def.script.distractorSource === "obvious"
+      ? "错误选项可以相对明显，让他能对"
+      : def.script.distractorSource === "misconception"
+        ? "**每个错误选项必须对应这个知识点一个真实、常见的误区**，并在 WHY 中逐个点明"
+        : "错误选项来自边界情形和专家也会犯的错，WHY 中说明为什么资深者也会掉进去"
+  }
+`;
+}
+
 function buildExplorePrompt(req: Req): string {
   const { node, script } = req;
+  const cycle = req.cycle;
   const hookGuide = HOOK_GUIDE[script.hookId] || HOOK_GUIDE.truth;
+  const cs = isCSNode(node);
+  const math = isMathNode(node);
+  const deepDiveInstr = cs
+    ? `[[CODE 语言]] 展示核心实现（真实可运行代码，8-20 行），逐行注释解释"为什么这么写"。`
+    : math
+      ? `[[DERIVE]] 逐步推导关键公式/结论，每步都写 WHY。`
+      : `如有算法/公式/流程，用 [[CODE]] 或 [[DERIVE]] 逐步推演；否则用一个 [[TEACH]] 拆解它的内部结构（组成部分与相互关系）。`;
 
-  if (script.creatorMode) {
-    return `你是「Nexiova」知识宇宙的探索引导者。用户已经掌握了「${node.name}」（${node.plain_name}），现在重访这颗星——进入造物主模式。
+  const header = `你是「Nexiova」知识宇宙的探索引导者。
 
-节点信息：${node.description}。关键概念：${node.keywords.join("、")}。
-
-${buildProtocolRules()}
-
-## 本次流程（造物主模式，严格按顺序输出后停止）
-
-1. [[HOOK]] 简短开场：他已经征服过这颗星，但解题者和出题者是两个物种。
-2. [[TEACH]] 一段：揭示"能骗过别人的题"背后的秘密——你必须洞察别人的思维会在哪里滑倒。给 1 个经典的"坑"的例子。
-3. [[CREATE]] 请他设计一道能骗过 80% 人的「${node.name}」题目。
-
-输出完 [[CREATE]] 后立即停止。`;
-  }
-
-  const steps: string[] = [];
-  steps.push(`1. [[HOOK]] ${hookGuide}`);
-  steps.push(`2. [[PREDICT]] 在讲解任何内容之前，先让用户预测。题目要与 HOOK 的问题直接相关，让他必须动脑猜。`);
-  steps.push(`3. [[TEACH]] 揭示预测的答案并开始第一段讲解，在悬念处停。`);
-  if (script.useDiscovery) {
-    steps.push(`4. 自我发现序列：用一个 [[TEACH]] 给出一组精心设计的例子/数据/序列（不解释规律），然后用 [[PREDICT]] 问"你发现了什么规律？"，让他自己找到。`);
-  }
-  if (script.useFlash) {
-    steps.push(`5. [[FLASH 20]] 把最核心的结论做成闪存卡。`);
-  }
-  steps.push(`6. 继续用 [[TEACH]] 推进，每揭示一个关键规律就紧跟一个 [[HUNT n/${script.huntCount}]]（全程共 ${script.huntCount} 个，编号 1/${script.huntCount} 到 ${script.huntCount}/${script.huntCount}）。`);
-  if (script.useBlank) {
-    steps.push(`7. [[BLANK]] 在一段关键推导处留空，让他先想再揭示。`);
-  }
-  steps.push(`8. ${script.quizCount} 道 [[QUIZ]]，难度阶梯递进，每道都带 TAUNT 和 HINT。`);
-  if (script.useFlash) {
-    steps.push(`9. [[RECALL]] 引爆时间炸弹：让他回忆 FLASH 卡里消失的内容。`);
-  }
-  steps.push(`10. [[ASK_SUMMARY]] 请他用自己的话说说「${node.name}」到底是什么。`);
-
-  return `你是「Nexiova」知识宇宙的探索引导者。用户点开了一颗未知的星——「${node.name}」（${node.plain_name}），即将开始一场探索。你的任务不是教知识，而是操控他的注意力、记忆、好奇心、胜负欲和成就感，让他忘记自己在学习。
-
+节点：「${node.name}」（${node.plain_name}）
 节点信息：${node.description}
 学科：${node.subjectName || "未知"}；难度：${node.difficulty}/10；关键概念：${node.keywords.join("、")}。
-假设用户是聪明的零基础者：不堆术语，但绝不弱智化。
 
+${personaBlock(req)}
+${buildMemoryBlock(req)}
 ${buildProtocolRules()}
+${req.retryInstruction || ""}`;
+
+  const steps: string[] = [];
+
+  if (cycle === 1) {
+    steps.push(`1. [[HOOK]] ${hookGuide}`);
+    steps.push(`2. [[PREDICT]] 在讲解任何内容之前先让他预测，题目与 HOOK 直接相关。`);
+    steps.push(`3. [[TEACH]] 揭示预测的答案并开始第一段讲解，在悬念处停。`);
+    if (script.useDiscovery) {
+      steps.push(`4. 自我发现序列：一个 [[TEACH]] 给出一组精心设计的例子/数据（不解释规律），再用 [[PREDICT]] 问"你发现了什么规律？"。`);
+    }
+    if (script.useFlash) steps.push(`5. [[FLASH 20]] 把最核心的结论做成闪存卡。`);
+    steps.push(`6. 继续用 [[TEACH]] 推进，每揭示一个关键规律紧跟一个 [[HUNT n/${script.huntCount}]]（共 ${script.huntCount} 个）。`);
+    if (script.useBlank) steps.push(`7. [[BLANK]] 在一段关键推导处留空。`);
+    steps.push(`8. ${script.quizCount} 道 [[QUIZ]]，第一题要让他能对，带 TAUNT 和 HINT。`);
+    if (script.useFlash) steps.push(`9. [[RECALL]] 让他回忆 FLASH 卡里消失的内容。`);
+    steps.push(`10. [[ASK_SUMMARY]] 请他用自己的话说说「${node.name}」到底是什么。`);
+    return `${header}
+用户点开了一颗未知的星，即将开始第一次探索。你的任务不是教知识，而是操控他的注意力、记忆、好奇心、胜负欲和成就感，让他忘记自己在学习。假设他是聪明的零基础者：不堆术语，但绝不弱智化。
 
 ## 本次探索流程（严格按顺序输出，输出完最后一步后停止）
 
 ${steps.join("\n")}
 
-输出完 [[ASK_SUMMARY]] 后立即停止，等待用户的总结。`;
+输出完 [[ASK_SUMMARY]] 后立即停止。`;
+  }
+
+  if (cycle === 2) {
+    steps.push(`1. [[HOOK]] 不再用悬念开场。用一句话把他带回这颗星，并直接引用记忆里的卡点或上次总结（"上次你说……这次我们从那里往下挖"）。`);
+    steps.push(`2. [[TEACH]] 精读的第一刀：这颗星"为什么成立"的核心机制，≤120 字，只讲一个点。`);
+    steps.push(`3. ${deepDiveInstr}`);
+    steps.push(`4. [[BLANK]] 在推导/代码中最容易出错的一步留空，让他先想。`);
+    steps.push(`5. [[TEACH]] 拆解：它在什么条件下会失效？边界在哪？≤120 字。`);
+    steps.push(`6. [[HUNT 1/${script.huntCount}]] … [[HUNT ${script.huntCount}/${script.huntCount}]] 穿插在以上讲解中，每个是一条可迁移的规律。`);
+    steps.push(`7. ${script.quizCount} 道 [[QUIZ]]：第一道应用（给场景让他选做法），第二道分析（给一段代码/推导让他找错或判断复杂度/条件），第三道综合。**干扰项必须来自真实误区**。`);
+    steps.push(`8. [[ASK_SUMMARY]] 不问"它是什么"，问"它为什么成立、什么时候会失效"。要求 ≥40 字。`);
+    return `${header}
+用户第二次来到这颗星。上一周目他建立了直觉；这一周目要把直觉变成技能：能做、能拆、知道为什么。不放水，但每一步都给他抓手。
+
+## 本次精读流程（严格按顺序输出，输出完最后一步后停止）
+
+${steps.join("\n")}
+
+输出完 [[ASK_SUMMARY]] 后立即停止。`;
+  }
+
+  if (cycle === 3) {
+    const neighbors = req.memory?.neighborLearned || [];
+    steps.push(`1. [[HOOK]] 跨界开场：把「${node.name}」放到一个**看似无关的领域**里（${neighbors.length ? `优先从他已学的「${neighbors.slice(0, 3).join("」「")}」中选一个` : "自行选一个真实的跨学科对应"}），问他"这两件事是同一件事吗？"`);
+    steps.push(`2. [[PREDICT]] 迁移预测：给一个新场景，让他判断「${node.name}」的规律在这里成立还是失效。`);
+    steps.push(`3. [[TEACH]] 只用 ≤80 字点破迁移的本质，不展开。然后停。`);
+    steps.push(`4. 1 道 [[QUIZ]] 融合题：同时用到「${node.name}」和${neighbors.length ? `「${neighbors[0]}」` : "一个相邻知识"}才能答对。干扰项来自边界情形。HINT 字段写「无提示，自己想」。`);
+    steps.push(`5. [[CREATE]] 造物主任务：请他设计一道能骗过 80% 人的「${node.name}」题目，并说明陷阱设计的依据。`);
+    steps.push(`6. [[ASK_SUMMARY]] "把「${node.name}」教给一个完全不懂的人，让他三分钟内明白它为什么重要。" 要求 ≥80 字，会按 rubric 评分：本质是否说清 / 是否有例子 / 是否指出常见误解。`);
+    return `${header}
+用户第三次来到这颗星。他已经会做了；这一周目要让他能迁移、能创造、能教别人。你是对手，不是老师：只问不答，用反例逼他自己说清楚。
+
+## 本次贯通流程（严格按顺序输出，输出完最后一步后停止）
+
+${steps.join("\n")}
+
+输出完 [[ASK_SUMMARY]] 后立即停止。`;
+  }
+
+  // cycle 4：守护
+  return `${header}
+守护周目：他已经贯通这颗星，今天只是来确认记忆还在。极简。
+
+## 流程（严格按顺序，输出完停止）
+
+1. [[RECALL]] 一句话提问：这颗星最核心的一条规律是什么？
+2. 1 道 [[QUIZ]]：随机挑一个上周目出过的角度换个场景再问一次，HINT 写「无提示」。
+3. [[LAYER_DONE]] 一句话确认。
+
+输出完 [[LAYER_DONE]] 后立即停止。`;
 }
 
 function buildClosingPrompt(req: Req): string {
   const { node, script } = req;
+  const cycle = req.cycle;
+  const def = cycleDef(cycle);
   const extras: string[] = [];
-  extras.push(`1. [[FEEDBACK]] 评价用户刚才的${script.creatorMode ? "题目设计" : "总结"}：先指出他说对了什么（具体引用他的话），再精准补上他漏掉的最关键一点。`);
-  extras.push(`2. [[GAIN 思维名称]] 给他命名刚获得的思维方式（4-8 字，如"变化率思维""结构化拆解"），写出这个思维让他以后能看见什么。`);
-  extras.push(`3. [[GIANT]] 讲一个关于这个知识发现者的真实、意外、人性化的细节故事。`);
+  const what = cycle >= 3 ? "题目设计与教学式总结" : cycle === 2 ? "机制总结" : "总结";
+
+  const gainGuide: Record<string, string> = {
+    直觉: `[[GAIN 思维名称]] 命名他刚获得的**直觉**（4-8 字，如"变化率思维"），写出这个直觉让他以后能看见什么。`,
+    技能: `[[GAIN 技能名称]] 命名他刚获得的**技能**（4-8 字，如"边界条件检查""复杂度估算"），写出以后什么场景会用到。`,
+    视角: `[[GAIN 视角名称]] 命名他刚获得的**视角**（4-8 字，如"结构同构""不变量思维"），写出它连接了哪两个看似无关的领域。`,
+    稳固: `[[GAIN 记忆稳固]] 一句话确认这颗星的记忆依然牢固，并说下次再见的时间。`,
+  };
+
+  extras.push(
+    `1. [[FEEDBACK]] 评价他刚才的${what}：先具体引用他说对的话，再精准补上他漏掉的最关键一点。${
+      cycle >= 2 ? "按 rubric 逐条打分（本质 / 例子 / 误解），给出 0-10 总分并写在开头。" : ""
+    }${cycle >= 2 && req.memory?.stickingPoints.length ? `对照上周目卡点「${req.memory.stickingPoints[0]}」：这次进步了还是依旧？直说。` : ""}`
+  );
+  extras.push(`2. ${gainGuide[def.gainKind] || gainGuide["直觉"]}`);
+  extras.push(`3. [[STICK]] 一行观察笔记（≤30 字，第三人称客观）：本次最明显的卡点或倾向；没有就写他的优势。`);
+  if (cycle <= 2) {
+    extras.push(`4. [[GIANT]] 讲一个关于这个知识发现者的真实、意外、人性化的细节故事。`);
+  }
   if (script.useSeed) {
-    extras.push(`4. [[SEED]] 埋一个值得发酵三天的问题，告诉他先不要回答，三天后回来。`);
+    extras.push(`5. [[SEED]] 埋一个值得发酵三天的问题，${cycle >= 2 ? "必须指向他下一周目要面对的迁移/创造任务。" : "告诉他先不要回答，三天后回来。"}`);
   }
   if (script.useDebt) {
-    extras.push(`5. [[DEBT]] 给他记一笔认知欠条：今天他学会了"怎么用"，但还欠一个具体的"为什么"（写明欠的是哪个推导/原因）。`);
+    extras.push(`6. [[DEBT]] 记一笔认知欠条：今天他学会了"怎么用"，但还欠一个具体的"为什么"（写明欠的是哪个推导/原因）。`);
+  }
+  if (cycle === 2 && req.memory?.debts.length) {
+    extras.push(`7. 如果他这次的表现已经还清了欠条「${req.memory.debts[0]}」，在 FEEDBACK 里明确宣布"欠条已还"。`);
   }
 
-  return `你是「Nexiova」知识宇宙的探索引导者。用户刚完成「${node.name}」（${node.plain_name}）的探索，提交了他的${script.creatorMode ? "题目设计（造物主模式）" : "总结"}。
+  return `你是「Nexiova」知识宇宙的探索引导者，本周目角色：${def.persona.role}。用户刚完成「${node.name}」（${node.plain_name}）第 ${cycle} 周目「${def.name}」的探索，提交了他的${what}。
 
 ${buildProtocolRules()}
-
+${req.retryInstruction || ""}
 ## 收尾流程（严格按顺序输出后停止）
 
 ${extras.join("\n")}`;
@@ -259,12 +392,19 @@ ${buildProtocolRules()}
 }
 
 export async function POST(req: NextRequest) {
+  const limited = rateLimitGuard(req, "node-learn", POLICIES.llm);
+  if (limited) return limited;
   try {
     const body = await req.json();
     const parsed = RequestSchema.parse(body);
 
     const userId = req.headers.get("x-user-id") || "anonymous";
-    recordEvent(userId, "ai_call:node-learn", { phase: parsed.phase, node: parsed.node.id });
+    recordEvent(userId, "ai_call:node-learn", {
+      phase: parsed.phase,
+      node: parsed.node.id,
+      cycle: parsed.cycle,
+      retry: Boolean(parsed.retryInstruction),
+    });
 
     const client = getClient();
     const model = process.env.AI_MODEL || "deepseek-chat";
@@ -290,7 +430,10 @@ export async function POST(req: NextRequest) {
     }
 
     if (parsed.phase === "explore") {
-      messages.push({ role: "user", content: `开始探索「${parsed.node.name}」` });
+      messages.push({
+        role: "user",
+        content: `开始「${parsed.node.name}」第 ${parsed.cycle} 周目（${cycleDef(parsed.cycle).name}）`,
+      });
     } else if (parsed.phase === "layer") {
       messages.push({ role: "user", content: parsed.userMessage || `开始学习「${parsed.node.name}」的 ${parsed.layer?.level || ""} 层` });
     } else {

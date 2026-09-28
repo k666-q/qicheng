@@ -5,7 +5,12 @@ import { useRouter } from "next/navigation";
 import { getUser, signOut } from "@/lib/auth/local";
 import { CosmicBackground } from "@/components/universe/CosmicBackground";
 
-const ADMIN_TOKEN = "nexiova-admin-2026";
+// 管理口令不再硬编码：由用户输入，仅存于本会话（sessionStorage）
+const TOKEN_KEY = "qc_admin_token";
+function loadToken(): string {
+  if (typeof window === "undefined") return "";
+  return sessionStorage.getItem(TOKEN_KEY) || "";
+}
 
 type Stats = {
   totalUsers: number;
@@ -34,6 +39,8 @@ export default function AdminPage() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [error, setError] = useState("");
   const [tab, setTab] = useState<"overview" | "ai" | "users" | "events">("overview");
+  const [token, setToken] = useState("");
+  const [tokenInput, setTokenInput] = useState("");
 
   const user = typeof window !== "undefined" ? getUser() : null;
 
@@ -42,23 +49,67 @@ export default function AdminPage() {
       router.replace("/login");
       return;
     }
-    fetchStats();
-  }, []);
-
-  const fetchStats = useCallback(async () => {
-    try {
-      const res = await fetch("/api/admin/stats", {
-        headers: { "x-admin-token": ADMIN_TOKEN },
-      });
-      if (!res.ok) throw new Error("Unauthorized");
-      setStats(await res.json());
-    } catch {
-      setError("无法加载数据");
+    const t = loadToken();
+    if (t) {
+      setToken(t);
+      fetchStats(t);
     }
   }, []);
 
+  const fetchStats = useCallback(async (t: string) => {
+    setError("");
+    try {
+      const res = await fetch("/api/admin/stats", {
+        headers: { "x-admin-token": t },
+      });
+      if (res.status === 401) {
+        sessionStorage.removeItem(TOKEN_KEY);
+        setToken("");
+        throw new Error("口令错误或服务端未配置 ADMIN_TOKEN");
+      }
+      if (!res.ok) throw new Error("无法加载数据");
+      setStats(await res.json());
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "无法加载数据");
+    }
+  }, []);
+
+  function submitToken() {
+    const t = tokenInput.trim();
+    if (!t) return;
+    sessionStorage.setItem(TOKEN_KEY, t);
+    setToken(t);
+    fetchStats(t);
+  }
+
   if (!user || user.role !== "admin") {
     return <div className="min-h-screen bg-[#050510] flex items-center justify-center text-white/30 text-sm">无权限</div>;
+  }
+
+  if (!token) {
+    return (
+      <div className="min-h-screen bg-[#050510] text-white flex items-center justify-center">
+        <CosmicBackground />
+        <form
+          onSubmit={(e) => { e.preventDefault(); submitToken(); }}
+          className="relative z-10 w-full max-w-sm rounded-xl border border-cyan-400/15 bg-[#0c0c18]/80 backdrop-blur-md p-6 space-y-4"
+        >
+          <div className="text-sm font-semibold text-white/70 tracking-wider">Admin 口令</div>
+          <p className="text-[11px] text-white/35">需与服务端环境变量 ADMIN_TOKEN 一致，仅保存在本次会话。</p>
+          <input
+            type="password"
+            value={tokenInput}
+            onChange={(e) => setTokenInput(e.target.value)}
+            autoFocus
+            className="w-full rounded-md border border-cyan-400/20 bg-black/40 px-3 py-2 text-sm text-white/90 focus:outline-none focus:border-cyan-400/50"
+          />
+          {error && <p className="text-red-400 text-xs">{error}</p>}
+          <button type="submit" className="w-full rounded-md border border-cyan-400/30 bg-cyan-400/10 py-2 text-xs text-cyan-200 hover:bg-cyan-400/20 transition-colors">
+            进入
+          </button>
+        </form>
+      </div>
+    );
   }
 
   return (
@@ -74,7 +125,7 @@ export default function AdminPage() {
           <span className="text-sm font-semibold text-white/60 tracking-wider">Admin Panel</span>
         </div>
         <div className="flex items-center gap-4">
-          <button onClick={fetchStats} className="text-xs text-cyan-300/60 hover:text-cyan-300 transition-colors">
+          <button onClick={() => fetchStats(token)} className="text-xs text-cyan-300/60 hover:text-cyan-300 transition-colors">
             刷新
           </button>
           <button

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimitGuard, POLICIES } from "@/lib/api/rate-limit";
 import { PDFParse } from "pdf-parse";
 import mammoth from "mammoth";
 
@@ -34,6 +35,8 @@ async function parseFile(buffer: Buffer, filename: string, mimeType: string): Pr
 }
 
 export async function POST(req: NextRequest) {
+  const limited = rateLimitGuard(req, "upload-doc", POLICIES.heavy);
+  if (limited) return limited;
   try {
     const formData = await req.formData();
     const file = formData.get("file") as File | null;

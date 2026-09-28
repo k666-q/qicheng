@@ -217,7 +217,21 @@ export function BlankCard({ seg, onComplete, initialCompleted = false }: { seg: 
 }
 
 /* ---------- 挑战题（对抗 + 错误纠正 + 差一点） ---------- */
-export function QuizCard({ seg, onComplete, initialCompleted = false }: { seg: Segment; onComplete: (firstTryCorrect: boolean) => void; initialCompleted?: boolean }) {
+export function QuizCard({
+  seg,
+  onComplete,
+  onFail,
+  initialCompleted = false,
+  hintPolicy = "after_first_wrong",
+}: {
+  seg: Segment;
+  onComplete: (firstTryCorrect: boolean) => void;
+  /** 两次都错时触发，带上选错的选项，供缺口诊断 */
+  onFail?: (wrongLabels: string[]) => void;
+  initialCompleted?: boolean;
+  /** 多周目提示策略：always（第一次错就给）/ after_first_wrong（同 always 但由周目定义）/ never（不给） */
+  hintPolicy?: "always" | "after_first_wrong" | "never";
+}) {
   const [attempts, setAttempts] = useState<string[]>(initialCompleted ? [seg.answer || "A"] : []);
   const [solved, setSolved] = useState(initialCompleted);
   const failed = !solved && attempts.length >= 2;
@@ -232,10 +246,12 @@ export function QuizCard({ seg, onComplete, initialCompleted = false }: { seg: S
       onComplete(next.length === 1);
     } else if (next.length >= 2) {
       onComplete(false);
+      onFail?.(next);
     }
   }
 
-  const showHint = !solved && attempts.length === 1 && !!seg.hint;
+  const hintAllowed = hintPolicy !== "never" && !!seg.hint && !/^无提示/.test(seg.hint.trim());
+  const showHint = !solved && attempts.length === 1 && hintAllowed;
 
   return (
     <CardShell accent="border-rose-400/30">
@@ -276,6 +292,11 @@ export function QuizCard({ seg, onComplete, initialCompleted = false }: { seg: S
         <div className="mt-3 animate-slide-up rounded-xl border border-amber-400/30 bg-amber-500/10 px-4 py-3">
           <p className="text-[11px] font-medium text-amber-300 mb-1">差一点。先别看答案——想想：</p>
           <p className="text-[13px] text-amber-100/90">{seg.hint}</p>
+        </div>
+      )}
+      {!solved && attempts.length === 1 && !hintAllowed && (
+        <div className="mt-3 animate-slide-up rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2.5">
+          <p className="text-[12px] text-white/50">不对。这一周目没有提示——再想一次，只剩一次机会。</p>
         </div>
       )}
       {finished && (
@@ -603,6 +624,56 @@ export function LayerDoneCard({ seg, onComplete }: { seg: Segment; onComplete?: 
       )}
       {claimed && (
         <p className="mt-3 text-center text-[10px] text-amber-300/60">已确认 — 层级进度已保存</p>
+      )}
+    </CardShell>
+  );
+}
+
+/* ---------- 小助理观察笔记：跨周目记忆（它认识我） ---------- */
+export function StickCard({ seg }: { seg: Segment }) {
+  return (
+    <div className="animate-slide-up flex items-start gap-3 rounded-xl border border-white/10 bg-gradient-to-r from-slate-900/70 to-[#13131d]/70 px-4 py-3">
+      <span className="mt-0.5 text-base leading-none">📌</span>
+      <div className="min-w-0 flex-1">
+        <p className="font-mono text-[10px] tracking-[0.15em] text-white/35">小助理记下了这一条 · 下周目会带着它回来</p>
+        <p className="mt-1 text-[13px] text-white/80 leading-relaxed">{seg.content}</p>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- 缺口诊断卡：答错 → 回溯前置 → 回炉 ---------- */
+export function GapCard({
+  seg,
+  onGo,
+  onDismiss,
+}: {
+  seg: Segment;
+  onGo: (nodeId: string) => void;
+  onDismiss: () => void;
+}) {
+  return (
+    <CardShell accent="border-orange-400/40" className="bg-gradient-to-br from-orange-950/40 to-[#13131d]/90">
+      <div className="mb-3 flex items-center justify-between gap-2">
+        <Tag className="bg-orange-500/20 text-orange-300">🩺 缺口诊断</Tag>
+        {seg.gapCycle && <span className="font-mono text-[10px] text-orange-300/60">建议：第 {seg.gapCycle} 周目</span>}
+      </div>
+      <Md content={seg.content} className="[&_p]:text-orange-100/85" />
+      {seg.gapNodeId && (
+        <div className="mt-4 flex flex-wrap gap-2">
+          <button
+            onClick={() => onGo(seg.gapNodeId!)}
+            className="flex-1 min-w-[140px] border border-orange-400/40 bg-orange-400/10 px-3 py-2 font-mono text-xs tracking-widest text-orange-200 hover:bg-orange-400/20 transition-all"
+          >
+            去回炉「{seg.gapNodeName || seg.gapNodeId}」→
+          </button>
+          <button
+            onClick={onDismiss}
+            className="border border-white/10 px-3 py-2 font-mono text-xs text-white/45 hover:bg-white/5 hover:text-white/70 transition-all"
+          >
+            先继续，稍后再补
+          </button>
+        </div>
       )}
     </CardShell>
   );

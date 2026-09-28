@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { rateLimitGuard, POLICIES } from "@/lib/api/rate-limit";
 import { z } from "zod";
 import OpenAI from "openai";
 import { buildFullPersonaPrompt } from "@/lib/ai/persona";
@@ -298,6 +299,8 @@ function buildChatPrompt(task: z.infer<typeof RequestSchema>["task"], planContex
 }
 
 export async function POST(req: NextRequest) {
+  const limited = rateLimitGuard(req, "task-chat", POLICIES.llm);
+  if (limited) return limited;
   try {
     const body = await req.json();
     const parsed = RequestSchema.parse(body);

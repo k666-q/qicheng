@@ -13,7 +13,14 @@ export type EventType =
   | "session_returned"
   | "node_explored"
   | "stage_completed"
-  | "card_shared";
+  | "card_shared"
+  // 多周目（§9 指标）
+  | "cycle_started"
+  | "cycle_completed"
+  | "gap_diagnosed"
+  | "gap_repaired"
+  | "script_invalid"
+  | "plan_ng_plus_started";
 
 export type ProfileEvent = {
   event_type: EventType;
